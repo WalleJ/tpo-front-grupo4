@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O Wireframe Sketch</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  /* ── Sketch Theme Globals ── */
+  body { 
+    font-family: 'Architects Daughter', cursive; 
+    background-color: #fbfbfb;
+    /* Sketchbook dot grid pattern */
+    background-image: radial-gradient(#ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #111;
+    min-height: 100dvh;
+  }
+
+  /* ── Sketch Components ── */
+  .sketch-box {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    box-shadow: 4px 4px 0px #111;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  
+  .sketch-img {
+    background: repeating-linear-gradient(45deg, #fff, #fff 10px, #f0f0f0 10px, #f0f0f0 20px);
+    border: 2px solid #111;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #555;
+    font-weight: bold;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Crossed lines for images */
+  .sketch-img::before, .sketch-img::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 1px;
+    background: rgba(0,0,0,0.1);
+    top: 50%;
+    left: 50%;
+  }
+  .sketch-img::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .sketch-img::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .sketch-btn {
+    background: #fff;
+    border: 2px solid #111;
+    box-shadow: 3px 3px 0px #111;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.1s;
+  }
+  .sketch-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px #111;
+  }
+  .sketch-btn-primary {
+    background: #111;
+    color: #fff;
+    box-shadow: 3px 3px 0px #888;
+  }
+  .sketch-btn-primary:active {
+    box-shadow: 0px 0px 0px #888;
+  }
+
+  .sketch-input {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    outline: none;
+    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.05);
+  }
+  .sketch-input:focus {
+    box-shadow: 2px 2px 0px #111, inset 2px 2px 0px rgba(0,0,0,0.05);
+  }
+
+  .sketch-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Page Transitions ── */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Hide scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; border-left: 2px solid #111; }
+  ::-webkit-scrollbar-thumb { background: #111; border: 2px solid #fff; }
+</style>
+</head>
+<body class="text-lg">
+
+<!-- ══════════════════════════════════════════
+     TOP APP BAR (Wireframe)
+══════════════════════════════════════════ -->
+<header class="fixed top-0 w-full z-50 bg-white border-b-4 border-black">
+  <div class="flex justify-between items-center h-16 px-6 max-w-[1280px] mx-auto">
+    <button onclick="navigate('home')" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 border-2 border-black rounded bg-gray-200 flex items-center justify-center">
+        <span class="material-symbols-outlined sketch-icon text-[20px]">blur_on</span>
+      </div>
+      <h1 class="font-bold text-2xl tracking-tight uppercase">AI-O Logo</h1>
+    </button>
+    <nav class="hidden md:flex items-center gap-8" id="desktop-nav">
+      <button onclick="navigate('home')"    data-page="home"    class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Home</button>
+      <button onclick="navigate('store')"   data-page="store"   class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Store</button>
+      <button onclick="navigate('cart')"    data-page="cart"    class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Cart</button>
+      <button onclick="navigate('profile')" data-page="profile" class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Profile</button>
+    </nav>
+    <div class="w-8 h-8 border-2 border-black rounded-full flex items-center justify-center sketch-btn">
+      <span class="material-symbols-outlined sketch-icon text-[18px]">settings</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active pt-20 pb-24 md:pb-8">
+
+  <!-- Hero Sketch -->
+  <section class="max-w-[1280px] mx-auto px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div class="z-10 flex flex-col gap-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-black rounded max-w-max bg-white">
+        <span class="material-symbols-outlined sketch-icon text-[16px]">bolt</span>
+        <span class="text-sm font-bold uppercase">Badge: Status Active</span>
+      </div>
+      <h2 class="text-5xl md:text-6xl font-black uppercase leading-tight">
+        Hero<br>Headline<br>Goes Here
+      </h2>
+      <p class="text-xl max-w-md text-gray-700">
+        Sub-headline descriptive text simulating the pitch for the ecosystem. Lines of text to show layout structure.
+      </p>
+      <div class="flex flex-wrap gap-4 mt-4">
+        <button onclick="navigate('store')" class="sketch-btn sketch-btn-primary px-6 py-3 uppercase text-lg">Primary CTA</button>
+        <button onclick="navigate('product')" class="sketch-btn px-6 py-3 uppercase text-lg">Secondary</button>
+      </div>
+    </div>
+    <div class="h-[300px] md:h-[450px] w-full sketch-img sketch-box">
+      <span class="z-10 bg-white px-4 py-2 border-2 border-black">Hero Image Placeholder</span>
+    </div>
+  </section>
+
+  <!-- Stats bar Sketch -->
+  <section class="border-y-4 border-black bg-white py-8 my-8">
+    <div class="max-w-[1280px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">0.02ms</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Stat Label 1</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">99.9%</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Stat Label 2</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">AES-256</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Stat Label 3</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">12.4k</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Stat Label 4</div></div>
+    </div>
+  </section>
+
+  <!-- Featured Categories Sketch -->
+  <section class="py-12 max-w-[1280px] mx-auto px-6">
+    <div class="flex justify-between items-end mb-8 border-b-2 border-black pb-4">
+      <div>
+        <h3 class="text-3xl font-bold uppercase">Featured Section</h3>
+        <p class="text-gray-600 text-lg">Subtitle description text.</p>
+      </div>
+      <button onclick="navigate('store')" class="font-bold uppercase flex items-center gap-1 hover:underline">
+        See All <span class="material-symbols-outlined sketch-icon text-[18px]">arrow_forward</span>
+      </button>
+    </div>
+
+    <!-- Sliders -->
+    <div class="flex flex-col gap-12">
+      <!-- Slider Row 1 -->
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-bold uppercase">Slider Category 1</h4>
+          <div class="flex gap-2">
+            <button class="sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_left</span></button>
+            <button class="sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="flex gap-6 overflow-x-auto pb-4">
+          <!-- Card Wireframes -->
+          <div class="min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Product Img</span></div>
+            <h5 class="font-bold text-lg">Product Name 1</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm">
+              <div><p class="uppercase text-gray-500 text-xs">Spec 1</p><p class="font-bold">Value A</p></div>
+              <div><p class="uppercase text-gray-500 text-xs">Spec 2</p><p class="font-bold">Value B</p></div>
+            </div>
+          </div>
+          <div class="min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Product Img</span></div>
+            <h5 class="font-bold text-lg">Product Name 2</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm">
+              <div><p class="uppercase text-gray-500 text-xs">Spec 1</p><p class="font-bold">Value A</p></div>
+              <div><p class="uppercase text-gray-500 text-xs">Spec 2</p><p class="font-bold">Value B</p></div>
+            </div>
+          </div>
+          <div class="min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Product Img</span></div>
+            <h5 class="font-bold text-lg">Product Name 3</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm">
+              <div><p class="uppercase text-gray-500 text-xs">Spec 1</p><p class="font-bold">Value A</p></div>
+              <div><p class="uppercase text-gray-500 text-xs">Spec 2</p><p class="font-bold">Value B</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo banner sketch -->
+      <div class="sketch-box p-8 flex flex-col md:flex-row items-center gap-8 bg-[#fdfdfd]">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2 font-bold uppercase">
+            <span class="material-symbols-outlined sketch-icon">star</span>
+            <span>Promo Tagline</span>
+          </div>
+          <h4 class="text-2xl font-black uppercase mb-2">Large Promotional Banner Area</h4>
+          <p class="text-gray-600">Short description of the highlighted feature or product announcement.</p>
+        </div>
+        <button class="sketch-btn sketch-btn-primary px-6 py-3 uppercase">Action Btn</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Sketch -->
+  <section class="max-w-[1280px] mx-auto px-6 py-12">
+    <div class="sketch-box bg-white p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 text-center md:text-left">
+        <h3 class="text-3xl font-black uppercase mb-2">Newsletter Form block</h3>
+        <p class="text-gray-600">Enter your email block layout.</p>
+      </div>
+      <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4">
+        <input class="sketch-input w-full md:w-64" placeholder="email@address.com" type="text">
+        <button class="sketch-btn sketch-btn-primary px-6 py-2 uppercase">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: STORE
+══════════════════════════════════════════ -->
+<div id="page-store" class="page pt-20 pb-24 md:pb-8">
+  <main class="max-w-[1280px] mx-auto px-6 py-8">
+    
+    <!-- Search / Filter Sketch -->
+    <section class="mb-12 border-b-2 border-black pb-8">
+      <h2 class="text-4xl font-black uppercase mb-4 text-center">Store Catalog</h2>
+      <div class="max-w-2xl mx-auto flex flex-col gap-4">
+        <div class="relative">
+          <span class="material-symbols-outlined sketch-icon absolute left-4 top-1/2 -translate-y-1/2">search</span>
+          <input class="sketch-input w-full pl-12 py-4 text-xl" placeholder="Search catalog..." type="text">
+        </div>
+        <div class="flex justify-center gap-4">
+          <button class="sketch-btn px-4 py-2 flex items-center gap-2 uppercase font-bold"><span class="material-symbols-outlined sketch-icon">tune</span> Filters</button>
+          <button class="sketch-btn px-4 py-2 flex items-center gap-2 uppercase font-bold"><span class="material-symbols-outlined sketch-icon">grid_view</span> Grid</button>
+        </div>
+        <!-- Active filters pills -->
+        <div class="sketch-box p-4 mt-4 flex gap-4 flex-wrap bg-gray-50">
+          <div class="px-3 py-1 border-2 border-black rounded-full text-sm font-bold uppercase bg-white">Filter 1 <span class="ml-2 cursor-pointer">x</span></div>
+          <div class="px-3 py-1 border-2 border-black rounded-full text-sm font-bold uppercase bg-white">Filter 2 <span class="ml-2 cursor-pointer">x</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid Sketch -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <!-- Generate 6 placeholder cards -->
+      <script>
+        for(let i=1; i<=6; i++) {
+          document.write(`
+            <div class="sketch-box flex flex-col">
+              <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full">
+                <span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase">Product Img ${i}</span>
+              </div>
+              <div class="p-6 flex flex-col flex-1">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="font-bold text-xl uppercase">Item Title ${i}</h3>
+                  <span class="font-black text-xl">$XXX</span>
+                </div>
+                <p class="text-gray-600 mb-6 flex-1">Short lorem ipsum description for the store item card.</p>
+                <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6">
+                  <div class="flex items-center gap-1 text-sm"><span class="material-symbols-outlined sketch-icon text-[16px]">check_box</span> Spec A</div>
+                  <div class="flex items-center gap-1 text-sm"><span class="material-symbols-outlined sketch-icon text-[16px]">check_box</span> Spec B</div>
+                </div>
+                <button onclick="navigate('cart')" class="sketch-btn w-full py-3 uppercase font-bold text-center">Add to Cart</button>
+              </div>
+            </div>
+          `);
+        }
+      </script>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PRODUCT DETAIL
+══════════════════════════════════════════ -->
+<div id="page-product" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 max-w-[1280px] mx-auto px-6">
+    <button onclick="navigate('store')" class="mb-8 font-bold uppercase flex items-center gap-2 hover:underline">
+      <span class="material-symbols-outlined sketch-icon text-[18px]">arrow_back</span> Back
+    </button>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      
+      <!-- Image Gallery Sketch -->
+      <div class="flex flex-col gap-4">
+        <div class="aspect-square md:aspect-[4/3] sketch-box sketch-img w-full">
+          <span class="z-10 bg-white px-4 py-2 border-2 border-black text-xl font-bold uppercase">Main Product Image</span>
+        </div>
+        <div class="grid grid-cols-4 gap-4">
+          <div class="aspect-square sketch-box sketch-img bg-gray-200 border-black"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-3xl z-10">play_circle</span></div>
+        </div>
+      </div>
+
+      <!-- Detail Sketch -->
+      <div class="flex flex-col gap-8">
+        <div>
+          <span class="text-gray-500 font-bold uppercase text-sm border-2 border-black px-2 py-1 bg-white rounded">Category Label</span>
+          <h1 class="text-4xl md:text-5xl font-black uppercase mt-4 mb-4">Detailed Product Title</h1>
+          <p class="text-xl text-gray-700 leading-relaxed">Longer paragraph describing the product. Placeholder text to simulate a full descriptive block indicating layout density.</p>
+        </div>
+        
+        <div class="flex items-baseline gap-4">
+          <span class="text-4xl font-black">$X,XXX.00</span>
+          <span class="text-xl text-gray-500 line-through font-bold">$Y,YYY.00</span>
+        </div>
+
+        <!-- Bento Specs -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">memory</span><div class="font-bold uppercase">Spec Block</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">bolt</span><div class="font-bold uppercase">Spec Block</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">shield</span><div class="font-bold uppercase">Spec Block</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">hub</span><div class="font-bold uppercase">Spec Block</div></div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col gap-4 mt-4">
+          <button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary py-4 text-xl uppercase w-full flex items-center justify-center gap-2">
+            Primary Action <span class="material-symbols-outlined sketch-icon">add_shopping_cart</span>
+          </button>
+          <button class="sketch-btn py-4 text-xl uppercase w-full flex items-center justify-center gap-2">
+            Secondary Action <span class="material-symbols-outlined sketch-icon">favorite</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Specs Block -->
+    <div class="mt-16 sketch-box">
+      <div class="border-b-2 border-black p-6 flex justify-between items-center bg-gray-50">
+        <h3 class="text-2xl font-bold uppercase">Expandable Details Panel</h3>
+        <span class="material-symbols-outlined sketch-icon">expand_more</span>
+      </div>
+      <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Column 1</h4>
+          <ul class="space-y-2">
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Column 2</h4>
+          <ul class="space-y-2">
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Column 3</h4>
+          <ul class="space-y-2">
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+            <li class="flex justify-between border-b border-gray-300 pb-1"><span>Row Label</span><span class="font-bold">Value</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CART
+══════════════════════════════════════════ -->
+<div id="page-cart" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 px-6 max-w-[1280px] mx-auto">
+    <div class="mb-8 border-b-2 border-black pb-4">
+      <h2 class="text-4xl font-black uppercase">Shopping Cart</h2>
+      <p class="text-lg text-gray-600">Review layout page.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Items -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        
+        <!-- Cart Item 1 -->
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center">
+          <div class="w-full md:w-32 h-32 sketch-img flex-shrink-0"><span class="z-10 text-sm bg-white border border-black px-1 font-bold">Img</span></div>
+          <div class="flex-grow w-full">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-bold text-2xl uppercase">Cart Item Title 1</h3>
+              <span class="font-black text-2xl">$XXX</span>
+            </div>
+            <p class="text-gray-600 mb-4">Item short description for cart context.</p>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-4 sketch-box px-3 py-1">
+                <span class="cursor-pointer font-black text-xl">-</span>
+                <span class="font-bold text-xl">1</span>
+                <span class="cursor-pointer font-black text-xl">+</span>
+              </div>
+              <button class="font-bold uppercase flex items-center gap-1 underline"><span class="material-symbols-outlined sketch-icon text-sm">delete</span> Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Item 2 -->
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center">
+          <div class="w-full md:w-32 h-32 sketch-img flex-shrink-0"><span class="z-10 text-sm bg-white border border-black px-1 font-bold">Img</span></div>
+          <div class="flex-grow w-full">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-bold text-2xl uppercase">Cart Item Title 2</h3>
+              <span class="font-black text-2xl">$XXX</span>
+            </div>
+            <p class="text-gray-600 mb-4">Item short description for cart context.</p>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-4 sketch-box px-3 py-1">
+                <span class="cursor-pointer font-black text-xl">-</span>
+                <span class="font-bold text-xl">2</span>
+                <span class="cursor-pointer font-black text-xl">+</span>
+              </div>
+              <button class="font-bold uppercase flex items-center gap-1 underline"><span class="material-symbols-outlined sketch-icon text-sm">delete</span> Remove</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Summary -->
+      <div class="lg:col-span-4">
+        <div class="sketch-box p-8 flex flex-col gap-6 sticky top-24 bg-white">
+          <h4 class="text-2xl font-black uppercase border-b-2 border-black pb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined sketch-icon">receipt_long</span> Summary block
+          </h4>
+          <div class="flex flex-col gap-3 font-bold text-lg">
+            <div class="flex justify-between"><span>Subtotal Line</span><span>$X,XXX</span></div>
+            <div class="flex justify-between"><span>Fees Line</span><span>$XX</span></div>
+            <div class="flex justify-between"><span>Tax Line</span><span>$XX</span></div>
+          </div>
+          <div class="border-t-2 border-black pt-4 flex justify-between items-baseline">
+            <span class="text-xl font-black uppercase">Total</span>
+            <span class="text-3xl font-black">$X,XXX.XX</span>
+          </div>
+          <div class="flex flex-col gap-4 mt-4">
+            <button class="sketch-btn sketch-btn-primary py-4 uppercase text-xl font-bold">Checkout Button</button>
+            <button class="sketch-btn py-4 uppercase font-bold">Secondary Button</button>
+          </div>
+          <div class="bg-gray-100 p-4 border-2 border-black rounded text-sm mt-4">
+            Placeholder text for legal, terms, or shipping notes block that was in the original layout.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PROFILE
+══════════════════════════════════════════ -->
+<div id="page-profile" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 px-6 max-w-[1280px] mx-auto">
+    
+    <!-- Profile Header Sketch -->
+    <section class="mb-12 sketch-box p-8 bg-white flex flex-col md:flex-row items-center gap-8">
+      <div class="w-32 h-32 sketch-img rounded-full flex-shrink-0">
+        <span class="z-10 bg-white border border-black px-2 py-1 text-xs uppercase font-bold">Avatar</span>
+      </div>
+      <div class="flex-1 text-center md:text-left">
+        <span class="border-2 border-black px-2 py-1 bg-black text-white font-bold uppercase text-xs rounded">Role Badge</span>
+        <h1 class="text-4xl font-black uppercase mt-2">User Name Profile</h1>
+        <p class="text-gray-600 flex items-center justify-center md:justify-start gap-1 mt-2">
+          <span class="material-symbols-outlined sketch-icon text-[16px]">location_on</span> Location String
+        </p>
+      </div>
+      <div class="flex flex-col w-full md:w-auto gap-4">
+        <button class="sketch-btn px-6 py-2 uppercase font-bold text-center">Edit Profile</button>
+        <button class="sketch-btn px-6 py-2 uppercase font-bold text-center flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined sketch-icon text-[18px]">logout</span> Logout
+        </button>
+      </div>
+    </section>
+
+    <!-- Dashboard Grid Sketch -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      
+      <!-- Nodes Box -->
+      <div class="md:col-span-8 sketch-box p-8 bg-white flex flex-col gap-6">
+        <div class="flex justify-between items-center border-b-2 border-black pb-4">
+          <h2 class="text-2xl font-black uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined sketch-icon">grid_view</span> Grid Block 1
+          </h2>
+          <span class="font-bold uppercase text-sm">Status Info</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Generate 5 node boxes -->
+          <script>
+            for(let i=1; i<=5; i++) {
+              document.write(`
+                <div class="border-2 border-black rounded p-4 bg-gray-50 flex flex-col gap-2">
+                  <div class="flex justify-between"><div class="w-6 h-6 border-2 border-black rounded-full bg-white flex items-center justify-center"><span class="block w-2 h-2 bg-black rounded-full"></span></div></div>
+                  <h3 class="font-bold uppercase text-lg">Card Element ${i}</h3>
+                  <p class="text-sm font-mono uppercase text-gray-500">Metric Line</p>
+                </div>
+              `);
+            }
+          </script>
+          <!-- Add new placeholder -->
+          <button class="border-4 border-dashed border-gray-300 rounded p-4 flex flex-col items-center justify-center text-gray-500 hover:text-black hover:border-black transition-colors font-bold uppercase gap-2">
+            <span class="material-symbols-outlined sketch-icon text-3xl">add_circle</span> Add New
+          </button>
+        </div>
+      </div>
+
+      <!-- Logs Box -->
+      <div class="md:col-span-4 sketch-box p-8 bg-white flex flex-col gap-6">
+        <h2 class="text-2xl font-black uppercase border-b-2 border-black pb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined sketch-icon">list_alt</span> List Block 2
+        </h2>
+        <div class="flex flex-col gap-4 font-mono text-sm overflow-hidden">
+          <div class="border-b-2 border-dashed border-gray-300 pb-2"><p class="font-bold">HH:MM:SS</p><p>Line item entry detailing a specific event.</p></div>
+          <div class="border-b-2 border-dashed border-gray-300 pb-2"><p class="font-bold">HH:MM:SS</p><p>Line item entry detailing a specific event.</p></div>
+          <div class="border-b-2 border-dashed border-gray-300 pb-2"><p class="font-bold">HH:MM:SS</p><p>Line item entry detailing a specific event.</p></div>
+          <div class="border-b-2 border-dashed border-gray-300 pb-2"><p class="font-bold">HH:MM:SS</p><p>Line item entry detailing a specific event.</p></div>
+        </div>
+        <button class="sketch-btn w-full py-2 uppercase font-bold mt-auto">Action Btn</button>
+      </div>
+
+      <!-- Table Box -->
+      <div class="md:col-span-12 sketch-box p-8 bg-white">
+        <div class="flex justify-between items-center border-b-2 border-black pb-4 mb-6">
+          <h2 class="text-2xl font-black uppercase flex items-center gap-2">
+            <span class="material-symbols-outlined sketch-icon">table_chart</span> Table Block 3
+          </h2>
+          <div class="flex gap-2">
+            <div class="border-2 border-black px-3 py-1 font-bold text-xs uppercase bg-black text-white">Tab 1</div>
+            <div class="border-2 border-black px-3 py-1 font-bold text-xs uppercase bg-white">Tab 2</div>
+          </div>
+        </div>
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left font-bold border-collapse min-w-[600px]">
+            <thead>
+              <tr class="border-b-4 border-black text-sm uppercase">
+                <th class="py-2 px-4">Col Header 1</th>
+                <th class="py-2 px-4">Col Header 2</th>
+                <th class="py-2 px-4">Col Header 3</th>
+                <th class="py-2 px-4">Col Header 4</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b-2 border-gray-200"><td class="py-4 px-4 border-r border-gray-200">Table Data A1</td><td class="py-4 px-4 border-r border-gray-200">Table Data B1</td><td class="py-4 px-4 border-r border-gray-200">Table Data C1</td><td class="py-4 px-4">Table Data D1</td></tr>
+              <tr class="border-b-2 border-gray-200"><td class="py-4 px-4 border-r border-gray-200">Table Data A2</td><td class="py-4 px-4 border-r border-gray-200">Table Data B2</td><td class="py-4 px-4 border-r border-gray-200">Table Data C2</td><td class="py-4 px-4">Table Data D2</td></tr>
+              <tr><td class="py-4 px-4 border-r border-gray-200">Table Data A3</td><td class="py-4 px-4 border-r border-gray-200">Table Data B3</td><td class="py-4 px-4 border-r border-gray-200">Table Data C3</td><td class="py-4 px-4">Table Data D3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FOOTER GLOBALS
+══════════════════════════════════════════ -->
+<footer class="border-t-4 border-black bg-white py-8 mt-auto relative z-40">
+  <div class="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="font-bold uppercase text-sm">© Footer Copyright Line. Wireframe Layout.</span>
+    <div class="flex gap-6 font-bold uppercase underline text-sm">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     BOTTOM NAV (Mobile Wireframe)
+══════════════════════════════════════════ -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-20 bg-white border-t-4 border-black flex justify-around items-center px-4 z-50">
+  <button onclick="navigate('home')" data-page="home" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent">
+    <span class="material-symbols-outlined sketch-icon">home</span><span class="text-xs">Home</span>
+  </button>
+  <button onclick="navigate('store')" data-page="store" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent">
+    <span class="material-symbols-outlined sketch-icon">shopping_bag</span><span class="text-xs">Store</span>
+  </button>
+  <button onclick="navigate('cart')" data-page="cart" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent">
+    <span class="material-symbols-outlined sketch-icon">shopping_cart</span><span class="text-xs">Cart</span>
+  </button>
+  <button onclick="navigate('profile')" data-page="profile" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent">
+    <span class="material-symbols-outlined sketch-icon">person</span><span class="text-xs">Profile</span>
+  </button>
+</nav>
+
+<script>
+// ── Router logic adapted for the Sketch ──────────────────────────────────────
+const PAGES = ['home', 'store', 'product', 'cart', 'profile'];
+
+function navigate(pageId) {
+  if (!PAGES.includes(pageId)) return;
+
+  // Hide all
+  PAGES.forEach(id => {
+    const el = document.getElementById('page-' + id);
+    if (el) el.classList.remove('active');
+  });
+
+  // Show target
+  const target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+
+  // Desktop nav style
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const active = link.dataset.page === pageId;
+    if(active) {
+      link.classList.add('border-black', 'bg-black', 'text-white', 'px-3', 'py-1', 'rounded');
+      link.classList.remove('border-transparent');
+    } else {
+      link.classList.remove('border-black', 'bg-black', 'text-white', 'px-3', 'py-1', 'rounded');
+      link.classList.add('border-transparent');
+    }
+  });
+
+  // Mobile nav style
+  document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+    const active = btn.dataset.page === pageId;
+    if(active) {
+      btn.classList.add('border-black', 'bg-black', 'text-white', 'rounded');
+    } else {
+      btn.classList.remove('border-black', 'bg-black', 'text-white', 'rounded');
+    }
+  });
+
+  window.scrollTo({ top: 0 });
+  history.pushState({ page: pageId }, '', '#' + pageId);
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  const page = e.state?.page || 'home';
+  navigate(page);
+});
+
+// Initialize
+const initPage = location.hash.replace('#', '') || 'home';
+navigate(PAGES.includes(initPage) ? initPage : 'home');
+</script>
+</body>
+</html>
