@@ -416,6 +416,37 @@
         </div>
       </div>
 
+      <!-- AI-O Core Hub Card -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCturmW3_kCD1w2hBIl1Lb8lzKyU63DcgrOD3-0f_SKnCYpjxA1HDQ2KCTWgPwXmWOHLyEnq-epr7JLJXc8cUiHiOak0NOASYeFqd7mURb-KnSlgwYN-2suZ_ED38jxzwbzedlAA5NH7esI4QX22fVWBNabvQ8IsOjN28uu1llwM6USW-YDcscom7t9nj7hnbjeXeKbXQ7i9w-uSWQisxBnN0M7ShlcQertyhv2MuB4hQcQicItkcoIiut53e1JsZHJ06uH6Fj-5XG8" alt="AI-O Core Hub">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">CORE HUB</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">AI-O Core Hub</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$1,249.00</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">The definitive neural gateway for your intelligent ecosystem. Low-latency processing with enterprise security.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">memory</span><span class="font-label-caps text-[11px] text-on-surface-variant">Hexa-core NPU</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">bolt</span><span class="font-label-caps text-[11px] text-on-surface-variant">Ultra-latency</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">encrypted</span><span class="font-label-caps text-[11px] text-on-surface-variant">RSA-4096</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">hub</span><span class="font-label-caps text-[11px] text-on-surface-variant">12x Hybrid I/O</span></div>
+          </div>
+          <div class="mt-auto flex flex-col gap-sm">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Latency">speed</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Security">shield</span>
+            </div>
+            <div class="flex items-center justify-between gap-sm">
+              <button onclick="showProductDetail('aiocorehub')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+              <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card 2 -->
       <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
         <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
@@ -1083,6 +1114,14 @@ const STORE_PRODUCTS = {
     price: '$599.00',
     oldPrice: '$749.00',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC7GSD94ytrmWIdu1fRoWRboDYhBexCmiEMHLKzABBq-jlU-75dL4GTSKPxaBHq0u8kPKSPW74brcpGu3152BSy2NdSQZDa-6U3fnNlNLDzl6jTVUMkhSYXUB72SFpgFOBRPY_hS-83Ll2q0ds7xNNZiSrNKuURx0ubu1pSWQE8cUTK_Nq2CcWNf495-fRQIEIihWdCDQV8JfyDtXcEUAOddEi1jsCNpS6tX64ocR9Q0rVyZhHP5FOmwE3uizgTCx58bBfZHZyJ3TL6'
+  },
+  aiocorehub: {
+    category: 'CORE HUB',
+    title: 'AI-O Core Hub',
+    description: 'The definitive neural gateway for your intelligent ecosystem. Low-latency processing with enterprise security.',
+    price: '$1,249.00',
+    oldPrice: '$1,599.00',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCturmW3_kCD1w2hBIl1Lb8lzKyU63DcgrOD3-0f_SKnCYpjxA1HDQ2KCTWgPwXmWOHLyEnq-epr7JLJXc8cUiHiOak0NOASYeFqd7mURb-KnSlgwYN-2suZ_ED38jxzwbzedlAA5NH7esI4QX22fVWBNabvQ8IsOjN28uu1llwM6USW-YDcscom7t9nj7hnbjeXeKbXQ7i9w-uSWQisxBnN0M7ShlcQertyhv2MuB4hQcQicItkcoIiut53e1JsZHJ06uH6Fj-5XG8'
   },
   auraL2: {
     category: 'ACOUSTIC',
