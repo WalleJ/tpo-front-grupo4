@@ -74,13 +74,13 @@ El flujo de auth esta simulado por rol con `localStorage`, dentro del alcance de
 
 ## 4. Componentes y vistas definidas
 
-## 4.1 Auth
+### 4.1 Auth
 
 - **Login**: formulario de usuario/contrasena, validacion mock, links de recupero/registro.
 - **Register**: formulario de alta de usuario (simulado) y retorno a login.
 - **Recover**: formulario de email con mensaje de confirmacion.
 
-## 4.2 Shop
+### 4.2 Shop
 
 - **Top App Bar** con logo, navegacion principal y toggle de tema.
 - **Hero** con CTA principal.
@@ -91,7 +91,7 @@ El flujo de auth esta simulado por rol con `localStorage`, dentro del alcance de
 - **Footer** informativo.
 - **Navegacion mobile** (bottom nav).
 
-## 4.3 Admin
+### 4.3 Admin
 
 - **Admin Dashboard**:
   - Header con badge de rol y logout.
