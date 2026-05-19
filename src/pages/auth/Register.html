@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crear Cuenta - AI-O HOME</title>
+  <title>Create Account - AI-O HOME</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -34,42 +34,42 @@
   <div class="glass-panel rounded-3xl shadow-2xl p-10 w-full max-w-md flex flex-col items-center gap-6">
     <div class="flex flex-col items-center gap-2 mb-2">
       <span class="material-symbols-outlined text-primary text-5xl">person_add</span>
-      <h1 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">Crear Cuenta</h1>
+      <h1 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">Create Account</h1>
       <span class="font-label-caps text-label-caps text-on-surface-variant text-xs">AI-O HOME Marketplace</span>
     </div>
     <form id="register-form" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="username" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Usuario</label>
-        <input type="text" id="username" placeholder="Usuario" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
+        <label for="username" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Username</label>
+        <input type="text" id="username" placeholder="Username" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
       </div>
       <div class="flex flex-col gap-1 cyber-glow-focus">
         <label for="email" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Email</label>
         <input type="email" id="email" placeholder="Email" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
       </div>
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="password" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Contraseña</label>
-        <input type="password" id="password" placeholder="Contraseña" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
+        <label for="password" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Password</label>
+        <input type="password" id="password" placeholder="Password" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
       </div>
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="firstName" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Nombre</label>
-        <input type="text" id="firstName" placeholder="Nombre" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full">
+        <label for="firstName" class="font-label-caps text-label-caps text-on-surface-variant text-xs">First name</label>
+        <input type="text" id="firstName" placeholder="First name" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full">
       </div>
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="lastName" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Apellido</label>
-        <input type="text" id="lastName" placeholder="Apellido" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full">
+        <label for="lastName" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Last name</label>
+        <input type="text" id="lastName" placeholder="Last name" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full">
       </div>
-      <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 mt-2">Crear Cuenta</button>
+      <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 mt-2">Create Account</button>
     </form>
     <div id="register-error" class="text-error mt-2 hidden text-center font-bold"></div>
     <div class="w-full flex flex-col items-center mt-2">
-      <a href="Login.html" class="text-primary text-xs font-bold hover:underline">¿Ya tienes cuenta? Iniciar sesión</a>
+      <a href="Login.html" class="text-primary text-xs font-bold hover:underline">Already have an account? Sign in</a>
     </div>
   </div>
   <script>
     document.getElementById('register-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      // Aquí deberías hacer el POST al backend para crear el usuario
-      // Simulación de éxito
+      // Here you should POST to the backend to create the user
+      // Success simulation
       window.location.href = 'Login.html';
     });
   </script>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI-O Admin Listados</title>
+<title>AI-O Admin Listings</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -37,36 +37,36 @@
   <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
     <div class="flex items-center gap-2">
       <span class="material-symbols-outlined text-[#006970]">admin_panel_settings</span>
-      <h1 class="text-xl font-bold tracking-tight text-[#006970]">AI-O ADMIN LISTADOS</h1>
+      <h1 class="text-xl font-bold tracking-tight text-[#006970]">AI-O ADMIN LISTINGS</h1>
     </div>
     <div class="flex items-center gap-2">
-      <a href="AdminDashboard.html" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Volver al dashboard</a>
-      <button onclick="logout()" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Cerrar sesion</button>
+      <a href="AdminDashboard.html" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Back to dashboard</a>
+      <button onclick="logout()" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Log out</button>
     </div>
   </div>
 </header>
 
 <main class="max-w-[1280px] mx-auto px-6 py-8 md:py-12 space-y-6">
   <section class="glass-panel rounded-2xl p-6 md:p-8">
-    <p class="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Espacio de administracion</p>
-    <h2 class="text-3xl md:text-4xl font-bold mb-3">Listados administrativos</h2>
-    <p class="text-[#3b494b] max-w-3xl">Gestiona modulos, usuarios y catalogo. Esta vista representa operaciones exclusivas para rol ADMIN.</p>
+    <p class="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Administration area</p>
+    <h2 class="text-3xl md:text-4xl font-bold mb-3">Administrative listings</h2>
+    <p class="text-[#3b494b] max-w-3xl">Manage modules, users, and catalog. This view represents operations exclusive to the ADMIN role.</p>
   </section>
 
   <section class="glass-panel rounded-2xl p-3 md:p-4">
     <div class="flex flex-wrap gap-2" id="tabs-nav">
-      <button data-tab="users" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Usuarios</button>
-      <button data-tab="products" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Productos</button>
-      <button data-tab="categories" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Categorias</button>
-      <button data-tab="promos" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Promos y descuentos</button>
-      <button data-tab="orders" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Ordenes</button>
+      <button data-tab="users" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Users</button>
+      <button data-tab="products" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Products</button>
+      <button data-tab="categories" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Categories</button>
+      <button data-tab="promos" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Promos and discounts</button>
+      <button data-tab="orders" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Orders</button>
     </div>
   </section>
 
   <section id="tab-users" class="tab-panel active glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-semibold">Gestion de usuarios</h3>
-      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nuevo usuario</button>
+      <h3 class="text-xl font-semibold">User management</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">New user</button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
@@ -76,10 +76,10 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -90,10 +90,10 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -102,8 +102,8 @@
 
   <section id="tab-products" class="tab-panel glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-semibold">Gestion de productos</h3>
-      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nuevo producto</button>
+      <h3 class="text-xl font-semibold">Product management</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">New product</button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
@@ -113,10 +113,10 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -127,10 +127,10 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -139,49 +139,49 @@
 
   <section id="tab-categories" class="tab-panel glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-semibold">Gestion de categorias</h3>
-      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nueva categoria</button>
+      <h3 class="text-xl font-semibold">Category management</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">New category</button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
           <p class="font-semibold">CORE NODE</p>
-          <p class="text-[#3b494b]">12 productos</p>
+          <p class="text-[#3b494b]">12 products</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
           <p class="font-semibold">ACOUSTIC</p>
-          <p class="text-[#3b494b]">8 productos</p>
+          <p class="text-[#3b494b]">8 products</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
           <p class="font-semibold">SECURITY</p>
-          <p class="text-[#3b494b]">10 productos</p>
+          <p class="text-[#3b494b]">10 products</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -190,8 +190,8 @@
 
   <section id="tab-promos" class="tab-panel glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-semibold">Listado de promociones y descuentos</h3>
-      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nueva promocion</button>
+      <h3 class="text-xl font-semibold">Promotions and discounts list</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">New promotion</button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
@@ -201,10 +201,10 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -215,24 +215,24 @@
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
           <p class="font-semibold">ENVIOFREE</p>
-          <p class="text-[#3b494b]">Envio sin cargo en ordenes mayores a $1000</p>
+          <p class="text-[#3b494b]">Free shipping on orders over $1000</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
@@ -241,90 +241,90 @@
 
   <section id="tab-orders" class="tab-panel glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-semibold">Gestion de ordenes</h3>
+      <h3 class="text-xl font-semibold">Order management</h3>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #881</p>
+          <p class="font-semibold">Order #881</p>
           <p class="text-[#3b494b]">CREATED</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #882</p>
+          <p class="font-semibold">Order #882</p>
           <p class="text-[#3b494b]">PENDING</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #883</p>
+          <p class="font-semibold">Order #883</p>
           <p class="text-[#3b494b]">CONFIRMED</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #884</p>
+          <p class="font-semibold">Order #884</p>
           <p class="text-[#3b494b]">SHIPPED</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #885</p>
+          <p class="font-semibold">Order #885</p>
           <p class="text-[#3b494b]">DELIVERED</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>
       <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
         <div>
-          <p class="font-semibold">Orden #886</p>
+          <p class="font-semibold">Order #886</p>
           <p class="text-[#3b494b]">CANCELLED</p>
         </div>
         <div class="flex items-center gap-2">
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Edit"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
           </div>
           <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
-            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Delete"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
           </div>
         </div>
       </article>

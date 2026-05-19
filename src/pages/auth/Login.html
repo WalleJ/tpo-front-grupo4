@@ -40,19 +40,19 @@
     </div>
     <form id="login-form" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="username" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Usuario</label>
-        <input type="text" id="username" placeholder="Usuario" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
+        <label for="username" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Username</label>
+        <input type="text" id="username" placeholder="Username" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
       </div>
       <div class="flex flex-col gap-1 cyber-glow-focus">
-        <label for="password" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Contraseña</label>
-        <input type="password" id="password" placeholder="Contraseña" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
+        <label for="password" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Password</label>
+        <input type="password" id="password" placeholder="Password" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
       </div>
-      <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 mt-2">Ingresar</button>
+      <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 mt-2">Sign in</button>
     </form>
     <div id="login-error" class="text-error mt-2 hidden text-center font-bold"></div>
     <div class="w-full flex flex-col items-center mt-2 gap-2">
-      <a href="Recover.html" class="text-primary text-xs font-bold hover:underline">¿Olvidaste tu contraseña?</a>
-      <a href="Register.html" class="text-on-surface-variant text-xs hover:underline">Crear cuenta nueva</a>
+      <a href="Recover.html" class="text-primary text-xs font-bold hover:underline">Forgot your password?</a>
+      <a href="Register.html" class="text-on-surface-variant text-xs hover:underline">Create a new account</a>
     </div>
   </div>
   <script>
@@ -67,7 +67,7 @@
         localStorage.setItem('role', role);
         window.location.href = role === 'ADMIN' ? '../admin/AdminDashboard.html' : '../shop/AI-O_v5.html#home';
       } else {
-        document.getElementById('login-error').innerText = 'Credenciales inválidas';
+        document.getElementById('login-error').innerText = 'Invalid credentials';
         document.getElementById('login-error').classList.remove('hidden');
       }
     });

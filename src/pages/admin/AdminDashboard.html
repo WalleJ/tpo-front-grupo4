@@ -35,7 +35,7 @@
     </div>
     <div class="flex items-center gap-2">
       <span class="text-xs px-3 py-1 rounded-full bg-[#00f0ff33] text-[#006970] font-bold">ADMIN</span>
-      <button onclick="logout()" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Cerrar sesión</button>
+      <button onclick="logout()" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Log out</button>
     </div>
   </div>
 </header>
@@ -44,56 +44,56 @@
   <section class="glass-panel rounded-2xl p-6 md:p-8">
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
       <div>
-        <p class="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Centro de control</p>
-        <h2 class="text-3xl md:text-4xl font-bold mb-3">Panel de administración</h2>
-        <p class="text-[#3b494b] max-w-2xl">Gestiona módulos, usuarios y catálogo. Esta vista representa operaciones exclusivas para rol ADMIN.</p>
+        <p class="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Control center</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-3">Administration dashboard</h2>
+        <p class="text-[#3b494b] max-w-2xl">Manage modules, users, and catalog. This view represents operations exclusive to the ADMIN role.</p>
       </div>
       <div class="flex flex-col items-start md:items-end gap-2">
-          <a href="AdminTabs.html?tab=users" class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-white/80 border border-[#b9cacb66] text-[#006970] hover:border-[#00697066] transition-colors whitespace-nowrap">Ir a listados</a>
-        <a href="../shop/AI-O_v5.html#home" class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-[#00f0ff33] text-[#006970] hover:bg-[#00f0ff55] transition-colors whitespace-nowrap">Entrar al Home como usuario</a>
+          <a href="AdminTabs.html?tab=users" class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-white/80 border border-[#b9cacb66] text-[#006970] hover:border-[#00697066] transition-colors whitespace-nowrap">Go to listings</a>
+        <a href="../shop/AI-O_v5.html#home" class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-[#00f0ff33] text-[#006970] hover:bg-[#00f0ff55] transition-colors whitespace-nowrap">Enter Home as user</a>
       </div>
     </div>
   </section>
 
   <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
     <a href="AdminTabs.html?tab=users" class="glass-panel rounded-xl p-5 hover:border-[#00697066] transition-all group">
-      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Usuarios</p>
+      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Users</p>
       <p class="text-3xl font-bold text-[#006970]">431</p>
-      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">Ver listado</p>
+      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">View list</p>
     </a>
     <a href="AdminTabs.html?tab=products" class="glass-panel rounded-xl p-5 hover:border-[#00697066] transition-all group">
-      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Productos</p>
+      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Products</p>
       <p class="text-3xl font-bold text-[#006970]">67</p>
-      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">Ver listado</p>
+      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">View list</p>
     </a>
     <a href="AdminTabs.html?tab=categories" class="glass-panel rounded-xl p-5 hover:border-[#00697066] transition-all group">
-      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Categorías</p>
+      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Categories</p>
       <p class="text-3xl font-bold text-[#006970]">18</p>
-      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">Ver listado</p>
+      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">View list</p>
     </a>
     <a href="AdminTabs.html?tab=promos" class="glass-panel rounded-xl p-5 hover:border-[#00697066] transition-all group">
-      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Promos y descuentos</p>
+      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Promos and discounts</p>
       <p class="text-3xl font-bold text-[#006970]">12</p>
-      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">Ver listado</p>
+      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">View list</p>
     </a>
     <a href="AdminTabs.html?tab=orders" class="glass-panel rounded-xl p-5 hover:border-[#00697066] transition-all group">
-      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Órdenes</p>
+      <p class="text-xs uppercase tracking-widest text-[#6a7a7b] mb-1">Orders</p>
       <p class="text-3xl font-bold text-[#006970]">124</p>
-      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">Ver listado</p>
+      <p class="text-xs mt-2 text-[#3b494b] group-hover:text-[#006970]">View list</p>
     </a>
   </section>
 
   <section class="glass-panel rounded-2xl p-6">
     <div class="flex items-center justify-between mb-5">
-      <h3 class="text-xl font-semibold">Actividades recientes</h3>
+      <h3 class="text-xl font-semibold">Recent activity</h3>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-[#3b494b]">
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Orden #912 cambió de CREATED a CONFIRMED.</article>
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Se creó la promoción INVIERNO20 con vigencia semanal.</article>
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">El usuario admin actualizó el precio de AI-O Core Hub.</article>
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Se añadió la categoría SMART LIVING al catálogo.</article>
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Stock sincronizado correctamente para 24 productos.</article>
-      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Orden #908 finalizada con estado DELIVERED.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Order #912 changed from CREATED to CONFIRMED.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Promotion WINTER20 was created with weekly validity.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">The admin user updated the price of AI-O Core Hub.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Category SMART LIVING was added to the catalog.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Stock synchronized successfully for 24 products.</article>
+      <article class="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">Order #908 completed with status DELIVERED.</article>
     </div>
   </section>
 </main>
