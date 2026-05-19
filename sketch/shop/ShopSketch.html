@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O Sketch Marketplace</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Architects Daughter', cursive;
+    background-color: #fbfbfb;
+    background-image: radial-gradient(#ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #111;
+    min-height: 100dvh;
+  }
+
+  .sketch-box {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    box-shadow: 4px 4px 0 #111;
+  }
+
+  .sketch-img {
+    background: repeating-linear-gradient(45deg, #fff, #fff 10px, #f0f0f0 10px, #f0f0f0 20px);
+    border: 2px solid #111;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #555;
+    font-weight: bold;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sketch-img::before,
+  .sketch-img::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    top: 50%;
+    left: 50%;
+  }
+
+  .sketch-img::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .sketch-img::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .sketch-btn {
+    background: #fff;
+    border: 2px solid #111;
+    box-shadow: 3px 3px 0 #111;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.1s;
+  }
+
+  .sketch-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 #111;
+  }
+
+  .sketch-btn-primary {
+    background: #111;
+    color: #fff;
+    box-shadow: 3px 3px 0 #888;
+  }
+
+  .sketch-btn-primary:active { box-shadow: 0 0 0 #888; }
+
+  .sketch-input {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    outline: none;
+    box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .sketch-input:focus { box-shadow: 2px 2px 0 #111, inset 2px 2px 0 rgba(0, 0, 0, 0.05); }
+
+  .sketch-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease-out; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .slider-container {
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .slider-container::-webkit-scrollbar { display: none; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; border-left: 2px solid #111; }
+  ::-webkit-scrollbar-thumb { background: #111; border: 2px solid #fff; }
+
+  html.dark body {
+    background: #111;
+    color: #f5f5f5;
+    background-image: radial-gradient(#444 1px, transparent 1px);
+  }
+
+  html.dark .sketch-box,
+  html.dark .sketch-btn,
+  html.dark .sketch-input,
+  html.dark header,
+  html.dark footer,
+  html.dark nav.md\:hidden {
+    background: #1f1f1f !important;
+    color: #f5f5f5;
+    border-color: #f5f5f5 !important;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  html.dark .sketch-btn-primary {
+    background: #f5f5f5;
+    color: #111;
+  }
+
+  html.dark .text-gray-600,
+  html.dark .text-gray-500,
+  html.dark .text-gray-700 {
+    color: #cfcfcf !important;
+  }
+</style>
+</head>
+<body class="text-lg">
+
+<header class="fixed top-0 w-full z-50 bg-white border-b-4 border-black">
+  <div class="flex justify-between items-center h-16 px-6 max-w-[1280px] mx-auto">
+    <button onclick="navigate('home')" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 border-2 border-black rounded bg-gray-200 flex items-center justify-center">
+        <span class="material-symbols-outlined sketch-icon text-[20px]">blur_on</span>
+      </div>
+      <h1 class="font-bold text-2xl tracking-tight uppercase">AI-O Sketch</h1>
+    </button>
+    <nav aria-label="Desktop navigation" class="hidden md:flex items-center gap-8" id="desktop-nav">
+      <button onclick="navigate('home')" data-page="home" class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Home</button>
+      <button onclick="navigate('store')" data-page="store" class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Store</button>
+      <button onclick="navigate('cart')" data-page="cart" class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Cart</button>
+      <button onclick="navigate('profile')" data-page="profile" class="nav-link font-bold border-b-2 border-transparent hover:border-black uppercase">Profile</button>
+    </nav>
+    <button onclick="toggleTheme()" class="w-9 h-9 border-2 border-black rounded-full flex items-center justify-center sketch-btn" aria-label="Theme">
+      <span id="theme-icon" class="material-symbols-outlined sketch-icon text-[18px]">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<div id="page-home" class="page active pt-20 pb-24 md:pb-8">
+  <section class="max-w-[1280px] mx-auto px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div class="z-10 flex flex-col gap-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-black rounded max-w-max bg-white">
+        <span class="material-symbols-outlined sketch-icon text-[16px]">bolt</span>
+        <span class="text-sm font-bold uppercase">AI Voice Assistant Ready</span>
+      </div>
+      <h2 class="text-5xl md:text-6xl font-black uppercase leading-tight">Your Home<br>Powered by<br>Real AI</h2>
+      <p class="text-xl max-w-md text-gray-700">Discover smart devices with AI voice assistants to automate your home with routines and centralized control.</p>
+      <div class="flex flex-wrap gap-4 mt-4">
+        <button onclick="navigate('store')" class="sketch-btn sketch-btn-primary px-6 py-3 uppercase text-lg">View AI Products</button>
+        <button onclick="showProductDetail('homepodMini')" class="sketch-btn px-6 py-3 uppercase text-lg">View Featured</button>
+      </div>
+    </div>
+    <div class="h-[300px] md:h-[450px] w-full sketch-img sketch-box"><span class="z-10 bg-white px-4 py-2 border-2 border-black">Smart Speakers with Voice Assistants</span></div>
+  </section>
+
+  <section class="border-y-4 border-black bg-white py-8 my-8">
+    <div class="max-w-[1280px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">3</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Top Assistants</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">50+</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Real Products</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">Matter</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Compatibility</div></div>
+      <div class="flex flex-col items-center"><div class="text-4xl font-black">24/7</div><div class="text-sm uppercase font-bold text-gray-500 mt-2">Voice Control</div></div>
+    </div>
+  </section>
+
+  <section class="py-12 max-w-[1280px] mx-auto px-6">
+    <div class="flex justify-between items-end mb-8 border-b-2 border-black pb-4">
+      <div>
+        <h3 class="text-3xl font-bold uppercase">Featured Products</h3>
+        <p class="text-gray-600 text-lg">Real devices with AI assistants for your home.</p>
+      </div>
+      <button onclick="navigate('store')" class="font-bold uppercase flex items-center gap-1 hover:underline">Explore Full Catalog <span class="material-symbols-outlined sketch-icon text-[18px]">arrow_forward</span></button>
+    </div>
+
+    <div class="flex flex-col gap-12">
+      <div class="auto-slider" data-interval="4500">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-bold uppercase">Smart Speakers with AI Assistants</h4>
+          <div class="flex gap-2">
+            <button class="prev-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_left</span></button>
+            <button class="next-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-6 overflow-x-auto pb-4">
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('homepodMini');}" onclick="showProductDetail('homepodMini')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Apple HomePod mini</span></div>
+            <h5 class="font-bold text-lg">Apple HomePod mini</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Assistant</p><p class="font-bold">AI Voice</p></div><div><p class="uppercase text-gray-500 text-xs">Ecosystem</p><p class="font-bold">Apple Home</p></div></div>
+          </div>
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('echo4');}" onclick="showProductDetail('echo4')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Amazon Echo (4th Gen)</span></div>
+            <h5 class="font-bold text-lg">Amazon Echo (4th Gen)</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Assistant</p><p class="font-bold">AI Voice</p></div><div><p class="uppercase text-gray-500 text-xs">Hub</p><p class="font-bold">Zigbee</p></div></div>
+          </div>
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('nestAudio');}" onclick="showProductDetail('nestAudio')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Google Nest Audio</span></div>
+            <h5 class="font-bold text-lg">Google Nest Audio</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Assistant</p><p class="font-bold">AI Assistant</p></div><div><p class="uppercase text-gray-500 text-xs">Function</p><p class="font-bold">Voice Match</p></div></div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-2 mt-2"><div class="dot w-2 h-2 rounded-full bg-black"></div><div class="dot w-2 h-2 rounded-full bg-gray-300"></div><div class="dot w-2 h-2 rounded-full bg-gray-300"></div></div>
+      </div>
+
+      <div class="auto-slider" data-interval="4000">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-bold uppercase">Smart Displays</h4>
+          <div class="flex gap-2">
+            <button class="prev-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_left</span></button>
+            <button class="next-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-6 overflow-x-auto pb-4">
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('nestHub2');}" onclick="showProductDetail('nestHub2')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Google Nest Hub (2nd Gen)</span></div>
+            <h5 class="font-bold text-lg">Google Nest Hub (2nd Gen)</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Display</p><p class="font-bold">7in Touch</p></div><div><p class="uppercase text-gray-500 text-xs">Assistant</p><p class="font-bold">AI Assistant</p></div></div>
+          </div>
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('echoShow8');}" onclick="showProductDetail('echoShow8')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Amazon Echo Show 8 (3rd Gen)</span></div>
+            <h5 class="font-bold text-lg">Amazon Echo Show 8 (3rd Gen)</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Display</p><p class="font-bold">8in HD</p></div><div><p class="uppercase text-gray-500 text-xs">Assistant</p><p class="font-bold">AI Voice</p></div></div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-2 mt-2"><div class="dot w-2 h-2 rounded-full bg-black"></div><div class="dot w-2 h-2 rounded-full bg-gray-300"></div></div>
+      </div>
+
+      <div class="auto-slider" data-interval="5000">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-bold uppercase">Streaming & Voice Control</h4>
+          <div class="flex gap-2">
+            <button class="prev-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_left</span></button>
+            <button class="next-btn sketch-btn w-8 h-8 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-6 overflow-x-auto pb-4">
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('appleTv4k');}" onclick="showProductDetail('appleTv4k')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Apple TV 4K</span></div>
+            <h5 class="font-bold text-lg">Apple TV 4K</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Video</p><p class="font-bold">4K HDR</p></div><div><p class="uppercase text-gray-500 text-xs">Control</p><p class="font-bold">Voice Remote</p></div></div>
+          </div>
+          <div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){showProductDetail('fireTvCube');}" onclick="showProductDetail('fireTvCube')" class="slider-item min-w-[280px] md:min-w-[320px] sketch-box p-4 flex flex-col gap-4 cursor-pointer">
+            <div class="h-40 sketch-img w-full"><span class="z-10 bg-white px-2 py-1 border border-black text-sm">Amazon Fire TV Cube</span></div>
+            <h5 class="font-bold text-lg">Amazon Fire TV Cube</h5>
+            <div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-2 text-sm"><div><p class="uppercase text-gray-500 text-xs">Video</p><p class="font-bold">4K Ultra HD</p></div><div><p class="uppercase text-gray-500 text-xs">Control</p><p class="font-bold">AI Voice</p></div></div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-2 mt-2"><div class="dot w-2 h-2 rounded-full bg-black"></div><div class="dot w-2 h-2 rounded-full bg-gray-300"></div></div>
+      </div>
+
+      <div class="sketch-box p-8 flex flex-col md:flex-row items-center gap-8 bg-[#fdfdfd]">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2 font-bold uppercase"><span class="material-symbols-outlined sketch-icon">new_releases</span><span>Just Announced</span></div>
+          <h4 class="text-2xl font-black uppercase mb-2">New: Apple HomePod mini</h4>
+          <p class="text-gray-600">360 audio, AI assistant and smart home automation in compact format.</p>
+        </div>
+        <button onclick="showProductDetail('homepodMini')" class="sketch-btn sketch-btn-primary px-6 py-3 uppercase">View Offer</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1280px] mx-auto px-6 py-12">
+    <div class="sketch-box bg-white p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 text-center md:text-left">
+        <h3 class="text-3xl font-black uppercase mb-2">Get updates on AI smart home devices</h3>
+        <p class="text-gray-600">Subscribe for launches, discounts and assistant comparisons.</p>
+      </div>
+      <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4">
+        <input class="sketch-input w-full md:w-64" placeholder="email@domain.com" type="email">
+        <button class="sketch-btn sketch-btn-primary px-6 py-2 uppercase">Subscribe</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-store" class="page pt-20 pb-24 md:pb-8">
+  <main class="max-w-[1280px] mx-auto px-6 py-8">
+    <section class="mb-12 border-b-2 border-black pb-8">
+      <h2 class="text-4xl font-black uppercase mb-4 text-center">Hardware Catalog</h2>
+      <div class="max-w-2xl mx-auto flex flex-col gap-4">
+        <div class="relative">
+          <span class="material-symbols-outlined sketch-icon absolute left-4 top-1/2 -translate-y-1/2">search</span>
+          <input class="sketch-input w-full pl-12 py-4 text-xl" placeholder="Search products, brands, or categories..." type="text">
+        </div>
+        <div class="flex justify-center gap-4">
+          <button class="sketch-btn px-4 py-2 flex items-center gap-2 uppercase font-bold"><span class="material-symbols-outlined sketch-icon">tune</span> Filters</button>
+          <button class="sketch-btn px-4 py-2 flex items-center gap-2 uppercase font-bold"><span class="material-symbols-outlined sketch-icon">grid_view</span> Layout</button>
+        </div>
+        <div class="sketch-box p-4 mt-4 flex gap-4 flex-wrap bg-gray-50">
+          <div class="px-3 py-1 border-2 border-black rounded-full text-sm font-bold uppercase bg-white">Smart Speakers <span class="ml-2 cursor-pointer">x</span></div>
+          <div class="px-3 py-1 border-2 border-black rounded-full text-sm font-bold uppercase bg-white">Wi-Fi <span class="ml-2 cursor-pointer">x</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">AI VOICE</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Apple HomePod mini</h3><span class="font-black text-xl">$99.00</span></div><p class="text-gray-600 mb-6 flex-1">Compact smart speaker with AI voice assistant, home automation and Intercom.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">settings_voice</span> AI Voice</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">hub</span> Thread / Matter</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('homepodMini')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">AI HUB</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Amazon Echo (4th Gen)</h3><span class="font-black text-xl">$99.99</span></div><p class="text-gray-600 mb-6 flex-1">Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">hub</span> Zigbee Hub</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">wifi</span> Wi-Fi + BT</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('echo4')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">AI VOICE</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Google Nest Audio</h3><span class="font-black text-xl">$99.99</span></div><p class="text-gray-600 mb-6 flex-1">AI-powered smart speaker with stereo pairing and Voice Match.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">record_voice_over</span> Voice Match</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">surround_sound</span> Stereo Pair</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('nestAudio')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">SMART DISPLAY</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Google Nest Hub (2nd Gen)</h3><span class="font-black text-xl">$99.99</span></div><p class="text-gray-600 mb-6 flex-1">Smart display with AI assistant, media controls and sleep sensing.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">display_settings</span> 7in Display</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">hotel_class</span> Sleep Sensing</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('nestHub2')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">AI DISPLAY</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Amazon Echo Show 8</h3><span class="font-black text-xl">$149.99</span></div><p class="text-gray-600 mb-6 flex-1">AI-powered display with calls, routines and smart home control.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">videocam</span> 13MP Camera</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">hub</span> Matter Hub</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('echoShow8')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+
+      <div class="sketch-box flex flex-col">
+        <div class="h-64 sketch-img border-b-2 border-l-0 border-r-0 border-t-0 rounded-none w-full"><span class="z-10 bg-white px-2 py-1 border border-black font-bold uppercase text-xs">AI TV</span></div>
+        <div class="p-6 flex flex-col flex-1"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-xl uppercase">Apple TV 4K</h3><span class="font-black text-xl">$129.00</span></div><p class="text-gray-600 mb-6 flex-1">Streaming box with tvOS, Apple ecosystem integration and AI voice control.</p><div class="grid grid-cols-2 gap-2 border-t-2 border-black pt-4 mb-6 text-sm"><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">4k</span> 4K HDR</div><div class="flex items-center gap-1"><span class="material-symbols-outlined sketch-icon text-[16px]">stadia_controller</span> Voice Remote</div></div><div class="flex items-center gap-2"><button onclick="showProductDetail('appleTv4k')" class="sketch-btn w-full py-2 uppercase font-bold text-center text-sm">Details</button><button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary w-full py-2 uppercase font-bold text-center text-sm">Cart</button></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="page-product" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 max-w-[1280px] mx-auto px-6">
+    <button onclick="navigate('store')" class="mb-8 font-bold uppercase flex items-center gap-2 hover:underline"><span class="material-symbols-outlined sketch-icon text-[18px]">arrow_back</span> Back to Marketplace</button>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="flex flex-col gap-4">
+        <div class="aspect-square md:aspect-[4/3] sketch-box sketch-img w-full"><span id="product-image-text" class="z-10 bg-white px-4 py-2 border-2 border-black text-xl font-bold uppercase text-center max-w-[80%]">Apple HomePod mini</span></div>
+        <div class="grid grid-cols-4 gap-4">
+          <div class="aspect-square sketch-box sketch-img bg-gray-200 border-black"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img"><span class="z-10 text-xs">Thumb</span></div>
+          <div class="aspect-square sketch-box sketch-img flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-3xl z-10">play_circle</span></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-8">
+        <div>
+          <span id="product-category" class="text-gray-500 font-bold uppercase text-sm border-2 border-black px-2 py-1 bg-white rounded">AI SMART SPEAKER</span>
+          <h1 id="product-title" class="text-4xl md:text-5xl font-black uppercase mt-4 mb-4">Apple HomePod mini</h1>
+          <p id="product-description" class="text-xl text-gray-700 leading-relaxed">Compact smart speaker with AI voice assistant, home automation and Intercom.</p>
+        </div>
+
+        <div class="flex items-baseline gap-4">
+          <span id="product-price" class="text-4xl font-black">$99.00</span>
+          <span id="product-old-price" class="text-xl text-gray-500 line-through font-bold">$129.00</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">memory</span><div class="font-bold uppercase">Apple S5</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">hub</span><div class="font-bold uppercase">Wi-Fi + Thread</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">settings_voice</span><div class="font-bold uppercase">AI Voice</div></div>
+          <div class="sketch-box p-4 text-center"><span class="material-symbols-outlined sketch-icon block mb-2 mx-auto">home</span><div class="font-bold uppercase">Apple Home</div></div>
+        </div>
+
+        <div class="flex flex-col gap-4 mt-4">
+          <button onclick="navigate('cart')" class="sketch-btn sketch-btn-primary py-4 text-xl uppercase w-full flex items-center justify-center gap-2">Add to Cart <span class="material-symbols-outlined sketch-icon">add_shopping_cart</span></button>
+          <button class="sketch-btn py-4 text-xl uppercase w-full flex items-center justify-center gap-2">Save to Wishlist <span class="material-symbols-outlined sketch-icon">favorite</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 sketch-box overflow-hidden">
+      <div class="border-b-2 border-black p-6 flex justify-between items-center bg-gray-50">
+        <h3 class="text-2xl font-bold uppercase">Detailed Technical Specification</h3>
+        <button type="button" onclick="toggleTechSpecs()"><span id="tech-spec-toggle-icon" class="material-symbols-outlined sketch-icon">expand_less</span></button>
+      </div>
+      <div id="tech-spec-content" class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div><h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Technical Specs</h4><ul class="space-y-2"><li class="flex justify-between border-b border-gray-300 pb-1"><span>Chip</span><span class="font-bold">Apple S5</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>AI Engine</span><span class="font-bold">Machine Learning</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>Memory</span><span class="font-bold">256MB RAM</span></li></ul></div>
+        <div><h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Connectivity</h4><ul class="space-y-2"><li class="flex justify-between border-b border-gray-300 pb-1"><span>Wi-Fi</span><span class="font-bold">802.11ac</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>Bluetooth</span><span class="font-bold">5.0</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>Thread</span><span class="font-bold">1.0</span></li></ul></div>
+        <div><h4 class="font-bold uppercase border-b-2 border-black pb-2 mb-4">Power</h4><ul class="space-y-2"><li class="flex justify-between border-b border-gray-300 pb-1"><span>Power Input</span><span class="font-bold">20W</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>Standby</span><span class="font-bold">1.8W</span></li><li class="flex justify-between border-b border-gray-300 pb-1"><span>Connector</span><span class="font-bold">Apple</span></li></ul></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="page-cart" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 px-6 max-w-[1280px] mx-auto">
+    <div class="mb-8 border-b-2 border-black pb-4"><h2 class="text-4xl font-black uppercase">Shopping Cart</h2><p class="text-lg text-gray-600">Secure checkout summary.</p></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center"><div class="w-full md:w-32 h-32 sketch-img flex-shrink-0"><span class="z-10 text-sm bg-white border border-black px-1 font-bold">Echo</span></div><div class="flex-grow w-full"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-2xl uppercase">Amazon Echo (4th Gen)</h3><span class="font-black text-2xl">$99.99</span></div><p class="text-gray-600 mb-4">Smart speaker with AI assistant and Zigbee hub.</p><div class="flex items-center gap-6"><div class="flex items-center gap-4 sketch-box px-3 py-1"><span class="cursor-pointer font-black text-xl">-</span><span class="font-bold text-xl">1</span><span class="cursor-pointer font-black text-xl">+</span></div><button class="font-bold uppercase flex items-center gap-1 underline"><span class="material-symbols-outlined sketch-icon text-sm">delete</span> Remove</button></div></div></div>
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center"><div class="w-full md:w-32 h-32 sketch-img flex-shrink-0"><span class="z-10 text-sm bg-white border border-black px-1 font-bold">Nest Hub</span></div><div class="flex-grow w-full"><div class="flex justify-between items-start mb-2"><h3 class="font-bold text-2xl uppercase">Google Nest Hub (2nd Gen)</h3><span class="font-black text-2xl">$99.99</span></div><p class="text-gray-600 mb-4">Smart display with media controls and sleep sensing.</p><div class="flex items-center gap-6"><div class="flex items-center gap-4 sketch-box px-3 py-1"><span class="cursor-pointer font-black text-xl">-</span><span class="font-bold text-xl">2</span><span class="cursor-pointer font-black text-xl">+</span></div><button class="font-bold uppercase flex items-center gap-1 underline"><span class="material-symbols-outlined sketch-icon text-sm">delete</span> Remove</button></div></div></div>
+      </div>
+
+      <div class="lg:col-span-4">
+        <div class="sketch-box p-8 flex flex-col gap-6 sticky top-24 bg-white">
+          <h4 class="text-2xl font-black uppercase border-b-2 border-black pb-2 flex items-center gap-2"><span class="material-symbols-outlined sketch-icon">receipt_long</span> Order Summary</h4>
+          <div class="flex flex-col gap-3 font-bold text-lg"><div class="flex justify-between"><span>Amazon Echo (4th Gen)</span><span>$99.99</span></div><div class="flex justify-between"><span>Google Nest Hub (2nd Gen)</span><span>$99.99</span></div><div class="flex justify-between"><span>Shipping</span><span>$9.99</span></div><div class="flex justify-between"><span>Taxes</span><span>$21.00</span></div><div class="flex justify-between"><span>Discount</span><span>-$10.00</span></div></div>
+          <div class="border-t-2 border-black pt-4 flex justify-between items-baseline"><span class="text-xl font-black uppercase">Total</span><span class="text-3xl font-black">$220.97</span></div>
+          <div class="flex flex-col gap-4 mt-4"><button class="sketch-btn sketch-btn-primary py-4 uppercase text-xl font-bold">Checkout</button><button class="sketch-btn py-4 uppercase font-bold">Save for later</button></div>
+          <div class="bg-gray-100 p-4 border-2 border-black rounded text-sm mt-4">By completing this purchase, you agree to AI-O terms and conditions.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="page-profile" class="page pt-20 pb-24 md:pb-8">
+  <main class="pt-8 pb-16 px-6 max-w-[1280px] mx-auto">
+    <section class="mb-12 sketch-box p-8 bg-white flex flex-col md:flex-row items-center gap-8">
+      <div class="w-32 h-32 sketch-box rounded-lg overflow-hidden">
+        <img id="profile-avatar" alt="Profile avatar" class="w-full h-full object-cover" src="">
+      </div>
+      <div class="flex-1 text-center md:text-left">
+        <span id="profile-role" class="border-2 border-black px-2 py-1 bg-black text-white font-bold uppercase text-xs rounded">SYSTEM ADMINISTRATOR</span>
+        <h1 id="profile-name" class="text-4xl font-black uppercase mt-2">Admin</h1>
+        <p id="profile-location" class="text-gray-600 flex items-center justify-center md:justify-start gap-1 mt-2"><span class="material-symbols-outlined sketch-icon text-[16px]">location_on</span>Buenos Aires, Argentina</p>
+      </div>
+      <div class="flex flex-col w-full md:w-auto gap-4">
+        <button class="sketch-btn px-6 py-2 uppercase font-bold text-center">Edit Profile</button>
+        <button onclick="handleLogout(event)" class="sketch-btn px-6 py-2 uppercase font-bold text-center flex items-center justify-center gap-2 text-red-600"><span class="material-symbols-outlined sketch-icon text-[18px]">logout</span> Logout</button>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <div class="md:col-span-8 sketch-box p-8 bg-white flex flex-col gap-6">
+        <div class="flex justify-between items-center border-b-2 border-black pb-4"><h2 id="profile-overview-title" class="text-2xl font-black uppercase flex items-center gap-2"><span class="material-symbols-outlined sketch-icon">insights</span> Automation Highlights</h2><span id="profile-overview-subtitle" class="font-bold uppercase text-sm">4 ACTIVE RULES</span></div>
+        <div id="profile-overview-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+
+      <div class="md:col-span-4 sketch-box p-8 bg-white flex flex-col gap-6">
+        <h2 class="text-2xl font-black uppercase border-b-2 border-black pb-4 flex items-center gap-2"><span class="material-symbols-outlined sketch-icon">security</span> Security Logs</h2>
+        <div id="security-logs-list" class="flex flex-col gap-4 font-mono text-sm overflow-hidden"></div>
+        <button class="sketch-btn w-full py-2 uppercase font-bold mt-auto">View Full Archive</button>
+      </div>
+
+      <div class="md:col-span-12 sketch-box p-8 bg-white">
+        <div class="flex justify-between items-center border-b-2 border-black pb-4 mb-6"><h2 class="text-2xl font-black uppercase flex items-center gap-2"><span class="material-symbols-outlined sketch-icon">table_chart</span> Purchase History</h2></div>
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left font-bold border-collapse min-w-[760px]"><thead><tr class="border-b-4 border-black text-sm uppercase"><th class="py-2 px-4">Order ID</th><th class="py-2 px-4">Product Name</th><th class="py-2 px-4">Category</th><th class="py-2 px-4">Date</th><th class="py-2 px-4">Status</th><th class="py-2 px-4">Action</th></tr></thead><tbody id="purchase-history-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="page-admin" class="page pt-20 pb-24 md:pb-8">
+  <main class="max-w-[1280px] mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8"><div><h1 class="text-4xl font-black uppercase mb-2">Device Administration</h1><p class="text-gray-600">Manage your store's product catalog and inventory.</p></div><div class="flex gap-4"><button class="sketch-btn sketch-btn-primary px-6 py-3 flex items-center gap-2 uppercase font-bold text-sm"><span class="material-symbols-outlined sketch-icon text-[18px]">add</span> Add New Product</button><button onclick="handleLogout(event)" class="sketch-btn px-6 py-3 flex items-center gap-2 uppercase font-bold text-sm text-red-600"><span class="material-symbols-outlined sketch-icon text-[18px]">logout</span> Logout</button></div></div>
+
+    <div class="flex gap-4 mb-8 overflow-x-auto pb-2"><button class="sketch-btn sketch-btn-primary px-4 py-2 uppercase font-bold text-xs whitespace-nowrap rounded-full">All Products</button><button class="sketch-btn px-4 py-2 uppercase font-bold text-xs whitespace-nowrap rounded-full">TVs & Displays</button><button class="sketch-btn px-4 py-2 uppercase font-bold text-xs whitespace-nowrap rounded-full">Audio Systems</button><button class="sketch-btn px-4 py-2 uppercase font-bold text-xs whitespace-nowrap rounded-full">Climate Control</button></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row items-center gap-6"><div class="w-24 h-24 sketch-img flex-shrink-0"><span class="z-10 text-xs bg-white border border-black px-1 font-bold uppercase">TV</span></div><div class="flex-grow w-full"><div class="flex items-center gap-2 mb-2"><span class="border-2 border-black bg-black text-white px-2 py-0.5 text-xs font-bold uppercase rounded">TV-001</span><span class="text-xs font-bold uppercase text-gray-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-black inline-block"></span> Active</span></div><h3 class="text-xl font-bold uppercase">Samsung 8K QLED TV</h3><p class="text-sm text-gray-600">Smart TV • Living Room Display</p></div><div class="flex items-center gap-2"><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">visibility</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">edit</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px] text-red-600">delete_forever</span></button></div></div>
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row items-center gap-6"><div class="w-24 h-24 sketch-img flex-shrink-0"><span class="z-10 text-xs bg-white border border-black px-1 font-bold uppercase">AUD</span></div><div class="flex-grow w-full"><div class="flex items-center gap-2 mb-2"><span class="border-2 border-black bg-white text-black px-2 py-0.5 text-xs font-bold uppercase rounded">AUD-042</span><span class="text-xs font-bold uppercase text-gray-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full border-2 border-gray-400 inline-block"></span> Standby</span></div><h3 class="text-xl font-bold uppercase">Amazon Echo (4th Gen)</h3><p class="text-sm text-gray-600">Smart Speaker • Living Room</p></div><div class="flex items-center gap-2"><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">visibility</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">edit</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px] text-red-600">delete_forever</span></button></div></div>
+        <div class="sketch-box p-4 md:p-6 flex flex-col md:flex-row items-center gap-6"><div class="w-24 h-24 sketch-img flex-shrink-0"><span class="z-10 text-xs bg-white border border-black px-1 font-bold uppercase">VAC</span></div><div class="flex-grow w-full"><div class="flex items-center gap-2 mb-2"><span class="border-2 border-black bg-black text-white px-2 py-0.5 text-xs font-bold uppercase rounded">VAC-08</span><span class="text-xs font-bold uppercase text-gray-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-black inline-block"></span> Optimized</span></div><h3 class="text-xl font-bold uppercase">Nest Learning Thermostat</h3><p class="text-sm text-gray-600">Climate Control • Hallway</p></div><div class="flex items-center gap-2"><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">visibility</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px]">edit</span></button><button class="sketch-btn p-2 flex items-center justify-center"><span class="material-symbols-outlined sketch-icon text-[18px] text-red-600">delete_forever</span></button></div></div>
+      </div>
+
+      <aside class="lg:col-span-4">
+        <div class="sketch-box p-6 sticky top-24 bg-white flex flex-col gap-6"><div class="border-b-2 border-black pb-4"><div class="flex justify-between items-center mb-2"><h2 class="font-bold uppercase text-sm">Product Analytics</h2><span class="material-symbols-outlined sketch-icon">monitoring</span></div><p class="text-2xl font-black uppercase">Samsung 8K QLED</p></div><div class="flex flex-col gap-3 text-sm"><div class="flex justify-between border-b-2 border-dashed border-gray-300 pb-1"><span class="uppercase text-gray-500 font-bold text-xs">Brand</span><span class="font-bold">Samsung</span></div><div class="flex justify-between border-b-2 border-dashed border-gray-300 pb-1"><span class="uppercase text-gray-500 font-bold text-xs">Model</span><span class="font-bold">QN900C</span></div><div class="flex justify-between border-b-2 border-dashed border-gray-300 pb-1"><span class="uppercase text-gray-500 font-bold text-xs">Resolution</span><span class="font-bold">8K</span></div><div class="flex justify-between border-b-2 border-dashed border-gray-300 pb-1"><span class="uppercase text-gray-500 font-bold text-xs">In Stock</span><span class="font-bold">24 Units</span></div></div><div class="h-32 border-2 border-black rounded sketch-img flex-col items-center justify-center bg-gray-50"><span class="z-10 font-bold uppercase text-xs bg-white px-2 py-1 border border-black inline-block text-center">Monthly Sales Graph<br>Placeholder</span></div><button class="sketch-btn py-3 uppercase font-bold text-sm w-full flex items-center justify-center gap-2"><span class="material-symbols-outlined sketch-icon text-[18px]">terminal</span> Product Details</button></div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<footer class="border-t-4 border-black bg-white py-8 mt-auto relative z-40">
+  <div class="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="font-bold uppercase text-sm">© 2024 AI-O Home Marketplace. Sketch Layout.</span>
+    <div class="flex gap-6 font-bold uppercase underline text-sm"><a href="#">Privacy Protocol</a><a href="#">Technical Specs</a><a href="#">Support</a></div>
+  </div>
+</footer>
+
+<nav aria-label="Mobile navigation" class="md:hidden fixed bottom-0 left-0 w-full h-20 bg-white border-t-4 border-black flex justify-around items-center px-4 z-50">
+  <button onclick="navigate('home')" data-page="home" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent"><span class="material-symbols-outlined sketch-icon">home</span><span class="text-xs">Home</span></button>
+  <button onclick="navigate('store')" data-page="store" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent"><span class="material-symbols-outlined sketch-icon">shopping_bag</span><span class="text-xs">Store</span></button>
+  <button onclick="navigate('cart')" data-page="cart" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent"><span class="material-symbols-outlined sketch-icon">shopping_cart</span><span class="text-xs">Cart</span></button>
+  <button onclick="navigate('profile')" data-page="profile" class="mobile-nav-btn flex flex-col items-center p-2 font-bold uppercase transition-all gap-1 border-2 border-transparent"><span class="material-symbols-outlined sketch-icon">person</span><span class="text-xs">Profile</span></button>
+</nav>
+
+<script>
+const USER_PROFILES = {
+  admin: {
+    key: 'admin',
+    displayName: 'Admin',
+    role: 'SYSTEM ADMINISTRATOR',
+    location: 'Buenos Aires, Argentina',
+    avatar: { initials: 'AD', colors: ['#111111', '#666666'] },
+    overviewTitle: 'Automation Highlights',
+    overviewSubtitle: '4 ACTIVE RULES',
+    overviewItems: [
+      { icon: 'routine', title: 'Night Mode', text: 'Lights, climate and audio sync' },
+      { icon: 'security', title: 'Security', text: 'Door and motion alerts enabled' },
+      { icon: 'bolt', title: 'Energy', text: 'Smart plugs saving 18% this month' },
+      { icon: 'hub', title: 'Scenes', text: 'Away, Work and Relax presets' },
+      { icon: 'speaker', title: 'Voice', text: '3 assistants paired across rooms' },
+      { icon: 'devices', title: 'Inventory', text: '24 active devices monitored' }
+    ],
+    logs: [
+      { time: '14:02', title: 'LOGIN OK' },
+      { time: '13:46', title: 'SCAN OK' },
+      { time: '12:20', title: 'DEVICE LINKED' },
+      { time: '10:15', title: 'ACCESS BLOCKED' }
+    ],
+    history: [
+      { id: 'ORD-2024-001', product: 'Apple HomePod mini', category: 'SPEAKER', date: '2024-11-20 09:12', status: 'DELIVERED' },
+      { id: 'ORD-2024-002', product: 'Amazon Echo (4th Gen)', category: 'SPEAKER', date: '2024-11-15 14:45', status: 'SHIPPED' },
+      { id: 'ORD-2024-003', product: 'Google Nest Hub (2nd Gen)', category: 'DISPLAY', date: '2024-10-30 11:20', status: 'DELIVERED' }
+    ]
+  },
+  user: {
+    key: 'user',
+    displayName: 'User',
+    role: 'HOME USER',
+    location: 'Cordoba, Argentina',
+    avatar: { initials: 'US', colors: ['#444444', '#999999'] },
+    overviewTitle: 'Home Snapshot',
+    overviewSubtitle: '3 ACTIVE ROOMS',
+    overviewItems: [
+      { icon: 'home', title: 'Living room', text: 'Speaker + display routines' },
+      { icon: 'thermostat', title: 'Climate', text: '21.4C target with auto schedule' },
+      { icon: 'camera_indoor', title: 'Security', text: 'Camera armed while away' },
+      { icon: 'music_note', title: 'Media', text: 'Streaming shortcuts ready' },
+      { icon: 'lightbulb', title: 'Lighting', text: 'Sunset scene on tap' },
+      { icon: 'favorite', title: 'Favorites', text: 'HomePod mini and Nest Hub' }
+    ],
+    logs: [
+      { time: '18:10', title: 'SCENE ON' },
+      { time: '15:22', title: 'TEMP ADJUSTED' },
+      { time: '13:40', title: 'VOICE MATCH' },
+      { time: '08:05', title: 'DEVICE ONLINE' }
+    ],
+    history: [
+      { id: 'ORD-2024-101', product: 'Amazon Echo Show 8', category: 'DISPLAY', date: '2024-11-21 19:02', status: 'DELIVERED' },
+      { id: 'ORD-2024-102', product: 'Google Nest Audio', category: 'AUDIO', date: '2024-11-03 12:34', status: 'PROCESSING' },
+      { id: 'ORD-2024-103', product: 'Apple TV 4K', category: 'STREAMING', date: '2024-10-18 17:10', status: 'DELIVERED' }
+    ]
+  }
+};
+
+let currentUserKey = localStorage.getItem('aio-current-user') || 'user';
+let currentTheme = localStorage.getItem('aio-theme') || 'light';
+
+function buildAvatarDataUri(profile) {
+  const startColor = profile.avatar.colors[0];
+  const endColor = profile.avatar.colors[1];
+  const initials = profile.avatar.initials;
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="' + startColor + '"/><stop offset="100%" stop-color="' + endColor + '"/></linearGradient></defs><rect width="256" height="256" rx="40" fill="url(#g)"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="92" font-weight="700" fill="#ffffff">' + initials + '</text></svg>';
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.classList.toggle('light', !isDark);
+  const themeIcon = document.getElementById('theme-icon');
+  if (themeIcon) themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('aio-theme', currentTheme);
+  applyTheme(currentTheme);
+}
+
+function toggleTechSpecs() {
+  const content = document.getElementById('tech-spec-content');
+  const icon = document.getElementById('tech-spec-toggle-icon');
+  if (!content || !icon) return;
+  const isHidden = content.classList.toggle('hidden');
+  icon.textContent = isHidden ? 'expand_more' : 'expand_less';
+}
+
+function closeAllOrderMenus() {
+  document.querySelectorAll('[id^="order-menu-"]').forEach(function(menu) {
+    menu.classList.add('hidden');
+  });
+}
+
+function toggleOrderMenu(event, orderId) {
+  event.stopPropagation();
+  const menu = document.getElementById('order-menu-' + orderId);
+  if (!menu) return;
+  const isHidden = menu.classList.contains('hidden');
+  closeAllOrderMenus();
+  if (isHidden) menu.classList.remove('hidden');
+}
+
+function renderProfile(userKey) {
+  const key = userKey || currentUserKey;
+  const profile = USER_PROFILES[key] || USER_PROFILES.user;
+  currentUserKey = profile.key;
+  localStorage.setItem('aio-current-user', currentUserKey);
+
+  const avatar = document.getElementById('profile-avatar');
+  if (avatar) {
+    avatar.src = buildAvatarDataUri(profile);
+    avatar.alt = profile.displayName + ' profile picture';
+  }
+
+  const role = document.getElementById('profile-role');
+  const name = document.getElementById('profile-name');
+  const location = document.getElementById('profile-location');
+  const overviewTitle = document.getElementById('profile-overview-title');
+  const overviewSubtitle = document.getElementById('profile-overview-subtitle');
+  const overviewItems = document.getElementById('profile-overview-items');
+  const logsList = document.getElementById('security-logs-list');
+  const historyBody = document.getElementById('purchase-history-body');
+
+  if (role) role.textContent = profile.role;
+  if (name) name.textContent = profile.displayName;
+  if (location) location.innerHTML = '<span class="material-symbols-outlined sketch-icon text-[16px]">location_on</span>' + profile.location;
+  if (overviewTitle) overviewTitle.innerHTML = '<span class="material-symbols-outlined sketch-icon">insights</span> ' + profile.overviewTitle;
+  if (overviewSubtitle) overviewSubtitle.textContent = profile.overviewSubtitle;
+
+  if (overviewItems) {
+    overviewItems.innerHTML = profile.overviewItems.map(function(item) {
+      return '<div class="border-2 border-black rounded p-4 bg-gray-50 flex flex-col gap-2"><div class="flex justify-between"><span class="material-symbols-outlined sketch-icon">' + item.icon + '</span><span class="w-2 h-2 rounded-full bg-black inline-block"></span></div><h3 class="font-bold uppercase text-lg">' + item.title + '</h3><p class="text-sm uppercase text-gray-500">' + item.text + '</p></div>';
+    }).join('');
+  }
+
+  if (logsList) {
+    logsList.innerHTML = profile.logs.map(function(entry) {
+      return '<div class="border-b-2 border-dashed border-gray-300 pb-2"><p class="font-bold">' + entry.time + '</p><p>' + entry.title + '</p></div>';
+    }).join('');
+  }
+
+  if (historyBody) {
+    historyBody.innerHTML = profile.history.map(function(order) {
+      return '<tr class="border-b-2 border-gray-200 relative"><td class="py-4 px-4 border-r border-gray-200">' + order.id + '</td><td class="py-4 px-4 border-r border-gray-200">' + order.product + '</td><td class="py-4 px-4 border-r border-gray-200">' + order.category + '</td><td class="py-4 px-4 border-r border-gray-200">' + order.date + '</td><td class="py-4 px-4 border-r border-gray-200">' + order.status + '</td><td class="py-4 px-4 relative"><button class="sketch-btn px-2 py-1" onclick="toggleOrderMenu(event, \'' + order.id + '\')">...</button><div id="order-menu-' + order.id + '" class="hidden absolute right-2 top-12 z-20 w-40 rounded border-2 border-black bg-white p-1 text-left"><button class="w-full text-left px-2 py-1 hover:bg-gray-100" onclick="closeAllOrderMenus()">View Detail</button><button class="w-full text-left px-2 py-1 hover:bg-gray-100" onclick="closeAllOrderMenus()">Resend</button><button class="w-full text-left px-2 py-1 hover:bg-gray-100" onclick="closeAllOrderMenus()">Download Invoice</button><button class="w-full text-left px-2 py-1 hover:bg-gray-100 text-red-600" onclick="closeAllOrderMenus()">Delete</button></div></td></tr>';
+    }).join('');
+  }
+}
+
+function handleLogout(event) {
+  if (event) event.preventDefault();
+  localStorage.removeItem('aio-current-user');
+  localStorage.removeItem('role');
+  currentUserKey = 'user';
+  window.location.href = '../auth/LoginSketch.html';
+}
+
+const PAGES = ['home', 'store', 'product', 'cart', 'profile', 'admin'];
+
+function navigate(pageId) {
+  if (!PAGES.includes(pageId)) return;
+
+  PAGES.forEach(function(id) {
+    const el = document.getElementById('page-' + id);
+    if (el) el.classList.remove('active');
+  });
+
+  const target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    const active = link.dataset.page === pageId;
+    if (active) {
+      link.classList.add('border-black', 'bg-black', 'text-white', 'px-3', 'py-1', 'rounded');
+      link.classList.remove('border-transparent');
+    } else {
+      link.classList.remove('border-black', 'bg-black', 'text-white', 'px-3', 'py-1', 'rounded');
+      link.classList.add('border-transparent');
+    }
+  });
+
+  document.querySelectorAll('.mobile-nav-btn').forEach(function(btn) {
+    const active = btn.dataset.page === pageId;
+    if (active) {
+      btn.classList.add('border-black', 'bg-black', 'text-white', 'rounded');
+    } else {
+      btn.classList.remove('border-black', 'bg-black', 'text-white', 'rounded');
+    }
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  history.pushState({ page: pageId }, '', '#' + pageId);
+
+  if (pageId === 'profile') renderProfile(currentUserKey);
+  if (pageId === 'home') initSliders();
+}
+
+const STORE_PRODUCTS = {
+  homepodMini: {
+    category: 'AI SMART SPEAKER',
+    title: 'Apple HomePod mini',
+    description: 'Compact smart speaker with AI voice assistant, home automation and Intercom.',
+    price: '$99.00',
+    oldPrice: '$129.00'
+  },
+  echo4: {
+    category: 'ALEXA HUB',
+    title: 'Amazon Echo (4th Gen)',
+    description: 'Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.',
+    price: '$99.99',
+    oldPrice: '$129.99'
+  },
+  nestAudio: {
+    category: 'GOOGLE SPEAKER',
+    title: 'Google Nest Audio',
+    description: 'AI-powered smart speaker with stereo pairing and Voice Match.',
+    price: '$99.99',
+    oldPrice: '$129.99'
+  },
+  nestHub2: {
+    category: 'GOOGLE SMART DISPLAY',
+    title: 'Google Nest Hub (2nd Gen)',
+    description: 'Smart display with AI assistant, media controls and sleep sensing.',
+    price: '$99.99',
+    oldPrice: '$129.99'
+  },
+  ecobeeThermostat: {
+    category: 'SMART CLIMATE CONTROL',
+    title: 'ecobee SmartThermostat',
+    description: 'Smart thermostat with voice control, room sensors and AI assistant compatibility.',
+    price: '$249.99',
+    oldPrice: '$299.99'
+  },
+  echoShow8: {
+    category: 'AI SMART DISPLAY',
+    title: 'Amazon Echo Show 8 (3rd Gen)',
+    description: 'AI-powered smart display with 8in screen, calls, routines and home control.',
+    price: '$149.99',
+    oldPrice: '$179.99'
+  },
+  appleTv4k: {
+    category: 'AI STREAMING DEVICE',
+    title: 'Apple TV 4K',
+    description: 'Streaming box with tvOS, Apple ecosystem integration and AI voice control.',
+    price: '$129.00',
+    oldPrice: '$159.00'
+  },
+  fireTvCube: {
+    category: 'STREAMING & VOICE',
+    title: 'Amazon Fire TV Cube',
+    description: 'Hands-free 4K streaming device with Alexa voice control and HDMI passthrough.',
+    price: '$139.99',
+    oldPrice: '$169.99'
+  }
+};
+
+function showProductDetail(productId) {
+  const product = STORE_PRODUCTS[productId];
+  if (!product) return;
+
+  const imgText = document.getElementById('product-image-text');
+  if (imgText) imgText.innerText = product.title;
+
+  const category = document.getElementById('product-category');
+  const title = document.getElementById('product-title');
+  const description = document.getElementById('product-description');
+  const price = document.getElementById('product-price');
+  const oldPrice = document.getElementById('product-old-price');
+
+  if (category) category.innerText = product.category;
+  if (title) title.innerText = product.title;
+  if (description) description.innerText = product.description;
+  if (price) price.innerText = product.price;
+  if (oldPrice) oldPrice.innerText = product.oldPrice;
+
+  navigate('product');
+}
+
+function initSliders() {
+  document.querySelectorAll('#page-home .auto-slider').forEach(function(sliderWrapper) {
+    if (sliderWrapper._sliderInitialized) return;
+    sliderWrapper._sliderInitialized = true;
+
+    const container = sliderWrapper.querySelector('.slider-container');
+    const items = sliderWrapper.querySelectorAll('.slider-item');
+    const dots = sliderWrapper.querySelectorAll('.dot');
+    const prevBtn = sliderWrapper.querySelector('.prev-btn');
+    const nextBtn = sliderWrapper.querySelector('.next-btn');
+    const intervalTime = Number.parseInt(sliderWrapper.dataset.interval, 10) || 4000;
+
+    let currentIndex = 0;
+    let autoPlayInterval;
+    let isProgrammaticScroll = false;
+    let programmaticScrollTimer;
+
+    const updateSlider = function(index) {
+      currentIndex = ((index % items.length) + items.length) % items.length;
+      isProgrammaticScroll = true;
+      clearTimeout(programmaticScrollTimer);
+
+      const targetLeft = items[currentIndex].offsetLeft - container.offsetLeft;
+      container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+
+      programmaticScrollTimer = setTimeout(function() { isProgrammaticScroll = false; }, 600);
+
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle('bg-black', i === currentIndex);
+        dot.classList.toggle('bg-gray-300', i !== currentIndex);
+        dot.style.width = i === currentIndex ? '20px' : '8px';
+      });
+
+      items.forEach(function(item, i) { item.classList.toggle('opacity-60', i !== currentIndex); });
+    };
+
+    const startAutoPlay = function() {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = setInterval(function() { updateSlider(currentIndex + 1); }, intervalTime);
+    };
+
+    const stopAutoPlay = function() { clearInterval(autoPlayInterval); };
+
+    if (nextBtn) nextBtn.addEventListener('click', function() { stopAutoPlay(); updateSlider(currentIndex + 1); startAutoPlay(); });
+    if (prevBtn) prevBtn.addEventListener('click', function() { stopAutoPlay(); updateSlider(currentIndex - 1); startAutoPlay(); });
+
+    dots.forEach(function(dot, i) {
+      dot.addEventListener('click', function() { stopAutoPlay(); updateSlider(i); startAutoPlay(); });
+    });
+
+    sliderWrapper.addEventListener('mouseenter', stopAutoPlay);
+    sliderWrapper.addEventListener('mouseleave', startAutoPlay);
+    sliderWrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
+    sliderWrapper.addEventListener('touchend', startAutoPlay, { passive: true });
+
+    let isScrolling;
+    container.addEventListener('scroll', function() {
+      if (isProgrammaticScroll) return;
+      clearTimeout(isScrolling);
+      isScrolling = setTimeout(function() {
+        const scrollLeft = container.scrollLeft;
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+
+        items.forEach(function(item, i) {
+          const itemLeft = item.offsetLeft - container.offsetLeft;
+          const distance = Math.abs(itemLeft - scrollLeft);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = i;
+          }
+        });
+
+        if (nearestIndex !== currentIndex) updateSlider(nearestIndex);
+      }, 150);
+    });
+
+    updateSlider(0);
+    startAutoPlay();
+  });
+}
+
+globalThis.addEventListener('popstate', function(e) {
+  const page = (e.state && e.state.page) || 'home';
+  navigate(page);
+});
+
+document.addEventListener('click', closeAllOrderMenus);
+document.addEventListener('DOMContentLoaded', initSliders);
+
+const initPage = location.hash.replace('#', '') || 'home';
+applyTheme(currentTheme);
+if (initPage === 'login') {
+  window.location.href = '../auth/LoginSketch.html';
+} else {
+  navigate(PAGES.includes(initPage) ? initPage : 'home');
+}
+</script>
+</body>
+</html>

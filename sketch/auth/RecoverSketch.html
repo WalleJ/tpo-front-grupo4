@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O Sketch Recover</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Architects Daughter', cursive;
+    background-color: #fbfbfb;
+    background-image: radial-gradient(#ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #111;
+    min-height: 100dvh;
+  }
+
+  .sketch-box {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    box-shadow: 4px 4px 0 #111;
+  }
+
+  .sketch-btn {
+    background: #fff;
+    border: 2px solid #111;
+    box-shadow: 3px 3px 0 #111;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.1s;
+  }
+
+  .sketch-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 #111;
+  }
+
+  .sketch-btn-primary {
+    background: #111;
+    color: #fff;
+    box-shadow: 3px 3px 0 #888;
+  }
+
+  .sketch-btn-primary:active { box-shadow: 0 0 0 #888; }
+
+  .sketch-input {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    outline: none;
+    box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .sketch-input:focus { box-shadow: 2px 2px 0 #111, inset 2px 2px 0 rgba(0, 0, 0, 0.05); }
+
+  .sketch-icon {
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .note {
+    border-left: 4px solid #111;
+    background: #f6f6f6;
+  }
+</style>
+</head>
+<body class="text-lg">
+  <main class="min-h-screen flex items-center justify-center p-6">
+    <div class="sketch-box w-full max-w-xl p-8 md:p-10">
+      <div class="flex items-center gap-3 mb-6 border-b-2 border-black pb-4">
+        <span class="material-symbols-outlined sketch-icon text-3xl">lock_reset</span>
+        <h1 class="text-3xl font-black uppercase">Recover Password</h1>
+      </div>
+
+      <p class="note px-4 py-2 mb-6 text-base">Enter your email and we will send recovery instructions.</p>
+
+      <form id="recover-form" class="flex flex-col gap-4">
+        <label class="font-bold uppercase text-sm" for="email">Registered Email</label>
+        <input class="sketch-input" id="email" placeholder="email@domain.com" required type="email">
+        <button class="sketch-btn sketch-btn-primary mt-4 py-3 uppercase" type="submit">Send Link</button>
+      </form>
+
+      <div class="mt-4 text-sm font-bold uppercase hidden" id="recover-msg">IF THE EMAIL EXISTS, YOU WILL RECEIVE RESET INSTRUCTIONS.</div>
+
+      <div class="mt-6 pt-4 border-t-2 border-black text-sm font-bold uppercase">
+        <a class="hover:underline" href="LoginSketch.html">Back to login</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('recover-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('recover-msg').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
