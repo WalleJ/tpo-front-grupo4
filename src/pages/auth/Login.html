@@ -65,7 +65,7 @@
       else if(username === 'user' && password === 'user') role = 'USER';
       if(role) {
         localStorage.setItem('role', role);
-        window.location.href = role === 'ADMIN' ? '../admin/AdminDashboard.html' : '../shop/AI-O_v5.html#home';
+        window.location.href = role === 'ADMIN' ? '../admin/AdminDashboard.html' : '../shop/AI-O_HOME.html#home';
       } else {
         document.getElementById('login-error').innerText = 'Invalid credentials';
         document.getElementById('login-error').classList.remove('hidden');

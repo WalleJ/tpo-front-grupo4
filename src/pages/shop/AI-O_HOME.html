@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O HOME MARKETPLACE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary-fixed": "#e2e2e5","primary-fixed-dim": "#00dbe9","tertiary-fixed-dim": "#c6c6c9","on-tertiary-fixed": "#1a1c1e","secondary-fixed": "#e2e2e4","error": "#ba1a1a","surface-container-lowest": "#ffffff","outline-variant": "#b9cacb","on-secondary-container": "#616365","on-primary": "#ffffff","surface-bright": "#fcf8f9","inverse-surface": "#313031","tertiary-container": "#d9d9dc","on-tertiary": "#ffffff","on-background": "#1c1b1c","on-tertiary-fixed-variant": "#454749","background": "#fcf8f9","surface-container-low": "#f6f3f4","on-surface-variant": "#3b494b","surface-variant": "#e5e2e3","primary-fixed": "#7df4ff","on-tertiary-container": "#5d5f61","outline": "#6a7a7b","secondary-container": "#dfdfe1","surface-dim": "#dcd9da","secondary": "#5d5e60","surface-container-highest": "#e5e2e3","on-secondary-fixed-variant": "#454749","tertiary": "#5d5e61","inverse-on-surface": "#f3f0f1","surface-container-high": "#ebe7e8","on-primary-container": "#006970","primary": "#006970","surface": "#fcf8f9","on-secondary": "#ffffff","on-secondary-fixed": "#1a1c1d","error-container": "#ffdad6","on-primary-fixed-variant": "#004f54","surface-container": "#f0edee","secondary-fixed-dim": "#c6c6c8","on-surface": "#1c1b1c","inverse-primary": "#00dbe9","primary-container": "#00f0ff","on-error-container": "#93000a","on-primary-fixed": "#002022","surface-tint": "#006970","on-error": "#ffffff"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: { "xl": "80px", "base": "8px", "xs": "4px", "sm": "12px", "md": "24px", "margin": "32px", "lg": "48px", "gutter": "24px" },
+        fontFamily: { "headline-sm": ["Sora"], "label-caps": ["Sora"], "body-md": ["Sora"], "headline-lg": ["Sora"], "body-lg": ["Sora"], "headline-md": ["Sora"], "display": ["Sora"], "body-sm": ["Sora"] },
+        fontSize: {
+          "headline-sm": ["20px", {"lineHeight":"1.4","fontWeight":"500"}],
+          "label-caps": ["12px", {"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"700"}],
+          "body-md": ["16px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-lg": ["32px", {"lineHeight":"1.2","letterSpacing":"-0.01em","fontWeight":"600"}],
+          "body-lg": ["18px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-md": ["24px", {"lineHeight":"1.3","fontWeight":"600"}],
+          "display": ["64px", {"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "body-sm": ["14px", {"lineHeight":"1.5","fontWeight":"400"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  /* ── Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { min-height: 100dvh; font-family: 'Sora', sans-serif; background: #fcf8f9; color: #1c1b1c; }
+
+  /* ── Glass panels ── */
+  .glass-panel {
+    background: rgba(252,248,249,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(185,202,203,0.3);
+  }
+  .glass-panel-white {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(185,202,203,0.3);
+  }
+
+  /* ── Material Icons ── */
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Mesh gradient background ── */
+  .mesh-gradient {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(0,219,233,0.07) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(0,105,112,0.07) 0px, transparent 55%);
+  }
+
+  /* ── Scrollable sliders (hide scrollbar) ── */
+  .slider-container {
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .slider-container::-webkit-scrollbar { display: none; }
+
+  /* ── Cyber glow ── */
+  .cyber-glow { box-shadow: 0 0 15px rgba(0,219,233,0.25); }
+
+  /* ── Page transitions ── */
+  .page { display: none; animation: fadeIn 0.25s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Focus input glow ── */
+  .cyber-glow-focus:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,219,233,0.3);
+    border-color: #00dbe9;
+  }
+
+  /* ── Custom scrollbar for main scroll ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,105,112,0.2); border-radius: 9999px; }
+
+  /* ── Theme toggle ── */
+  html.dark body { background: #081012; color: #edf6f6; }
+  html.dark .glass-panel,
+  html.dark .glass-panel-white {
+    background: rgba(10, 17, 19, 0.88);
+    border-color: rgba(125, 160, 163, 0.16);
+  }
+  html.dark header,
+  html.dark footer,
+  html.dark nav.md\:hidden {
+    background: rgba(8, 16, 18, 0.92);
+  }
+  html.dark .mesh-gradient {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(0,219,233,0.12) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(0,105,112,0.14) 0px, transparent 55%),
+      linear-gradient(180deg, rgba(8,16,18,0.98), rgba(8,16,18,0.92));
+  }
+  html.dark .bg-surface { background-color: #081012 !important; }
+  html.dark .bg-surface-container-low,
+  html.dark .bg-surface-container-lowest,
+  html.dark .bg-surface-container,
+  html.dark .bg-surface-container-high,
+  html.dark .bg-surface-container-highest,
+  html.dark .bg-surface-variant {
+    background-color: #10191b !important;
+  }
+  html.dark .text-on-surface { color: #edf6f6 !important; }
+  html.dark .text-on-surface-variant { color: #9cb3b6 !important; }
+  html.dark .text-outline,
+  html.dark .text-outline-variant { color: #7f9496 !important; }
+</style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ══════════════════════════════════════════
+     TOP APP BAR (shared)
+══════════════════════════════════════════ -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+  <div class="flex justify-between items-center h-16 px-gutter max-w-[1280px] mx-auto">
+    <button onclick="navigate('home')" class="flex items-center gap-sm group">
+      <span class="material-symbols-outlined text-primary">blur_on</span>
+      <h1 class="font-display text-headline-md tracking-tighter text-primary">AI-O HOME</h1>
+    </button>
+    <nav class="hidden md:flex items-center gap-lg" id="desktop-nav">
+      <button onclick="navigate('home')"    data-page="home"    class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Home</button>
+      <button onclick="navigate('store')"   data-page="store"   class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Store</button>
+      <button onclick="navigate('cart')"    data-page="cart"    class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Cart</button>
+      <button onclick="navigate('profile')" data-page="profile" class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Profile</button>
+    </nav>
+    <button onclick="toggleTheme()" class="w-10 h-10 inline-flex items-center justify-center rounded-full hover:bg-primary/5 active:scale-95 transition-all" aria-label="Toggle theme">
+      <span id="theme-icon" class="material-symbols-outlined block leading-none text-on-surface-variant">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active pt-16 pb-24 md:pb-0">
+
+  <!-- Hero -->
+  <section class="relative min-h-[600px] flex items-center overflow-hidden mesh-gradient">
+    <div class="max-w-[1280px] mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-lg items-center py-xl">
+      <div class="md:col-span-6 z-10">
+        <div class="inline-flex items-center gap-xs px-sm py-1 bg-primary-container/20 border border-primary/20 rounded-full mb-md">
+          <span class="material-symbols-outlined text-[14px] text-on-primary-container">bolt</span>
+          <span class="font-label-caps text-[10px] uppercase tracking-widest text-on-primary-container">AI Voice Assistant Ready</span>
+        </div>
+        <h2 class="font-display text-on-surface leading-none text-3xl md:text-5xl mb-sm font-bold">Your home, <span class="text-primary">powered by real AI.</span></h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-md">Discover smart devices with AI voice assistants to automate your home with voice commands, routines and centralized control.</p>
+        <div class="flex flex-wrap gap-md">
+          <button onclick="navigate('store')" class="bg-primary text-on-primary px-lg py-md rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20">VIEW AI PRODUCTS</button>
+          <button onclick="navigate('product')" class="glass-panel text-on-surface border border-outline-variant/50 px-lg py-md rounded-xl font-label-caps text-label-caps active:scale-95 transition-all">VIEW FEATURED</button>
+        </div>
+      </div>
+      <div class="md:col-span-6 relative h-[400px] md:h-[550px]">
+        <div class="absolute inset-0 bg-primary/5 rounded-[48px] rotate-3 blur-3xl"></div>
+        <img alt="Smart speakers with voice assistants" class="w-full h-full object-contain relative z-10 drop-shadow-2xl"
+          src="../../../images/Smart%20speakers%20with%20voice%20assistants.jpg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="border-y border-outline-variant/20 bg-surface-container-low py-md">
+    <div class="max-w-[1280px] mx-auto px-gutter grid grid-cols-2 md:grid-cols-4 gap-md text-center">
+      <div><div class="font-display text-headline-md text-primary">3</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Top Assistants</div></div>
+      <div><div class="font-display text-headline-md text-primary">50+</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Real Products</div></div>
+      <div><div class="font-display text-headline-md text-primary">Matter</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Compatibility</div></div>
+      <div><div class="font-display text-headline-md text-primary">24/7</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Voice Control</div></div>
+    </div>
+  </section>
+
+  <!-- Featured Categories -->
+  <section class="py-xl max-w-[1280px] mx-auto px-gutter">
+    <div class="flex justify-between items-end mb-lg">
+      <div>
+        <h3 class="font-headline-lg text-headline-lg mb-xs">Featured Products</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant">Real devices with AI assistants for your home.</p>
+      </div>
+      <button onclick="navigate('store')" class="text-primary font-label-caps text-label-caps flex items-center gap-xs hover:underline">
+        EXPLORE FULL CATALOG <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </button>
+    </div>
+    <div class="flex flex-col gap-xl">
+
+      <!-- Neural Hubs Slider -->
+      <div class="relative group auto-slider" data-interval="4500">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Smart Speakers with AI Assistants</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('homepodMini')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Apple HomePod mini" class="w-full h-full object-cover" src="../../../images/Apple%20HomePod%20mini.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Apple HomePod mini</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ECOSYSTEM</p><p class="text-body-sm font-medium">Apple Home</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('echo4')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Echo (4th Gen)" class="w-full h-full object-cover" src="../../../images/Amazon%20Echo%20(4th%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Echo (4th Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">HUB</p><p class="text-body-sm font-medium">Zigbee / Matter</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('nestAudio')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Google Nest Audio" class="w-full h-full object-cover" src="../../../images/Google%20Nest%20Audio.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Google Nest Audio</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Assistant</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">FUNCTION</p><p class="text-body-sm font-medium">Voice Match</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Smart Displays Slider -->
+      <div class="relative group auto-slider" data-interval="4000">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Smart Displays</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('nestHub2')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Google Nest Hub (2nd Gen)" class="w-full h-full object-cover" src="../../../images/Google%20Nest%20Hub%20(2nd%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Google Nest Hub (2nd Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Assistant</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">DISPLAY</p><p class="text-body-sm font-medium">7in Touch</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('echoShow8')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Echo Show 8 (3rd Gen)" class="w-full h-full object-cover" src="../../../images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Echo Show 8 (3rd Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">DISPLAY</p><p class="text-body-sm font-medium">8in HD</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Streaming & Voice Control Slider -->
+      <div class="relative group auto-slider" data-interval="5000">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Streaming & Voice Control</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('appleTv4k')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Apple TV 4K" class="w-full h-full object-cover" src="../../../images/Apple%20TV%204K.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Apple TV 4K</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">VIDEO</p><p class="text-body-sm font-medium">4K HDR</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('fireTvCube')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Fire TV Cube" class="w-full h-full object-cover" src="../../../images/Amazon%20Fire%20TV%20Cube.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Fire TV Cube</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">VIDEO</p><p class="text-body-sm font-medium">4K Ultra HD</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Promo card -->
+      <div class="glass-panel-white border border-outline-variant/30 rounded-2xl p-lg flex items-center gap-lg shadow-sm">
+        <div class="flex-1">
+          <div class="flex items-center gap-xs mb-sm">
+            <span class="material-symbols-outlined text-primary">new_releases</span>
+            <span class="font-label-caps text-label-caps text-primary">JUST ANNOUNCED</span>
+          </div>
+          <h4 class="font-headline-md mb-xs">New: Apple HomePod mini</h4>
+          <p class="font-body-sm text-on-surface-variant">360 Audio, AI voice assistant and smart home automation in a compact form factor.</p>
+        </div>
+        <button onclick="showProductDetail('homepodMini')" class="bg-primary-container text-on-primary-container px-md py-sm rounded-lg font-label-caps text-[10px] hover:shadow-md transition-shadow whitespace-nowrap">VIEW OFFER</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="max-w-[1280px] mx-auto px-gutter pb-xl">
+    <div class="bg-surface-container-highest rounded-[32px] p-lg md:p-xl flex flex-col md:flex-row items-center gap-lg text-center md:text-left relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      <div class="flex-1 z-10">
+        <h3 class="font-headline-lg text-headline-lg mb-sm">Get updates on the latest AI-powered smart home devices</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant">Subscribe to get notified of new launches, discounts and AI assistant comparisons.</p>
+      </div>
+      <div class="w-full md:w-auto z-10">
+        <div class="flex flex-col sm:flex-row gap-sm w-full">
+          <input class="bg-surface-container-lowest border border-outline-variant/50 px-md py-sm rounded-xl font-label-caps text-label-caps w-full md:w-80 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="email@domain.com" type="email">
+          <button class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-all">SUBSCRIBE</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px] uppercase tracking-widest">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: ADMIN
+══════════════════════════════════════════ -->
+<div id="page-admin" class="page pt-16 pb-24 md:pb-0">
+  <main class="max-w-7xl mx-auto px-gutter py-lg">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-xl">
+      <div>
+        <h1 class="text-headline-lg font-headline-lg text-on-surface mb-xs">Device Administration</h1>
+        <p class="text-body-md text-on-surface-variant">Manage your store's product catalog and inventory.</p>
+      </div>
+      <div class="flex gap-sm w-full md:w-auto">
+        <button onclick="navigate('profile')" class="bg-primary hover:bg-on-primary-container text-white px-md py-sm rounded-lg flex items-center gap-xs transition-all active:scale-95 shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+          <span class="text-label-caps">ADD NEW PRODUCT</span>
+        </button>
+        <button onclick="handleLogout(event)" class="flex-1 md:flex-none px-md py-sm bg-error text-on-error font-label-caps text-label-caps rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs">
+          <span class="material-symbols-outlined text-[18px]">logout</span>LOGOUT
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex items-center gap-sm mb-lg overflow-x-auto pb-xs">
+      <button class="px-md py-base rounded-full bg-primary text-white text-label-caps whitespace-nowrap">ALL PRODUCTS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">TVS & DISPLAYS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">AUDIO SYSTEMS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">CLIMATE CONTROL</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <!-- Device List Container -->
+      <div class="lg:col-span-8 space-y-md">
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Samsung 8K QLED TV" class="w-full h-full object-cover" src="../../../images/Samsung%208K%20QLED%20TV.jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-primary px-xs bg-primary/10 rounded">TV-001</span>
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-label-caps text-on-surface-variant">ACTIVE</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Samsung 8K QLED TV</h3>
+            <p class="text-body-sm text-on-surface-variant">Smart TV • Living Room Display</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Amazon Echo (4th Gen)" class="w-full h-full object-cover" src="../../../images/Amazon%20Echo%20(4th%20Gen).jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-on-secondary-fixed-variant px-xs bg-secondary-container rounded">AUD-042</span>
+              <span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+              <span class="text-label-caps text-on-surface-variant">STANDBY</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Amazon Echo (4th Gen)</h3>
+            <p class="text-body-sm text-on-surface-variant">Smart Speaker • Living Room</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Nest Learning Thermostat" class="w-full h-full object-cover" src="../../../images/Nest%20Learning%20Thermostat.jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-primary px-xs bg-primary/10 rounded">VAC-08</span>
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-label-caps text-on-surface-variant">OPTIMIZED</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Nest Learning Thermostat</h3>
+            <p class="text-body-sm text-on-surface-variant">Climate Control • Hallway</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Panel: Technical Specs -->
+      <aside class="lg:col-span-4">
+        <div class="glass-panel rounded-xl overflow-hidden border border-primary/20 shadow-xl shadow-primary/5 sticky top-[100px]">
+          <div class="p-md bg-primary/5 border-b border-outline-variant/30">
+            <div class="flex justify-between items-center mb-xs">
+              <h2 class="text-label-caps text-primary">PRODUCT ANALYTICS</h2>
+              <span class="material-symbols-outlined text-primary" data-icon="monitoring">monitoring</span>
+            </div>
+            <p class="text-headline-sm font-bold text-on-surface">Samsung 8K QLED</p>
+          </div>
+          <div class="p-md space-y-md">
+            <div class="space-y-sm">
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">BRAND</span>
+                <span class="text-body-sm font-bold text-on-surface">Samsung</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">MODEL</span>
+                <span class="text-body-sm font-bold text-on-surface">QN900C Series</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">RESOLUTION</span>
+                <span class="text-body-sm font-bold text-on-surface">8K (7680×4320)</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">IN STOCK</span>
+                <span class="text-body-sm font-bold text-on-surface">24 units</span>
+              </div>
+            </div>
+            <div class="h-32 w-full bg-surface-container-low rounded-lg relative overflow-hidden group">
+              <div class="absolute inset-0 flex items-end gap-1 px-base py-base">
+                <div class="w-full bg-primary/20 h-[40%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/30 h-[65%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/40 h-[85%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/60 h-[45%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/20 h-[30%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/70 h-[95%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/40 h-[60%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/20 h-[50%] rounded-t-xs"></div>
+              </div>
+              <div class="absolute top-2 left-2 text-[10px] font-bold text-primary opacity-50">MONTHLY SALES</div>
+            </div>
+            <button class="w-full py-base border border-outline-variant hover:border-primary text-label-caps text-on-surface-variant hover:text-primary transition-all rounded-lg flex justify-center items-center gap-xs">
+              <span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+              PRODUCT DETAILS
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="bg-surface-container border-t border-outline-variant/50 mt-xl">
+      <div class="w-full max-w-7xl mx-auto px-md py-lg flex flex-col md:flex-row justify-between items-center gap-sm">
+        <span class="text-label-caps text-on-surface-variant">© 2024 AI-O HOME MARKETPLACE</span>
+        <div class="flex gap-md">
+          <a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Security Protocols</a>
+          <span class="text-body-sm text-on-surface-variant opacity-50">|</span>
+          <span class="text-body-sm text-on-surface-variant">Installer ID: 882-99</span>
+          <span class="text-body-sm text-on-surface-variant opacity-50">|</span>
+          <a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">System Status</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: STORE
+══════════════════════════════════════════ -->
+<div id="page-store" class="page pt-16 pb-24 md:pb-0">
+  <main class="max-w-[1280px] mx-auto px-margin pt-12">
+
+    <!-- Hero Search -->
+    <section class="mb-lg">
+      <div class="flex flex-col gap-md">
+        <div class="w-full max-w-2xl mx-auto">
+          <h2 class="font-headline-lg text-headline-lg mb-sm">Hardware Catalog</h2>
+          <p class="text-on-surface-variant font-body-md mb-md">Find the perfect smart home device for your needs.</p>
+          <div class="relative group cyber-glow-focus rounded-xl bg-surface-container-low border border-outline-variant/50 transition-all">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input class="w-full bg-transparent border-none pl-12 pr-4 py-4 focus:ring-0 font-body-md" placeholder="Search products, brands, or categories..." type="text">
+          </div>
+        </div>
+        <div class="flex gap-sm justify-center mt-2">
+          <button class="flex items-center gap-xs px-md py-3 rounded-xl border border-outline-variant hover:bg-surface-container transition-colors font-label-caps text-on-surface-variant">
+            <span class="material-symbols-outlined text-[18px]">tune</span>Filters
+          </button>
+          <button class="flex items-center gap-xs px-md py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-colors font-label-caps shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined text-[18px]">grid_view</span>Layout
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-md mt-md p-md glass-panel rounded-2xl">
+          <div class="flex flex-col gap-xs">
+            <label class="font-label-caps text-outline text-[10px] uppercase">Category</label>
+            <div class="flex gap-xs flex-wrap">
+              <span class="px-sm py-1.5 rounded-full bg-primary-container/30 text-on-primary-container font-label-caps text-[11px] border border-primary/20 cursor-pointer">Smart Speakers</span>
+              <span class="px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 cursor-pointer transition-colors">Displays</span>
+              <span class="px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 cursor-pointer transition-colors">Streaming</span>
+            </div>
+          </div>
+          <div class="w-px h-10 bg-outline-variant/30 mx-2 hidden md:block"></div>
+          <div class="flex flex-col gap-xs">
+            <label class="font-label-caps text-outline text-[10px] uppercase">Connectivity</label>
+            <div class="flex gap-xs flex-wrap">
+              <span class="px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 cursor-pointer transition-colors">Matter</span>
+              <span class="px-sm py-1.5 rounded-full bg-primary-container/30 text-on-primary-container font-label-caps text-[11px] border border-primary/20 cursor-pointer">Wi-Fi</span>
+              <span class="px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 cursor-pointer transition-colors">Zigbee</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md mb-xl">
+
+      <!-- Card 1 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Apple%20HomePod%20mini.jpg" alt="Apple HomePod mini">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">AI VOICE</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Apple HomePod mini</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$99.00</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">Compact smart speaker with AI voice assistant, home automation and Intercom.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">memory</span><span class="font-label-caps text-[11px] text-on-surface-variant">Apple S5 Chip</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_voice</span><span class="font-label-caps text-[11px] text-on-surface-variant">AI Voice + Home</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_input_antenna</span><span class="font-label-caps text-[11px] text-on-surface-variant">Thread / Matter</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">thermostat</span><span class="font-label-caps text-[11px] text-on-surface-variant">Temp Sensor</span></div>
+          </div>
+          <div class="mt-auto flex flex-col gap-sm">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Smart Home">home</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Cloud Sync">cloud</span>
+            </div>
+            <div class="flex items-center justify-between gap-sm">
+              <button onclick="showProductDetail('homepodMini')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+              <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amazon Echo Card -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Amazon%20Echo%20(4th%20Gen).jpg" alt="Amazon Echo (4th Gen)">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">AI HUB</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Amazon Echo (4th Gen)</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$99.99</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">memory</span><span class="font-label-caps text-[11px] text-on-surface-variant">AZ1 Neural Edge</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">hub</span><span class="font-label-caps text-[11px] text-on-surface-variant">Zigbee Hub</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_voice</span><span class="font-label-caps text-[11px] text-on-surface-variant">AI Voice</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">wifi</span><span class="font-label-caps text-[11px] text-on-surface-variant">Wi-Fi + BT</span></div>
+          </div>
+          <div class="mt-auto flex flex-col gap-sm">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Latency">speed</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Security">shield</span>
+            </div>
+            <div class="flex items-center justify-between gap-sm">
+              <button onclick="showProductDetail('echo4')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+              <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Google%20Nest%20Audio.jpg" alt="Google Nest Audio">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">AI VOICE</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Google Nest Audio</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$99.99</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">AI-powered smart speaker with stereo pairing and Voice Match.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_voice</span><span class="font-label-caps text-[11px] text-on-surface-variant">AI Assistant</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">surround_sound</span><span class="font-label-caps text-[11px] text-on-surface-variant">Stereo Pair</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">record_voice_over</span><span class="font-label-caps text-[11px] text-on-surface-variant">Voice Match</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">wifi</span><span class="font-label-caps text-[11px] text-on-surface-variant">Wi-Fi + BT</span></div>
+          </div>
+          <div class="mt-auto flex flex-col gap-sm">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Remote">settings_remote</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Multi-room">speaker_group</span>
+            </div>
+            <div class="flex items-center justify-between gap-sm">
+              <button onclick="showProductDetail('nestAudio')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+              <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Google%20Nest%20Hub%20(2nd%20Gen).jpg" alt="Google Nest Hub (2nd Gen)">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">SMART DISPLAY</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Google Nest Hub (2nd Gen)</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$99.99</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">AI-powered smart display with media controls and sleep sensing.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">display_settings</span><span class="font-label-caps text-[11px] text-on-surface-variant">7in Display</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_voice</span><span class="font-label-caps text-[11px] text-on-surface-variant">AI Assistant</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">hotel_class</span><span class="font-label-caps text-[11px] text-on-surface-variant">Sleep Sensing</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">cast</span><span class="font-label-caps text-[11px] text-on-surface-variant">Cast Ready</span></div>
+          </div>
+          <div class="mt-auto flex flex-col gap-sm">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Secured">security</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Alert">notifications_active</span>
+            </div>
+            <div class="flex items-center justify-between gap-sm">
+              <button onclick="showProductDetail('nestHub2')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+              <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/ecobee%20SmartThermostat.jpg" alt="ecobee SmartThermostat">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">CLIMATE</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">ecobee SmartThermostat</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$249.99</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">Smart thermostat with voice control and AI assistant compatibility.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">air</span><span class="font-label-caps text-[11px] text-on-surface-variant">Auto Schedule</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">sensors</span><span class="font-label-caps text-[11px] text-on-surface-variant">Room Sensor</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">eco</span><span class="font-label-caps text-[11px] text-on-surface-variant">Energy Star</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">cloud_done</span><span class="font-label-caps text-[11px] text-on-surface-variant">Matter Ready</span></div>
+          </div>
+          <div class="mt-auto flex items-center justify-between">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Health">ecg_heart</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Sun Sync">wb_sunny</span>
+            </div>
+            <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg" alt="Amazon Echo Show 8 (3rd Gen)">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">AI DISPLAY</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Amazon Echo Show 8 (3rd Gen)</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$149.99</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">AI-powered smart display with 8in screen, calls, routines and home control.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">display_settings</span><span class="font-label-caps text-[11px] text-on-surface-variant">8in HD Screen</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">videocam</span><span class="font-label-caps text-[11px] text-on-surface-variant">13MP Camera</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">settings_voice</span><span class="font-label-caps text-[11px] text-on-surface-variant">AI Ready</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">hub</span><span class="font-label-caps text-[11px] text-on-surface-variant">Matter Hub</span></div>
+          </div>
+          <div class="mt-auto flex items-center justify-between">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Expansion">settings_input_composite</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Local First">cloud_off</span>
+            </div>
+            <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="../../../images/Apple%20TV%204K.jpg" alt="Apple TV 4K">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">AI TV</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">Apple TV 4K</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">$129.00</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">Streaming box with tvOS, Apple ecosystem integration and AI voice control.</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">4k</span><span class="font-label-caps text-[11px] text-on-surface-variant">4K HDR</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">stadia_controller</span><span class="font-label-caps text-[11px] text-on-surface-variant">Voice Remote</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">apps</span><span class="font-label-caps text-[11px] text-on-surface-variant">tvOS Apps</span></div>
+            <div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">wifi</span><span class="font-label-caps text-[11px] text-on-surface-variant">Wi-Fi + ETH</span></div>
+          </div>
+          <div class="mt-auto flex items-center justify-between">
+            <div class="flex gap-sm">
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="UI Sync">view_quilt</span>
+              <span class="material-symbols-outlined text-outline text-[20px] opacity-60 hover:opacity-100 transition-opacity" title="Pair">link</span>
+            </div>
+            <button onclick="navigate('cart')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin mt-lg">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PRODUCT DETAIL
+══════════════════════════════════════════ -->
+<div id="page-product" class="page pt-16 pb-24 md:pb-0">
+  <main class="pt-10 pb-32 max-w-[1280px] mx-auto px-gutter">
+    <nav class="mb-md flex items-center gap-xs">
+      <button onclick="navigate('store')" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors group">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        <span class="font-label-caps text-label-caps">BACK TO MARKETPLACE</span>
+      </button>
+    </nav>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+
+      <!-- Left: Product Visual -->
+      <div class="lg:col-span-7 space-y-md">
+        <div class="glass-panel rounded-xl overflow-hidden relative aspect-square md:aspect-[4/3] flex items-center justify-center p-lg">
+          <img id="product-image" alt="Apple HomePod mini" class="w-full h-full object-contain mix-blend-multiply"
+            src="../../../images/Apple%20HomePod%20mini.jpg">
+          <div class="absolute top-md right-md flex flex-col gap-sm">
+            <div class="glass-panel px-sm py-xs rounded-full flex items-center gap-xs">
+              <span class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse"></span>
+              <span class="font-label-caps text-label-caps text-primary">IN STOCK</span>
+            </div>
+          </div>
+        </div>
+        <!-- Thumbnails -->
+        <div class="grid grid-cols-4 gap-md">
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-primary cursor-pointer">
+            <img class="w-full h-full object-cover rounded" src="../../../images/Apple%20HomePod%20mini.jpg" alt="Apple HomePod mini">
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">photo</span>
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">photo</span>
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">videocam</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Config -->
+      <div class="lg:col-span-5 space-y-lg">
+        <section>
+          <span id="product-category" class="font-label-caps text-label-caps text-primary tracking-widest mb-xs block">AI SMART SPEAKER</span>
+          <h1 id="product-title" class="font-headline-lg text-headline-lg text-on-surface mb-sm">Apple HomePod mini</h1>
+          <p id="product-description" class="font-body-lg text-on-surface-variant">Compact smart speaker with AI voice assistant, home automation and multi-room audio.</p>
+        </section>
+        <div class="flex items-baseline gap-sm">
+          <span id="product-price" class="font-display text-headline-lg font-bold" style="color:#00f0ff">$99.00</span>
+          <span id="product-old-price" class="font-label-caps text-label-caps text-outline line-through">$129.00</span>
+        </div>
+        <!-- Specs Bento -->
+        <div class="grid grid-cols-2 gap-md">
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">memory</span><div class="font-label-caps text-label-caps text-outline">PROCESSING</div><div class="font-headline-sm text-headline-sm">Apple S5</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">hub</span><div class="font-label-caps text-label-caps text-outline">CONNECTIVITY</div><div class="font-headline-sm text-headline-sm">Wi-Fi + Thread</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">settings_voice</span><div class="font-label-caps text-label-caps text-outline">ASSISTANT</div><div class="font-headline-sm text-headline-sm">AI Voice</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">home</span><div class="font-label-caps text-label-caps text-outline">ECOSYSTEM</div><div class="font-headline-sm text-headline-sm">Apple Home</div></div>
+        </div>
+        <!-- Compatibility -->
+        <section class="space-y-md">
+          <div class="font-label-caps text-label-caps text-outline-variant">SYSTEM COMPATIBILITY</div>
+          <div class="flex flex-wrap gap-md items-center opacity-60">
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">settings_voice</span><span class="font-label-caps text-[10px]">VOICE AI</span></div>
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">record_voice_over</span><span class="font-label-caps text-[10px]">MULTI-ASSISTANT</span></div>
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">smart_toy</span><span class="font-label-caps text-[10px]">VOICE CONTROL</span></div>
+          </div>
+        </section>
+        <!-- Actions -->
+        <div class="space-y-md pt-md">
+          <button onclick="navigate('cart')" class="w-full bg-primary text-on-primary py-md px-lg rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-md hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">
+            <span>Add to Cart</span>
+            <span class="material-symbols-outlined">shopping_cart</span>
+          </button>
+          <button class="w-full glass-panel py-md px-lg rounded-xl font-label-caps text-label-caps text-primary border-primary/20 hover:bg-primary/5 transition-colors flex items-center justify-center gap-sm">
+            <span class="material-symbols-outlined">favorite</span>SAVE TO WISHLIST
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Spec Table -->
+    <div class="mt-xl glass-panel rounded-xl overflow-hidden">
+      <div class="border-b border-outline-variant/20 p-md flex items-center justify-between">
+        <h3 class="font-headline-sm text-headline-sm">Detailed Technical Specification</h3>
+        <button type="button" onclick="toggleTechSpecs()" class="p-1 rounded-md hover:bg-primary/5 transition-colors" aria-label="Toggle technical specification">
+          <span id="tech-spec-toggle-icon" class="material-symbols-outlined">expand_less</span>
+        </button>
+      </div>
+      <div id="tech-spec-content" class="p-lg grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">TECHNICAL SPECS</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Chip</span><span>Apple S5</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>AI Engine</span><span>Machine Learning</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Memory</span><span>256MB RAM</span></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">CONNECTIVITY</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Wi-Fi</span><span>Wi-Fi 5 (802.11ac)</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Bluetooth</span><span>Bluetooth 5.0</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Thread</span><span>Thread 1.0</span></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">POWER</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Power Input</span><span>20W (included adapter)</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Standby Power</span><span>1.8W</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Connector</span><span>Proprietary (Apple)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CART
+══════════════════════════════════════════ -->
+<div id="page-cart" class="page pt-16 pb-24 md:pb-0">
+  <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
+    <div class="mb-lg flex flex-col gap-xs">
+      <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">CHECKOUT SUMMARY</span>
+      <h2 class="font-headline-lg text-headline-lg text-on-surface">Shopping Cart</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+      <!-- Cart Items -->
+      <div class="lg:col-span-8 flex flex-col gap-md">
+        <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
+          <div class="flex flex-col">
+            <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
+            <span class="font-label-caps text-label-caps">Your payment data is protected</span>
+          </div>
+        </div>
+
+        <!-- Item 1 -->
+        <div class="glass-panel rounded-xl p-md flex flex-col md:flex-row gap-md items-center group hover:border-primary/40 transition-colors">
+          <div class="w-full md:w-32 h-32 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+            <img alt="Smart Hub" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+              src="../../../images/Amazon%20Echo%20(4th%20Gen).jpg">
+          </div>
+          <div class="flex-grow">
+            <div class="flex justify-between items-start mb-xs">
+              <div>
+                <h3 class="font-headline-sm text-headline-sm">Amazon Echo (4th Gen)</h3>
+              </div>
+              <span class="font-headline-sm text-headline-sm" style="color:#00f0ff">$99.99</span>
+            </div>
+            <p class="text-on-surface-variant font-body-sm text-body-sm mb-md">Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.</p>
+            <div class="flex items-center gap-md">
+              <div class="flex items-center gap-sm bg-surface-container-low border border-outline-variant/30 px-sm py-xs rounded-lg">
+                <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">remove</span>
+                <span class="font-label-caps text-label-caps w-4 text-center">01</span>
+                <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">add</span>
+              </div>
+              <button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors font-label-caps text-label-caps">
+                <span class="material-symbols-outlined text-[18px]">delete</span>REMOVE
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="glass-panel rounded-xl p-md flex flex-col md:flex-row gap-md items-center group hover:border-primary/40 transition-colors">
+          <div class="w-full md:w-32 h-32 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+            <img alt="Surveillance Unit" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+              src="../../../images/Google%20Nest%20Hub%20(2nd%20Gen).jpg">
+          </div>
+          <div class="flex-grow">
+            <div class="flex justify-between items-start mb-xs">
+              <div>
+                <h3 class="font-headline-sm text-headline-sm">Google Nest Hub (2nd Gen)</h3>
+              </div>
+              <span class="font-headline-sm text-headline-sm" style="color:#00f0ff">$99.99</span>
+            </div>
+            <p class="text-on-surface-variant font-body-sm text-body-sm mb-md">Smart display with AI assistant, media controls and sleep sensing.</p>
+            <div class="flex items-center gap-md">
+              <div class="flex items-center gap-sm bg-surface-container-low border border-outline-variant/30 px-sm py-xs rounded-lg">
+                <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">remove</span>
+                <span class="font-label-caps text-label-caps w-4 text-center">02</span>
+                <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">add</span>
+              </div>
+              <button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors font-label-caps text-label-caps">
+                <span class="material-symbols-outlined text-[18px]">delete</span>REMOVE
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="lg:col-span-4 sticky top-24">
+        <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+          <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+            <span class="material-symbols-outlined text-primary">receipt_long</span>
+            <h4 class="font-headline-sm text-headline-sm">ORDER SUMMARY</h4>
+          </div>
+          <div class="flex flex-col gap-sm">
+            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">AMAZON ECHO (4TH GEN)</span><span class="text-body-sm font-medium">$99.99</span></div>
+            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">GOOGLE NEST HUB (2ND GEN)</span><span class="text-body-sm font-medium">$99.99</span></div>
+            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">SHIPPING</span><span class="text-body-sm font-medium">$9.99</span></div>
+            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Taxes</span><span class="text-body-sm font-medium">$21.00</span></div>
+            <div class="flex justify-between items-center gap-2 text-primary"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Discount</span><span class="text-body-sm font-medium">−$10.00</span></div>
+          </div>
+          <div class="mt-md pt-md border-t border-primary/20 flex justify-between items-baseline">
+            <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
+            <div class="font-bold text-3xl tracking-tighter text-primary">$220.97</div>
+          </div>
+          <div class="flex flex-col gap-base mt-md">
+            <button class="w-full font-label-caps text-label-caps py-md rounded-xl shadow-lg bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
+              Checkout <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <button class="w-full border border-outline-variant/50 text-on-surface-variant font-label-caps text-label-caps py-md rounded-xl hover:bg-surface-variant transition-colors flex items-center justify-center gap-sm">
+              <span class="material-symbols-outlined">save</span>Save for Later
+            </button>
+          </div>
+          <div class="mt-md bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
+            <div class="flex items-start gap-sm">
+              <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
+              <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PROFILE / DASHBOARD
+══════════════════════════════════════════ -->
+<div id="page-profile" class="page pt-16 pb-24 md:pb-0">
+  <main class="pt-10 pb-32 px-gutter max-w-[1280px] mx-auto">
+
+    <!-- Profile Header -->
+    <section class="mb-lg">
+      <div class="flex flex-col md:flex-row items-center md:items-end gap-md">
+        <div class="relative group">
+          <div class="w-32 h-32 rounded-xl overflow-hidden border-2 border-primary/20 p-1 bg-surface">
+            <img id="profile-avatar" alt="Profile picture" class="w-full h-full object-cover rounded-lg"
+              src="">
+          </div>
+          <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary-fixed-dim text-on-primary-fixed rounded-lg cyber-glow flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">verified_user</span>
+          </div>
+        </div>
+        <div class="text-center md:text-left flex-1">
+          <span id="profile-role" class="font-label-caps text-label-caps text-primary-fixed-dim bg-on-primary-fixed-variant px-3 py-1 rounded-full mb-base inline-block">SYSTEM ADMINISTRATOR</span>
+          <h1 id="profile-name" class="font-headline-lg text-headline-lg text-on-surface">Admin</h1>
+          <p id="profile-location" class="font-body-md text-on-surface-variant flex items-center justify-center md:justify-start gap-xs">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>Buenos Aires, Argentina
+          </p>
+        </div>
+        <div class="flex gap-sm w-full md:w-auto">
+          <button class="flex-1 md:flex-none px-md py-sm bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded-xl border border-outline-variant/30 hover:bg-surface-variant transition-all active:scale-95">EDIT PROFILE</button>
+          <button class="flex-1 md:flex-none px-md py-sm bg-error text-on-error font-label-caps text-label-caps rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs" onclick="handleLogout(event)">
+            <span class="material-symbols-outlined text-[18px]">logout</span>LOGOUT
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Bento -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+
+      <!-- Profile Overview -->
+      <div class="md:col-span-8 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary">insights</span>
+            <h2 id="profile-overview-title" class="font-headline-sm text-headline-sm leading-none">Automation Highlights</h2>
+          </div>
+          <span id="profile-overview-subtitle" class="font-label-caps text-label-caps text-primary-fixed-dim">4 ACTIVE RULES</span>
+        </div>
+        <div id="profile-overview-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-base"></div>
+      </div>
+
+      <!-- Security Logs -->
+      <div class="md:col-span-4 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-error">security</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Security Logs</h2>
+        </div>
+        <div id="security-logs-list" class="space-y-sm overflow-y-auto max-h-[300px] pr-2"></div>
+        <button class="w-full py-2 bg-surface-container-highest text-on-surface-variant font-label-caps text-[11px] rounded-lg hover:text-primary transition-colors">VIEW FULL ARCHIVE</button>
+      </div>
+
+      <!-- Deployment History -->
+      <div class="md:col-span-12 glass-panel rounded-xl p-md overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-md">
+          <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary">rocket_launch</span>
+            <h2 class="font-headline-sm text-headline-sm leading-none">Purchase History</h2>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant">
+                <th class="pb-base px-sm">ORDER ID</th>
+                <th class="pb-base px-sm">PRODUCT NAME</th>
+                <th class="pb-base px-sm">CATEGORY</th>
+                <th class="pb-base px-sm">DATE</th>
+                <th class="pb-base px-sm">STATUS</th>
+                <th class="pb-base px-sm text-right">ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="purchase-history-body" class="text-body-sm font-body-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BOTTOM NAV (Mobile)
+══════════════════════════════════════════ -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-20 bg-surface/90 backdrop-blur-lg flex justify-around items-center px-4 pb-2 border-t border-outline-variant/50 shadow-[0_-4px_20px_rgba(0,105,112,0.05)] z-50">
+  <button onclick="navigate('home')"    data-page="home"    class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-label-caps text-[10px]">Home</span>
+  </button>
+  <button onclick="navigate('store')"   data-page="store"   class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">shopping_bag</span>
+    <span class="font-label-caps text-[10px]">Store</span>
+  </button>
+  <button onclick="navigate('cart')"    data-page="cart"    class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">shopping_cart</span>
+    <span class="font-label-caps text-[10px]">Cart</span>
+  </button>
+  <button onclick="navigate('profile')" data-page="profile" class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">person</span>
+    <span class="font-label-caps text-[10px]">Profile</span>
+  </button>
+</nav>
+
+<script>
+const USER_PROFILES = {
+  admin: {
+    key: 'admin',
+    displayName: 'Admin',
+    role: 'SYSTEM ADMINISTRATOR',
+    location: 'Buenos Aires, Argentina',
+    avatar: { initials: 'AD', colors: ['#006970', '#00f0ff'] },
+    overviewTitle: 'Automation Highlights',
+    overviewSubtitle: '4 ACTIVE RULES',
+    overviewItems: [
+      { icon: 'routine', title: 'Night Mode', text: 'Lights, climate and audio sync' },
+      { icon: 'security', title: 'Security', text: 'Door and motion alerts enabled' },
+      { icon: 'bolt', title: 'Energy', text: 'Smart plugs saving 18% this month' },
+      { icon: 'hub', title: 'Scenes', text: 'Away, Work and Relax presets' },
+      { icon: 'speaker', title: 'Voice', text: '3 assistants paired across rooms' },
+      { icon: 'devices', title: 'Inventory', text: '24 active devices monitored' }
+    ],
+    logs: [
+      { time: '14:02', title: 'LOGIN OK' },
+      { time: '13:46', title: 'SCAN OK' },
+      { time: '12:20', title: 'DEVICE LINKED' },
+      { time: '10:15', title: 'ACCESS BLOCKED' }
+    ],
+    history: [
+      { id: 'ORD-2024-001', product: 'Apple HomePod mini', category: 'SPEAKER', date: '2024-11-20 09:12', status: 'DELIVERED' },
+      { id: 'ORD-2024-002', product: 'Amazon Echo (4th Gen)', category: 'SPEAKER', date: '2024-11-15 14:45', status: 'SHIPPED' },
+      { id: 'ORD-2024-003', product: 'Google Nest Hub (2nd Gen)', category: 'DISPLAY', date: '2024-10-30 11:20', status: 'DELIVERED' }
+    ]
+  },
+  user: {
+    key: 'user',
+    displayName: 'User',
+    role: 'HOME USER',
+    location: 'Córdoba, Argentina',
+    avatar: { initials: 'US', colors: ['#5d5e61', '#00dbe9'] },
+    overviewTitle: 'Home Snapshot',
+    overviewSubtitle: '3 ACTIVE ROOMS',
+    overviewItems: [
+      { icon: 'home', title: 'Living room', text: 'Speaker + display routines' },
+      { icon: 'thermostat', title: 'Climate', text: '21.4°C target with auto schedule' },
+      { icon: 'camera_indoor', title: 'Security', text: 'Camera armed while away' },
+      { icon: 'music_note', title: 'Media', text: 'Streaming shortcuts ready' },
+      { icon: 'lightbulb', title: 'Lighting', text: 'Sunset scene on tap' },
+      { icon: 'favorite', title: 'Favorites', text: 'HomePod mini and Nest Hub' }
+    ],
+    logs: [
+      { time: '18:10', title: 'SCENE ON' },
+      { time: '15:22', title: 'TEMP ADJUSTED' },
+      { time: '13:40', title: 'VOICE MATCH' },
+      { time: '08:05', title: 'DEVICE ONLINE' }
+    ],
+    history: [
+      { id: 'ORD-2024-101', product: 'Amazon Echo Show 8', category: 'DISPLAY', date: '2024-11-21 19:02', status: 'DELIVERED' },
+      { id: 'ORD-2024-102', product: 'Google Nest Audio', category: 'AUDIO', date: '2024-11-03 12:34', status: 'PROCESSING' },
+      { id: 'ORD-2024-103', product: 'Apple TV 4K', category: 'STREAMING', date: '2024-10-18 17:10', status: 'DELIVERED' }
+    ]
+  }
+};
+
+let currentUserKey = localStorage.getItem('aio-current-user') || 'user';
+let currentTheme = localStorage.getItem('aio-theme') || 'light';
+
+function buildAvatarDataUri(profile) {
+  const [startColor, endColor] = profile.avatar.colors;
+  const initials = profile.avatar.initials;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${startColor}"/><stop offset="100%" stop-color="${endColor}"/></linearGradient></defs><rect width="256" height="256" rx="40" fill="url(#g)"/><circle cx="196" cy="56" r="44" fill="#ffffff" fill-opacity="0.12"/><circle cx="52" cy="216" r="70" fill="#ffffff" fill-opacity="0.08"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="Sora,Arial,sans-serif" font-size="92" font-weight="700" fill="#ffffff">${initials}</text></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.classList.toggle('light', !isDark);
+
+  const themeIcon = document.getElementById('theme-icon');
+  if (themeIcon) {
+    themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+  }
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('aio-theme', currentTheme);
+  applyTheme(currentTheme);
+}
+
+function toggleTechSpecs() {
+  const content = document.getElementById('tech-spec-content');
+  const icon = document.getElementById('tech-spec-toggle-icon');
+  if (!content || !icon) return;
+
+  const isHidden = content.classList.toggle('hidden');
+  icon.textContent = isHidden ? 'expand_more' : 'expand_less';
+}
+
+function renderProfile(userKey = currentUserKey) {
+  const profile = USER_PROFILES[userKey] || USER_PROFILES.user;
+  currentUserKey = profile.key;
+  localStorage.setItem('aio-current-user', currentUserKey);
+
+  const formatOrderDate = (value) => {
+    const [datePart] = String(value).split(' ');
+    const [year, month, day] = datePart.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  const avatar = document.getElementById('profile-avatar');
+  if (avatar) {
+    avatar.src = buildAvatarDataUri(profile);
+    avatar.alt = `${profile.displayName} profile picture`;
+  }
+
+  const role = document.getElementById('profile-role');
+  const name = document.getElementById('profile-name');
+  const location = document.getElementById('profile-location');
+  const overviewTitle = document.getElementById('profile-overview-title');
+  const overviewSubtitle = document.getElementById('profile-overview-subtitle');
+  const overviewItems = document.getElementById('profile-overview-items');
+  const logsList = document.getElementById('security-logs-list');
+  const historyBody = document.getElementById('purchase-history-body');
+
+  if (role) role.textContent = profile.role;
+  if (name) name.textContent = profile.displayName;
+  if (location) location.innerHTML = `<span class="material-symbols-outlined text-[16px]">location_on</span>${profile.location}`;
+  if (overviewTitle) overviewTitle.textContent = profile.overviewTitle;
+  if (overviewSubtitle) overviewSubtitle.textContent = profile.overviewSubtitle;
+
+  if (overviewItems) {
+    overviewItems.innerHTML = profile.overviewItems.map((item) => `
+      <div class="p-sm bg-surface-container-low border border-outline-variant/20 rounded-xl hover:border-primary-fixed-dim/50 transition-all group">
+        <div class="flex justify-between items-start mb-sm">
+          <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">${item.icon}</span>
+          <div class="w-2 h-2 rounded-full bg-primary-fixed-dim cyber-glow"></div>
+        </div>
+        <h3 class="font-label-caps text-label-caps mb-xs">${item.title}</h3>
+        <p class="text-[10px] text-on-surface-variant">${item.text}</p>
+      </div>
+    `).join('');
+  }
+
+  if (logsList) {
+    logsList.innerHTML = profile.logs.map((entry) => `
+      <div class="flex items-center gap-sm pb-sm border-b border-outline-variant/20 last:border-b-0">
+        <div class="text-[10px] font-mono text-on-surface-variant whitespace-nowrap">${entry.time}</div>
+        <div class="font-label-caps text-[11px] text-on-surface">${entry.title}</div>
+      </div>
+    `).join('');
+  }
+
+  if (historyBody) {
+    historyBody.innerHTML = profile.history.map((order) => `
+      <tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors relative">
+        <td class="py-md px-sm font-mono text-[12px]">${order.id}</td>
+        <td class="py-md px-sm">${order.product}</td>
+        <td class="py-md px-sm"><span class="px-2 py-0.5 bg-secondary-container rounded text-[10px]">${order.category}</span></td>
+        <td class="py-md px-sm text-on-surface-variant">${formatOrderDate(order.date)} ${String(order.date).split(' ')[1] || ''}</td>
+        <td class="py-md px-sm"><div class="flex items-center gap-xs text-primary"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div>${order.status}</div></td>
+        <td class="py-md px-sm text-right relative">
+          <button class="material-symbols-outlined text-on-surface-variant" onclick="toggleOrderMenu(event, '${order.id}')">more_vert</button>
+          <div id="order-menu-${order.id}" class="hidden absolute right-2 top-12 z-20 w-40 rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-xl shadow-primary/10 p-1 text-left" onclick="event.stopPropagation()">
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Ver detalle</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Reenviar</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Descargar factura</button>
+            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-error/10 text-sm text-error" onclick="closeAllOrderMenus()">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function closeAllOrderMenus() {
+  document.querySelectorAll('[id^="order-menu-"]').forEach((menu) => menu.classList.add('hidden'));
+}
+
+function toggleOrderMenu(event, orderId) {
+  event.stopPropagation();
+  const menu = document.getElementById(`order-menu-${orderId}`);
+  if (!menu) return;
+
+  const isHidden = menu.classList.contains('hidden');
+  closeAllOrderMenus();
+  if (isHidden) menu.classList.remove('hidden');
+}
+
+function handleLogout(event) {
+  event?.preventDefault();
+  localStorage.removeItem('aio-current-user');
+  currentUserKey = 'user';
+  globalThis.location.href = '../auth/Login.html';
+}
+
+// ── Router ──────────────────────────────────────
+const PAGES = ['home', 'store', 'product', 'cart', 'profile', 'admin'];
+
+function navigate(pageId) {
+  if (!PAGES.includes(pageId)) return;
+
+  // Hide all pages
+  PAGES.forEach(id => {
+    const el = document.getElementById('page-' + id);
+    if (el) el.classList.remove('active');
+  });
+
+  // Show target
+  const target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+
+  // Update desktop nav
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const active = link.dataset.page === pageId;
+    link.classList.toggle('text-primary', active);
+    link.classList.toggle('font-bold', active);
+    link.classList.toggle('text-on-surface-variant', !active);
+  });
+
+  // Update mobile nav
+  document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+    const active = btn.dataset.page === pageId;
+    btn.classList.toggle('text-primary', active);
+    btn.classList.toggle('text-secondary', !active);
+    // Pill highlight for active mobile button
+    if (active) {
+      btn.classList.add('bg-primary-container/30', 'rounded-xl', 'px-4', 'py-1.5');
+    } else {
+      btn.classList.remove('bg-primary-container/30', 'rounded-xl', 'px-4', 'py-1.5');
+    }
+  });
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Push state (no reload SPA)
+  history.pushState({ page: pageId }, '', '#' + pageId);
+
+  if (pageId === 'profile') {
+    renderProfile(currentUserKey);
+  }
+
+  // Re-init sliders if navigating to home
+  if (pageId === 'home') initSliders();
+}
+
+const STORE_PRODUCTS = {
+  homepodMini: {
+    category: 'AI SMART SPEAKER',
+    title: 'Apple HomePod mini',
+    description: 'Compact smart speaker with AI voice assistant, home automation and Intercom.',
+    price: '$99.00',
+    oldPrice: '$129.00',
+    image: '../../../images/Apple%20HomePod%20mini.jpg'
+  },
+  echo4: {
+    category: 'ALEXA HUB',
+    title: 'Amazon Echo (4th Gen)',
+    description: 'Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../../images/Amazon%20Echo%20(4th%20Gen).jpg'
+  },
+  nestAudio: {
+    category: 'GOOGLE SPEAKER',
+    title: 'Google Nest Audio',
+    description: 'AI-powered smart speaker with stereo pairing and Voice Match.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../../images/Google%20Nest%20Audio.jpg'
+  },
+  nestHub2: {
+    category: 'GOOGLE SMART DISPLAY',
+    title: 'Google Nest Hub (2nd Gen)',
+    description: 'Smart display with AI assistant, media controls and sleep sensing.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../../images/Google%20Nest%20Hub%20(2nd%20Gen).jpg'
+  },
+  ecobeeThermostat: {
+    category: 'SMART CLIMATE CONTROL',
+    title: 'ecobee SmartThermostat',
+    description: 'Smart thermostat with voice control, room sensors and AI assistant compatibility.',
+    price: '$249.99',
+    oldPrice: '$299.99',
+    image: '../../../images/ecobee%20SmartThermostat.jpg'
+  },
+  echoShow8: {
+    category: 'AI SMART DISPLAY',
+    title: 'Amazon Echo Show 8 (3rd Gen)',
+    description: 'AI-powered smart display with 8in screen, calls, routines and home control.',
+    price: '$149.99',
+    oldPrice: '$179.99',
+    image: '../../../images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg'
+  },
+  appleTv4k: {
+    category: 'AI STREAMING DEVICE',
+    title: 'Apple TV 4K',
+    description: 'Streaming box with tvOS, Apple ecosystem integration and AI voice control.',
+    price: '$129.00',
+    oldPrice: '$159.00',
+    image: '../../../images/Apple%20TV%204K.jpg'
+  },
+  fireTvCube: {
+    category: 'STREAMING & VOICE',
+    title: 'Amazon Fire TV Cube',
+    description: 'Hands-free 4K streaming device with Alexa voice control and HDMI passthrough.',
+    price: '$139.99',
+    oldPrice: '$169.99',
+    image: '../../../images/Amazon%20Fire%20TV%20Cube.jpg'
+  }
+};
+
+function showProductDetail(productId) {
+  const product = STORE_PRODUCTS[productId];
+  if (!product) return;
+
+  document.getElementById('product-image').src = product.image;
+  document.getElementById('product-image').alt = product.title;
+  const firstThumb = document.querySelector('#page-product .grid.grid-cols-4 img');
+  if (firstThumb) { firstThumb.src = product.image; firstThumb.alt = product.title; }
+  document.getElementById('product-category').innerText = product.category;
+  document.getElementById('product-title').innerText = product.title;
+  document.getElementById('product-description').innerText = product.description;
+  document.getElementById('product-price').innerText = product.price;
+  document.getElementById('product-old-price').innerText = product.oldPrice;
+
+  navigate('product');
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  const page = e.state?.page || 'home';
+  navigate(page);
+});
+
+// Initial page from hash
+const initPage = location.hash.replace('#', '') || 'home';
+applyTheme(currentTheme);
+navigate(PAGES.includes(initPage) ? initPage : 'home');
+
+document.addEventListener('click', closeAllOrderMenus);
+
+
+// ── Slider Logic ─────────────────────────────────
+function initSliders() {
+  document.querySelectorAll('#page-home .auto-slider').forEach(sliderWrapper => {
+    // Avoid double-init
+    if (sliderWrapper._sliderInitialized) return;
+    sliderWrapper._sliderInitialized = true;
+
+    const container = sliderWrapper.querySelector('.slider-container');
+    const items     = sliderWrapper.querySelectorAll('.slider-item');
+    const dots      = sliderWrapper.querySelectorAll('.dot');
+    const prevBtn   = sliderWrapper.querySelector('.prev-btn');
+    const nextBtn   = sliderWrapper.querySelector('.next-btn');
+    const intervalTime = parseInt(sliderWrapper.dataset.interval) || 4000;
+
+    let currentIndex = 0;
+    let autoPlayInterval;
+    let isProgrammaticScroll = false;
+    let programmaticScrollTimer;
+
+    const updateSlider = (index) => {
+      currentIndex = ((index % items.length) + items.length) % items.length;
+
+      isProgrammaticScroll = true;
+      clearTimeout(programmaticScrollTimer);
+
+      const targetLeft = items[currentIndex].offsetLeft - container.offsetLeft;
+      container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+
+      programmaticScrollTimer = setTimeout(() => { isProgrammaticScroll = false; }, 600);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-primary', i === currentIndex);
+        dot.classList.toggle('bg-outline-variant/50', i !== currentIndex);
+        dot.style.width = i === currentIndex ? '20px' : '8px';
+      });
+
+      items.forEach((item, i) => item.classList.toggle('opacity-60', i !== currentIndex));
+    };
+
+    const startAutoPlay = () => {
+      stopAutoPlay();
+      autoPlayInterval = setInterval(() => updateSlider(currentIndex + 1), intervalTime);
+    };
+
+    const stopAutoPlay = () => clearInterval(autoPlayInterval);
+
+    nextBtn?.addEventListener('click', () => { stopAutoPlay(); updateSlider(currentIndex + 1); startAutoPlay(); });
+    prevBtn?.addEventListener('click', () => { stopAutoPlay(); updateSlider(currentIndex - 1); startAutoPlay(); });
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { stopAutoPlay(); updateSlider(i); startAutoPlay(); }));
+
+    sliderWrapper.addEventListener('mouseenter', stopAutoPlay);
+    sliderWrapper.addEventListener('mouseleave', startAutoPlay);
+    sliderWrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
+    sliderWrapper.addEventListener('touchend', startAutoPlay, { passive: true });
+
+    let isScrolling;
+    container.addEventListener('scroll', () => {
+      if (isProgrammaticScroll) return;
+      clearTimeout(isScrolling);
+      isScrolling = setTimeout(() => {
+        const scrollLeft = container.scrollLeft;
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+
+        items.forEach((item, i) => {
+          const itemLeft = item.offsetLeft - container.offsetLeft;
+          const distance = Math.abs(itemLeft - scrollLeft);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = i;
+          }
+        });
+
+        if (nearestIndex !== currentIndex) updateSlider(nearestIndex);
+      }, 150);
+    });
+
+    updateSlider(0);
+    startAutoPlay();
+  });
+}
+
+// Init sliders on load
+document.addEventListener('DOMContentLoaded', initSliders);
+</script>
+</body>
+</html>
