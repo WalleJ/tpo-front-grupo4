@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O Admin Listados</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { min-height: 100dvh; font-family: 'Sora', sans-serif; background: #fcf8f9; color: #1c1b1c; }
+  .mesh-gradient {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(0,219,233,0.07) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(0,105,112,0.07) 0px, transparent 55%);
+  }
+  .glass-panel {
+    background: rgba(252,248,249,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(185,202,203,0.3);
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.22s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body class="mesh-gradient">
+<header class="sticky top-0 z-40 bg-[#fcf8f9cc] backdrop-blur-xl border-b border-[#b9cacb66]">
+  <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-[#006970]">admin_panel_settings</span>
+      <h1 class="text-xl font-bold tracking-tight text-[#006970]">AI-O ADMIN LISTADOS</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="AdminDashboard.html" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Volver al dashboard</a>
+      <button onclick="logout()" class="px-4 py-2 rounded-lg border border-[#b9cacb] hover:bg-[#e5e2e3] transition-colors text-sm">Cerrar sesion</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1280px] mx-auto px-6 py-8 md:py-12 space-y-6">
+  <section class="glass-panel rounded-2xl p-6 md:p-8">
+    <p class="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Espacio de administracion</p>
+    <h2 class="text-3xl md:text-4xl font-bold mb-3">Listados administrativos</h2>
+    <p class="text-[#3b494b] max-w-3xl">Gestiona modulos, usuarios y catalogo. Esta vista representa operaciones exclusivas para rol ADMIN.</p>
+  </section>
+
+  <section class="glass-panel rounded-2xl p-3 md:p-4">
+    <div class="flex flex-wrap gap-2" id="tabs-nav">
+      <button data-tab="users" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Usuarios</button>
+      <button data-tab="products" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Productos</button>
+      <button data-tab="categories" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Categorias</button>
+      <button data-tab="promos" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Promos y descuentos</button>
+      <button data-tab="orders" class="tab-btn flex-1 px-3 py-2 rounded-lg text-xs font-bold bg-white/70 border border-[#b9cacb66]">Ordenes</button>
+    </div>
+  </section>
+
+  <section id="tab-users" class="tab-panel active glass-panel rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">Gestion de usuarios</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nuevo usuario</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">admin</p>
+          <p class="text-[#3b494b]">admin@aio.com - ADMIN</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">user</p>
+          <p class="text-[#3b494b]">user@aio.com - USER</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="tab-products" class="tab-panel glass-panel rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">Gestion de productos</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nuevo producto</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Nexus-9 Core Hub</p>
+          <p class="text-[#3b494b]">$599.00 - CORE NODE</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">AI-O Core Hub</p>
+          <p class="text-[#3b494b]">$1249.00 - CORE HUB</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="tab-categories" class="tab-panel glass-panel rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">Gestion de categorias</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nueva categoria</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">CORE NODE</p>
+          <p class="text-[#3b494b]">12 productos</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">ACOUSTIC</p>
+          <p class="text-[#3b494b]">8 productos</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">SECURITY</p>
+          <p class="text-[#3b494b]">10 productos</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="tab-promos" class="tab-panel glass-panel rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">Listado de promociones y descuentos</h3>
+      <button class="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white">Nueva promocion</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">PROMO15</p>
+          <p class="text-[#3b494b]">15% en Core Hub</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">SECURE10</p>
+          <p class="text-[#3b494b]">10% en Security Nodes</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">ENVIOFREE</p>
+          <p class="text-[#3b494b]">Envio sin cargo en ordenes mayores a $1000</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="tab-orders" class="tab-panel glass-panel rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">Gestion de ordenes</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #881</p>
+          <p class="text-[#3b494b]">CREATED</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #882</p>
+          <p class="text-[#3b494b]">PENDING</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #883</p>
+          <p class="text-[#3b494b]">CONFIRMED</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #884</p>
+          <p class="text-[#3b494b]">SHIPPED</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #885</p>
+          <p class="text-[#3b494b]">DELIVERED</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+      <article class="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+        <div>
+          <p class="font-semibold">Orden #886</p>
+          <p class="text-[#3b494b]">CANCELLED</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Editar"><span class="material-symbols-outlined text-[18px] text-[#006970]">edit</span></button>
+          </div>
+          <div class="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+            <button class="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none" title="Eliminar"><span class="material-symbols-outlined text-[18px] text-[#006970]">delete</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script>
+  (function guardRole() {
+    const role = localStorage.getItem('role');
+    if (role !== 'ADMIN') {
+      window.location.href = '../auth/Login.html';
+    }
+  })();
+
+  function logout() {
+    localStorage.removeItem('role');
+    window.location.href = '../auth/Login.html';
+  }
+
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(target) {
+    tabs.forEach((tab) => {
+      const active = tab.dataset.tab === target;
+      tab.classList.toggle('bg-[#006970]', active);
+      tab.classList.toggle('text-white', active);
+      tab.classList.toggle('bg-white/70', !active);
+      tab.classList.toggle('border', !active);
+      tab.classList.toggle('border-[#b9cacb66]', !active);
+    });
+
+    panels.forEach((panel) => panel.classList.remove('active'));
+    const targetPanel = document.getElementById('tab-' + target);
+    if (targetPanel) targetPanel.classList.add('active');
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      activateTab(target);
+      history.replaceState({}, '', '?tab=' + target);
+    });
+  });
+
+  const allowedTabs = ['users', 'products', 'categories', 'promos', 'orders'];
+  const paramTab = new URLSearchParams(window.location.search).get('tab');
+  activateTab(allowedTabs.includes(paramTab) ? paramTab : 'users');
+</script>
+</body>
+</html>
+
