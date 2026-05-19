@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Contraseña - AI-O HOME</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    body { min-height: 100dvh; font-family: 'Sora', sans-serif; background: #fcf8f9; color: #1c1b1c; }
+    .mesh-gradient {
+      background-image:
+        radial-gradient(at 0% 0%, rgba(0,219,233,0.07) 0px, transparent 55%),
+        radial-gradient(at 100% 100%, rgba(0,105,112,0.07) 0px, transparent 55%);
+    }
+    .glass-panel {
+      background: rgba(252,248,249,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(185,202,203,0.3);
+    }
+    .cyber-glow-focus:focus-within {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0,219,233,0.3);
+      border-color: #00dbe9;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="mesh-gradient flex items-center justify-center min-h-screen p-4">
+  <div class="glass-panel rounded-3xl shadow-2xl p-10 w-full max-w-md flex flex-col items-center gap-6">
+    <div class="flex flex-col items-center gap-2 mb-2">
+      <span class="material-symbols-outlined text-primary text-5xl">lock_reset</span>
+      <h1 class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">Recuperar Contraseña</h1>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-xs">AI-O HOME Marketplace</span>
+    </div>
+    <form id="recover-form" class="flex flex-col gap-4 w-full">
+      <div class="flex flex-col gap-1 cyber-glow-focus">
+        <label for="email" class="font-label-caps text-label-caps text-on-surface-variant text-xs">Email</label>
+        <input type="email" id="email" placeholder="Email registrado" class="bg-surface-container-lowest border border-outline-variant/50 px-4 py-3 rounded-xl font-body-md focus:outline-none w-full" required>
+      </div>
+      <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 mt-2">Enviar enlace</button>
+    </form>
+    <div id="recover-msg" class="text-primary mt-2 hidden text-center font-bold">Si el email está registrado, recibirás instrucciones para restablecer tu contraseña.</div>
+    <div class="w-full flex flex-col items-center mt-2">
+      <a href="Login.html" class="text-primary text-xs font-bold hover:underline">Volver al login</a>
+    </div>
+  </div>
+  <script>
+    document.getElementById('recover-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('recover-msg').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
