@@ -134,6 +134,59 @@
   html.dark .text-on-surface-variant { color: #9cb3b6 !important; }
   html.dark .text-outline,
   html.dark .text-outline-variant { color: #7f9496 !important; }
+
+  /* ── Cart slide transitions ── */
+  .cart-slide-wrapper { position: relative; overflow: hidden; }
+  .cart-panel { width: 100%; }
+
+  /* ── Purchase button wave ── */
+  @keyframes purchaseWave {
+    0%   { box-shadow: 0 0 0 0 rgba(0,219,233,0.55); }
+    70%  { box-shadow: 0 0 0 22px rgba(0,219,233,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,219,233,0); }
+  }
+  .purchase-wave { animation: purchaseWave 0.7s ease forwards; }
+
+  /* ── Celebration ── */
+  @keyframes celebrationBounce {
+    0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+    60%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+    80%  { transform: scale(0.92) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes confettiFloat {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(90px) rotate(400deg) scale(0.5); opacity: 0; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to   { background-position:  200% center; }
+  }
+  .shimmer-text {
+    background: linear-gradient(90deg, #006970, #00dbe9, #00f0ff, #006970);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s linear infinite;
+  }
+  .celebration-icon { animation: celebrationBounce 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes countdownShrink {
+    from { width: 100%; }
+    to   { width: 0%;   }
+  }
+  .countdown-bar { animation: countdownShrink 5s linear forwards; }
+  .confetti-piece {
+    position: absolute;
+    border-radius: 3px;
+    animation: confettiFloat 1.6s ease-in forwards;
+    pointer-events: none;
+  }
+  @keyframes spinOnce {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .spin-once { animation: spinOnce 0.9s linear infinite; }
 </style>
 </head>
 <body class="bg-surface font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
@@ -764,72 +817,205 @@
      PAGE: CART
 ══════════════════════════════════════════ -->
 <div id="page-cart" class="page pt-16 pb-24 md:pb-0">
-  <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
-    <div class="mb-lg flex flex-col gap-xs">
-      <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">CHECKOUT SUMMARY</span>
-      <h2 class="font-headline-lg text-headline-lg text-on-surface">Shopping Cart</h2>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
-      <!-- Cart Items -->
-      <div class="lg:col-span-8 flex flex-col gap-md">
-        <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
-          <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
-          <div class="flex flex-col">
-            <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
-            <span class="font-label-caps text-label-caps">Your payment data is protected</span>
-          </div>
-        </div>
-        <div id="cart-items-container" class="flex flex-col gap-md"></div>
-      </div>
+  <div id="cart-slide-wrapper" class="cart-slide-wrapper">
 
-      <!-- Order Summary -->
-      <div class="lg:col-span-4 sticky top-24">
-        <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
-          <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
-            <span class="material-symbols-outlined text-primary">receipt_long</span>
-            <h4 class="font-headline-sm text-headline-sm">ORDER SUMMARY</h4>
+    <!-- ════ Panel 1: Shopping Cart ════ -->
+    <div id="cart-panel-cart" class="cart-panel" style="position:relative;transform:translateX(0);opacity:1;">
+      <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
+        <div class="mb-lg flex flex-col gap-xs">
+          <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">CHECKOUT SUMMARY</span>
+          <h2 class="font-headline-lg text-headline-lg text-on-surface">Shopping Cart</h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+          <!-- Cart Items -->
+          <div class="lg:col-span-8 flex flex-col gap-md">
+            <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
+              <div class="flex flex-col">
+                <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
+                <span class="font-label-caps text-label-caps">Your payment data is protected</span>
+              </div>
+            </div>
+            <div id="cart-items-container" class="flex flex-col gap-md"></div>
           </div>
-          <div id="order-summary-lines" class="flex flex-col gap-sm"></div>
-          <div class="flex flex-col gap-xs mt-xs border-t border-outline-variant/20 pt-sm">
-            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Shipping</span><span id="summary-shipping" class="text-body-sm font-medium">$0.00</span></div>
-            <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Taxes</span><span id="summary-taxes" class="text-body-sm font-medium">$0.00</span></div>
-            <div class="flex justify-between items-center gap-2 text-primary"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Discount</span><span id="summary-discount" class="text-body-sm font-medium">-$0.00</span></div>
-          </div>
-          <div class="mt-md pt-md border-t border-primary/20 flex justify-between items-baseline">
-            <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
-            <div id="summary-total" class="font-bold text-3xl tracking-tighter text-primary">$0.00</div>
-          </div>
-          <div class="flex flex-col gap-base mt-md">
-            <button class="w-full font-label-caps text-label-caps py-md rounded-xl shadow-lg bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
-              Checkout <span class="material-symbols-outlined">arrow_forward</span>
-            </button>
-          </div>
-          <div class="mt-md bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
-            <div class="flex items-start gap-sm">
-              <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
-              <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+          <!-- Order Summary -->
+          <div class="lg:col-span-4 sticky top-24">
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">receipt_long</span>
+                <h4 class="font-headline-sm text-headline-sm">ORDER SUMMARY</h4>
+              </div>
+              <div id="order-summary-lines" class="flex flex-col gap-sm"></div>
+              <div class="flex flex-col gap-xs mt-xs border-t border-outline-variant/20 pt-sm">
+                <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Shipping</span><span id="summary-shipping" class="text-body-sm font-medium">$0.00</span></div>
+                <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Taxes</span><span id="summary-taxes" class="text-body-sm font-medium">$0.00</span></div>
+                <div class="flex justify-between items-center gap-2 text-primary"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Discount</span><span id="summary-discount" class="text-body-sm font-medium">-$0.00</span></div>
+              </div>
+              <div class="mt-md pt-md border-t border-primary/20 flex justify-between items-baseline">
+                <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
+                <div id="summary-total" class="font-bold text-3xl tracking-tighter text-primary">$0.00</div>
+              </div>
+              <div class="flex flex-col gap-base mt-md">
+                <button id="cart-checkout-btn" onclick="goToCheckout()" class="w-full font-label-caps text-label-caps py-md rounded-xl shadow-lg bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
+                  Checkout <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+              <div class="mt-md bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
+                <div class="flex items-start gap-sm">
+                  <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
+                  <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
+      <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+          <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+          <div class="flex gap-md">
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+          </div>
+        </div>
+      </footer>
     </div>
-  </main>
-  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
-    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
-      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
-      <div class="flex gap-md">
-        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
-        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
-        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
-      </div>
+
+    <!-- ════ Panel 2: Checkout ════ -->
+    <div id="cart-panel-checkout" class="cart-panel" style="position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;">
+      <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
+        <div class="mb-lg flex flex-col gap-xs">
+          <button onclick="goBackToCart()" class="inline-flex items-center gap-xs text-primary font-label-caps text-label-caps hover:opacity-75 transition-opacity mb-xs w-fit">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>Back to cart
+          </button>
+          <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">SECURE CHECKOUT</span>
+          <h2 class="font-headline-lg text-headline-lg text-on-surface">Order Details</h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+          <!-- Read-only items -->
+          <div class="lg:col-span-8 flex flex-col gap-md">
+            <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
+              <div class="flex flex-col">
+                <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
+                <span class="font-label-caps text-label-caps">Your payment data is protected</span>
+              </div>
+            </div>
+            <div id="checkout-items-container" class="flex flex-col gap-md"></div>
+          </div>
+          <!-- Purchase details & payment -->
+          <div class="lg:col-span-4 sticky top-24 flex flex-col gap-md">
+            <!-- Billing details -->
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">receipt</span>
+                <h4 class="font-headline-sm text-headline-sm">PURCHASE DETAILS</h4>
+              </div>
+              <div class="flex flex-col gap-sm">
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Full Name</span>
+                  <input id="checkout-billing-name" type="text" autocomplete="name" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="Name on invoice">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Email</span>
+                  <input id="checkout-billing-email" type="email" autocomplete="email" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="email@domain.com">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Tax ID / DNI (optional)</span>
+                  <input id="checkout-billing-taxid" type="text" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="XX-XXXXXXXX-X">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Shipping Address</span>
+                  <input id="checkout-billing-address" type="text" autocomplete="street-address" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="Street, City, Province">
+                </label>
+              </div>
+            </div>
+            <!-- Payment method -->
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">credit_card</span>
+                <h4 class="font-headline-sm text-headline-sm">PAYMENT METHOD</h4>
+              </div>
+              <div id="checkout-payment-methods" class="flex flex-col gap-sm"></div>
+              <button type="button" onclick="openAddCardPopup()" class="inline-flex items-center gap-xs text-primary font-label-caps text-label-caps hover:opacity-75 transition-opacity mt-xs w-fit">
+                <span class="material-symbols-outlined text-[18px]">add_card</span>ADD NEW CARD
+              </button>
+            </div>
+            <!-- Totals summary -->
+            <div class="glass-panel rounded-2xl p-md flex flex-col gap-sm shadow-sm">
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Shipping</span><span id="co-summary-shipping" class="text-body-sm font-medium">$0.00</span></div>
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Taxes</span><span id="co-summary-taxes" class="text-body-sm font-medium">$0.00</span></div>
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Discount</span><span id="co-summary-discount" class="text-body-sm font-medium">-$0.00</span></div>
+              <div class="flex justify-between items-baseline pt-sm border-t border-primary/20">
+                <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
+                <div id="co-summary-total" class="font-bold text-2xl tracking-tighter text-primary">$0.00</div>
+              </div>
+            </div>
+            <!-- Buy Now -->
+            <button id="buy-now-btn" onclick="handlePurchase()" class="w-full font-headline-sm text-headline-sm py-md rounded-xl shadow-lg shadow-primary/20 bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
+              <span class="material-symbols-outlined">shopping_bag</span>Buy Now
+            </button>
+            <div class="bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
+              <div class="flex items-start gap-sm">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
+                <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+          <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+          <div class="flex gap-md">
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+          </div>
+        </div>
+      </footer>
     </div>
-  </footer>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════
      PAGE: PROFILE / DASHBOARD
 ══════════════════════════════════════════ -->
-<div id="page-profile" class="page pt-16 pb-24 md:pb-0">
+<div id="page-profile" class="page relative pt-16 pb-24 md:pb-0">
+
+  <!-- ── Purchase Success Overlay ── -->
+  <div id="profile-success-overlay" class="hidden absolute inset-0 z-20 bg-surface flex flex-col items-center justify-start gap-md p-lg pt-24 md:pt-28" style="min-height:100%;">
+    <div class="relative flex flex-col items-center gap-md max-w-sm w-full text-center">
+      <!-- Confetti container -->
+      <div id="confetti-container" class="absolute inset-x-0 top-0 h-28 pointer-events-none overflow-hidden"></div>
+      <!-- Celebration icon -->
+      <div id="celebration-emoji" class="celebration-icon text-[88px] select-none leading-none">🎉</div>
+      <!-- Stars decoration -->
+      <div class="flex gap-sm text-2xl select-none">✨⭐✨</div>
+      <div>
+        <h2 class="shimmer-text font-display text-4xl font-bold mb-sm">Purchase Complete!</h2>
+        <p class="text-on-surface-variant font-body-md text-body-md">Your order has been placed successfully. A confirmation will be sent to your email.</p>
+      </div>
+      <!-- Action buttons -->
+      <div class="flex flex-col gap-sm w-full mt-xs">
+        <button class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-primary text-white font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 hover:brightness-110">
+          <span class="material-symbols-outlined">download</span>DOWNLOAD INVOICE
+        </button>
+        <button onclick="sendInvoiceEmail()" class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl border border-primary text-primary font-label-caps text-label-caps hover:bg-primary/5 active:scale-95 transition-all">
+          <span class="material-symbols-outlined">mail</span>SEND INVOICE BY EMAIL
+        </button>
+        <!-- Return to cart with countdown bar -->
+        <div class="relative overflow-hidden rounded-xl">
+          <button id="return-to-cart-btn" disabled onclick="returnToEmptyCart()" class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps transition-all opacity-60 cursor-not-allowed">
+            <span class="material-symbols-outlined">shopping_cart</span><span id="return-to-cart-label">RETURN TO CART</span>
+          </button>
+          <div id="countdown-bar" class="countdown-bar absolute bottom-0 left-0 h-1 bg-primary rounded-b"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <main class="pt-10 pb-32 px-gutter max-w-[1280px] mx-auto">
 
     <!-- Profile Header -->
@@ -1090,6 +1276,51 @@
       <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-payment-method-confirm-close="true">CANCEL</button>
       <button id="confirm-payment-method-delete-btn" type="button" class="px-md py-sm rounded-xl bg-error text-on-error font-label-caps text-label-caps active:scale-95 transition-all">REMOVE</button>
     </div>
+  </div>
+</div>
+
+<!-- ── Add New Card Popup ── -->
+<div id="add-card-popup" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" onclick="closeAddCardPopup()"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Add New Card</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Enter your card details to pay.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" onclick="closeAddCardPopup()" aria-label="Close">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <form id="add-card-form" class="space-y-sm" onsubmit="handleAddCard(event)">
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Cardholder Name</span>
+        <input id="card-name" type="text" required autocomplete="cc-name" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Name as shown on card">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Card Number</span>
+        <input id="card-number" type="text" required autocomplete="cc-number" maxlength="19" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono tracking-widest" placeholder="•••• •••• •••• ••••">
+      </label>
+      <div class="grid grid-cols-2 gap-sm">
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Expiry (MM/YY)</span>
+          <input id="card-expiry" type="text" required autocomplete="cc-exp" maxlength="5" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono" placeholder="MM/YY">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">CVV</span>
+          <input id="card-cvv" type="text" required autocomplete="cc-csc" maxlength="4" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono" placeholder="•••">
+        </label>
+      </div>
+      <label class="flex items-center gap-sm cursor-pointer pt-xs">
+        <input id="card-save" type="checkbox" checked class="rounded border-outline-variant accent-primary w-4 h-4">
+        <span class="font-body-sm text-body-sm text-on-surface">Save as new payment method in my profile</span>
+      </label>
+      <p id="add-card-error" class="text-error text-body-sm min-h-[18px]" aria-live="polite"></p>
+      <div class="flex justify-end gap-sm pt-xs">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" onclick="closeAddCardPopup()">CANCEL</button>
+        <button type="submit" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">ADD CARD</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -1614,9 +1845,9 @@ function renderProfile(userKey = currentUserKey) {
         <td class="py-md px-sm text-right relative">
           <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-primary" onclick="toggleOrderMenu(event, '${order.id}')">more_vert</button>
           <div id="order-menu-${order.id}" class="hidden absolute right-2 top-10 z-20 w-44 rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-xl shadow-primary/10 p-1 text-left">
-            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-detail" data-order-id="${order.id}">Ver detalle</button>
-            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-items" data-order-id="${order.id}">Ver Ítems</button>
-            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="download-invoice" data-order-id="${order.id}">Descargar factura</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-detail" data-order-id="${order.id}">View Details</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-items" data-order-id="${order.id}">View Items</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="download-invoice" data-order-id="${order.id}">Download Invoice</button>
           </div>
         </td>
       </tr>
@@ -2262,6 +2493,11 @@ document.addEventListener('keydown', (event) => {
     closePaymentMethodDeleteConfirmPopup();
   }
 });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeAddCardPopup();
+    }
+  });
 
 
 // ── Slider Logic ─────────────────────────────────
@@ -2417,6 +2653,493 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStoreProducts();
   renderCart();
 });
+
+  // ══════════════════════════════════════════
+  //  CHECKOUT FLOW
+  // ══════════════════════════════════════════
+
+  let cartViewState = 'cart'; // 'cart' | 'checkout'
+  let selectedPaymentIndex = null;
+  let tempNewCard = null;
+  let purchaseSuccessOrderId = null;
+  let returnToCartTimer = null;
+
+  const SLIDE_DURATION = 460;
+
+  function goToCheckout() {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    renderCheckoutItems();
+    syncCheckoutTotals();
+    prefillBillingDetails();
+    // Reset payment selection if profile methods changed
+    const profile = getCurrentProfile();
+    if (selectedPaymentIndex === null && profile.paymentMethods.length > 0) {
+      selectedPaymentIndex = 0;
+    }
+    renderCheckoutPaymentMethods();
+
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    const wrapper = document.getElementById('cart-slide-wrapper');
+    if (!cartPanel || !checkoutPanel) return;
+
+    // Freeze wrapper height so the page doesn't jump during absolute positioning
+    if (wrapper) wrapper.style.minHeight = cartPanel.offsetHeight + 'px';
+
+    // Prep checkout off-screen right
+    const tr = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.38s ease';
+    cartPanel.style.transition = tr;
+    checkoutPanel.style.cssText = `position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;transition:${tr};`;
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      cartPanel.style.transform = 'translateX(-100%)';
+      cartPanel.style.opacity = '0';
+      checkoutPanel.style.transform = 'translateX(0)';
+      checkoutPanel.style.opacity = '1';
+      checkoutPanel.style.pointerEvents = '';
+    }));
+
+    setTimeout(() => {
+      cartPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(-100%);opacity:0;pointer-events:none;';
+      checkoutPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+      if (wrapper) wrapper.style.minHeight = '';
+      cartViewState = 'checkout';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, SLIDE_DURATION);
+  }
+
+  function goBackToCart() {
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    const wrapper = document.getElementById('cart-slide-wrapper');
+    if (!cartPanel || !checkoutPanel) return;
+
+    if (wrapper) wrapper.style.minHeight = checkoutPanel.offsetHeight + 'px';
+
+    const tr = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.38s ease';
+    checkoutPanel.style.transition = tr;
+    cartPanel.style.cssText = `position:absolute;top:0;left:0;right:0;transform:translateX(-100%);opacity:0;pointer-events:none;transition:${tr};`;
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      checkoutPanel.style.transform = 'translateX(100%)';
+      checkoutPanel.style.opacity = '0';
+      cartPanel.style.transform = 'translateX(0)';
+      cartPanel.style.opacity = '1';
+      cartPanel.style.pointerEvents = '';
+    }));
+
+    setTimeout(() => {
+      checkoutPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;';
+      cartPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+      if (wrapper) wrapper.style.minHeight = '';
+      cartViewState = 'cart';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, SLIDE_DURATION);
+  }
+
+  function renderCheckoutItems() {
+    const container = document.getElementById('checkout-items-container');
+    if (!container) return;
+    const items = getCartItems();
+    if (items.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = items.map(({ quantity, product }) => `
+      <div class="glass-panel rounded-xl p-md flex flex-col md:flex-row gap-md items-center">
+        <div class="w-full md:w-24 h-24 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+          <img alt="${product.title}" class="w-full h-full object-cover" src="${product.image}">
+        </div>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start gap-sm mb-xs">
+            <h3 class="font-headline-sm text-headline-sm truncate">${product.title}</h3>
+            <span class="font-headline-sm text-headline-sm shrink-0" style="color:#00f0ff">${formatMoney(product.priceValue * quantity)}</span>
+          </div>
+          <p class="text-on-surface-variant font-body-sm text-body-sm mb-sm two-line-clamp">${product.description}</p>
+          <div class="flex items-center gap-xs flex-wrap">
+            <span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Qty:</span>
+            <span class="font-label-caps text-label-caps bg-surface-container-low border border-outline-variant/30 px-sm py-xs rounded-lg">${String(quantity).padStart(2, '0')}</span>
+            <span class="font-label-caps text-[10px] text-on-surface-variant uppercase ml-xs">Unit:</span>
+            <span class="text-body-sm text-on-surface-variant">${formatMoney(product.priceValue)}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderCheckoutPaymentMethods() {
+    const container = document.getElementById('checkout-payment-methods');
+    if (!container) return;
+    const profile = getCurrentProfile();
+    const methods = profile.paymentMethods || [];
+
+    if (methods.length === 0 && !tempNewCard) {
+      container.innerHTML = '<div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low text-body-sm text-on-surface-variant">No saved payment methods. Add a new card below.</div>';
+      return;
+    }
+
+    let allMethods = methods.map((m, i) => ({ ...m, idx: i }));
+    let rows = allMethods.map(({ label, detail, idx }) => `
+      <label class="flex items-center gap-sm p-sm rounded-xl border cursor-pointer transition-colors ${selectedPaymentIndex === idx ? 'border-primary bg-primary/5' : 'border-outline-variant/30 bg-surface-container-low hover:border-primary/40'}">
+        <input type="radio" name="checkout-payment" value="${idx}" ${selectedPaymentIndex === idx ? 'checked' : ''} onchange="selectPaymentMethod(${idx})" class="accent-primary w-4 h-4 shrink-0">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">payments</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-label-caps text-[11px] text-on-surface truncate">${label}</div>
+          <div class="text-body-sm text-on-surface-variant">${detail}</div>
+        </div>
+      </label>
+    `).join('');
+
+    if (tempNewCard) {
+      rows += `
+        <label class="flex items-center gap-sm p-sm rounded-xl border cursor-pointer transition-colors ${selectedPaymentIndex === -1 ? 'border-primary bg-primary/5' : 'border-outline-variant/30 bg-surface-container-low hover:border-primary/40'}">
+          <input type="radio" name="checkout-payment" value="-1" ${selectedPaymentIndex === -1 ? 'checked' : ''} onchange="selectPaymentMethod(-1)" class="accent-primary w-4 h-4 shrink-0">
+          <span class="material-symbols-outlined text-primary">credit_card</span>
+          <div class="flex-1 min-w-0">
+            <div class="font-label-caps text-[11px] text-on-surface truncate">${tempNewCard.label}</div>
+            <div class="text-body-sm text-on-surface-variant">${tempNewCard.detail} · one-time use</div>
+          </div>
+        </label>
+      `;
+    }
+
+    container.innerHTML = rows;
+  }
+
+  function selectPaymentMethod(index) {
+    selectedPaymentIndex = index;
+    renderCheckoutPaymentMethods();
+  }
+
+  function syncCheckoutTotals() {
+    const items = getCartItems();
+    const subtotal = items.reduce((acc, item) => acc + (item.product.priceValue * item.quantity), 0);
+    const shipping = items.length ? SHIPPING_FLAT : 0;
+    const taxes = subtotal * TAX_RATE;
+    const discount = subtotal >= 250 ? 10 : 0;
+    const total = Math.max(subtotal + shipping + taxes - discount, 0);
+    const els = {
+      'co-summary-shipping': formatMoney(shipping),
+      'co-summary-taxes': formatMoney(taxes),
+      'co-summary-discount': '-$' + Number(discount).toFixed(2),
+      'co-summary-total': formatMoney(total)
+    };
+    Object.entries(els).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    });
+  }
+
+  function prefillBillingDetails() {
+    const profile = getCurrentProfile();
+    const nameInput = document.getElementById('checkout-billing-name');
+    const emailInput = document.getElementById('checkout-billing-email');
+    if (nameInput && !nameInput.value) {
+      nameInput.value = (`${profile.profileData.firstName || ''} ${profile.profileData.lastName || ''}`).trim();
+    }
+    if (emailInput && !emailInput.value) {
+      emailInput.value = profile.profileData.email || '';
+    }
+  }
+
+  // ── Add Card Popup ──────────────────────────────
+  function openAddCardPopup() {
+    const popup = document.getElementById('add-card-popup');
+    if (!popup) return;
+    const form = document.getElementById('add-card-form');
+    if (form) form.reset();
+    const saveCheck = document.getElementById('card-save');
+    if (saveCheck) saveCheck.checked = true;
+    const err = document.getElementById('add-card-error');
+    if (err) err.textContent = '';
+    popup.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeAddCardPopup() {
+    const popup = document.getElementById('add-card-popup');
+    if (popup) popup.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  function getCardBrand(digits) {
+    if (/^4/.test(digits)) return 'Visa';
+    if (/^5[1-5]/.test(digits) || /^2[2-7]/.test(digits)) return 'Mastercard';
+    if (/^3[47]/.test(digits)) return 'Amex';
+    if (/^6/.test(digits)) return 'Maestro';
+    return 'Card';
+  }
+
+  function handleAddCard(event) {
+    event.preventDefault();
+    const name = String(document.getElementById('card-name')?.value || '').trim();
+    const rawNum = String(document.getElementById('card-number')?.value || '').replace(/\s/g, '');
+    const expiry = String(document.getElementById('card-expiry')?.value || '').trim();
+    const cvv = String(document.getElementById('card-cvv')?.value || '').trim();
+    const shouldSave = document.getElementById('card-save')?.checked ?? false;
+    const errEl = document.getElementById('add-card-error');
+
+    const setErr = (msg) => { if (errEl) errEl.textContent = msg; };
+
+    if (name.length < 2) { setErr('Please enter the cardholder name.'); return; }
+    if (!/^\d{13,16}$/.test(rawNum)) { setErr('Enter a valid card number (13–16 digits).'); return; }
+    if (!/^\d{2}\/\d{2}$/.test(expiry)) { setErr('Enter expiry as MM/YY.'); return; }
+    if (!/^\d{3,4}$/.test(cvv)) { setErr('Enter a valid CVV (3–4 digits).'); return; }
+    setErr('');
+
+    const [mm, yy] = expiry.split('/');
+    const brand = getCardBrand(rawNum);
+    const last4 = rawNum.slice(-4);
+    const newMethod = {
+      label: `${brand} ending in ${last4}`,
+      detail: `Expires ${mm}/20${yy}`
+    };
+
+    if (shouldSave) {
+      const profile = getCurrentProfile();
+      profile.paymentMethods.push(newMethod);
+      selectedPaymentIndex = profile.paymentMethods.length - 1;
+      tempNewCard = null;
+      renderProfile(currentUserKey); // update profile payment methods list
+    } else {
+      tempNewCard = newMethod;
+      selectedPaymentIndex = -1;
+    }
+
+    closeAddCardPopup();
+    renderCheckoutPaymentMethods();
+  }
+
+  // ── Purchase ────────────────────────────────────
+  function handlePurchase() {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    const profile = getCurrentProfile();
+    const hasSaved = selectedPaymentIndex !== null && selectedPaymentIndex >= 0 && selectedPaymentIndex < profile.paymentMethods.length;
+    const hasTemp = selectedPaymentIndex === -1 && tempNewCard !== null;
+
+    if (!hasSaved && !hasTemp) {
+      // Flash payment section to highlight it's required
+      const payEl = document.getElementById('checkout-payment-methods');
+      if (payEl) {
+        payEl.style.outline = '2px solid #ba1a1a';
+        payEl.style.borderRadius = '0.75rem';
+        setTimeout(() => { payEl.style.outline = ''; }, 1800);
+      }
+      return;
+    }
+
+    const btn = document.getElementById('buy-now-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.add('purchase-wave');
+      btn.innerHTML = '<span class="material-symbols-outlined spin-once">progress_activity</span><span>Processing…</span>';
+    }
+
+    setTimeout(() => {
+      // Build order
+      const orderId = 'ORD-' + Date.now().toString().slice(-7);
+      const orderDate = new Date().toISOString().slice(0, 16).replace('T', ' ');
+      const orderItems = items.map(({ product, quantity }) => ({
+        name: product.title, quantity, unitPrice: product.priceValue
+      }));
+      const profileData = getCurrentProfile();
+      profileData.history.unshift({ id: orderId, date: orderDate, status: 'PROCESSING', orderItems });
+
+      purchaseSuccessOrderId = orderId;
+
+      // Clear cart state
+      cartState = {};
+      selectedPaymentIndex = null;
+      tempNewCard = null;
+
+      // Reset buy button
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('purchase-wave');
+        btn.innerHTML = '<span class="material-symbols-outlined">shopping_bag</span>Buy Now';
+      }
+
+      // Reset checkout billing fields
+      ['checkout-billing-name','checkout-billing-email','checkout-billing-taxid','checkout-billing-address'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      // Navigate to profile → success overlay will appear
+      navigate('profile');
+    }, 1500);
+  }
+
+  function showPurchaseSuccess() {
+    const overlay = document.getElementById('profile-success-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('hidden');
+
+    // Re-trigger celebration icon animation
+    const emoji = document.getElementById('celebration-emoji');
+    if (emoji) {
+      emoji.style.animation = 'none';
+      void emoji.offsetHeight;
+      emoji.style.animation = '';
+    }
+
+    spawnConfetti();
+    startReturnCountdown();
+  }
+
+  function spawnConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+    container.innerHTML = '';
+    const colors = ['#006970', '#00dbe9', '#00f0ff', '#5d5e61', '#c6c6c9', '#00f0ff'];
+    for (let i = 0; i < 36; i++) {
+      const p = document.createElement('div');
+      const size = 6 + Math.random() * 8;
+      p.className = 'confetti-piece';
+      p.style.cssText = `
+        left:${Math.random() * 100}%;
+        top:${-10 - Math.random() * 30}px;
+        width:${size}px;
+        height:${size}px;
+        background:${colors[Math.floor(Math.random() * colors.length)]};
+        border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration:${1.2 + Math.random() * 1.2}s;
+        animation-delay:${Math.random() * 0.7}s;
+      `;
+      container.appendChild(p);
+    }
+  }
+
+  function startReturnCountdown() {
+    const btn = document.getElementById('return-to-cart-btn');
+    const bar = document.getElementById('countdown-bar');
+    if (btn) {
+      btn.disabled = true;
+      btn.className = 'w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps transition-all opacity-60 cursor-not-allowed';
+    }
+    if (bar) {
+      bar.style.animation = 'none';
+      void bar.offsetHeight;
+      bar.style.animation = 'countdownShrink 5s linear forwards';
+    }
+    clearTimeout(returnToCartTimer);
+    returnToCartTimer = setTimeout(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.className = 'w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-primary text-white font-label-caps text-label-caps transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-lg shadow-primary/20';
+      }
+    }, 5000);
+  }
+
+  function downloadInvoice() {
+    if (!purchaseSuccessOrderId) return;
+    const profile = getCurrentProfile();
+    const order = profile.history.find(o => o.id === purchaseSuccessOrderId);
+    if (!order) return;
+    const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+    const subtotal = items.reduce((s, i) => s + Number(i.quantity) * Number(i.unitPrice), 0);
+    const shipping = SHIPPING_FLAT;
+    const taxes = subtotal * TAX_RATE;
+    const discount = subtotal >= 250 ? 10 : 0;
+    const total = Math.max(subtotal + shipping + taxes - discount, 0);
+    const lines = items.map(i => `  ${i.name.padEnd(35)} x${i.quantity}  ${formatMoney(i.unitPrice).padStart(8)} = ${formatMoney(i.quantity * i.unitPrice)}`).join('\n');
+    const content = [
+      '========================================',
+      '        AI-O HOME MARKETPLACE',
+      '              INVOICE',
+      '========================================',
+      `Order ID : ${order.id}`,
+      `Date     : ${formatProfileDateTime(order.date)}`,
+      `Status   : ${order.status}`,
+      '----------------------------------------',
+      'ITEMS:',
+      lines,
+      '----------------------------------------',
+      `Subtotal : ${formatMoney(subtotal)}`,
+      `Shipping : ${formatMoney(shipping)}`,
+      `Taxes    : ${formatMoney(taxes)}`,
+      `Discount : -${formatMoney(discount)}`,
+      '----------------------------------------',
+      `TOTAL    : ${formatMoney(total)}`,
+      '========================================',
+      'Thank you for shopping at AI-O HOME!'
+    ].join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${order.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function sendInvoiceEmail() {
+    const profile = getCurrentProfile();
+    const email = profile.profileData.email || '';
+    const infoPopup = document.getElementById('info-popup');
+    const title = document.getElementById('info-popup-title');
+    const text = document.getElementById('info-popup-text');
+    if (infoPopup && title && text) {
+      title.textContent = 'Invoice Sent';
+      text.textContent = email
+        ? `Invoice for order ${purchaseSuccessOrderId || ''} has been sent to ${email}.`
+        : 'No email address is configured in your profile.';
+      infoPopup.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  function returnToEmptyCart() {
+    const btn = document.getElementById('return-to-cart-btn');
+    if (btn && btn.disabled) return;
+
+    // Hide success overlay
+    const overlay = document.getElementById('profile-success-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    purchaseSuccessOrderId = null;
+    clearTimeout(returnToCartTimer);
+
+    // Reset both cart panels to initial state
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    if (cartPanel) cartPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+    if (checkoutPanel) checkoutPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;';
+    cartViewState = 'cart';
+    cartState = {};
+
+    navigate('cart');
+  }
+
+  // Patch navigate to show success overlay when returning to profile after purchase
+  const _origNavigate = navigate;
+  navigate = function(pageId) {
+    _origNavigate(pageId);
+    if (pageId === 'profile' && purchaseSuccessOrderId) {
+      showPurchaseSuccess();
+    }
+  };
+
+  // Card number auto-formatting
+  document.addEventListener('DOMContentLoaded', () => {
+    const cardNumberInput = document.getElementById('card-number');
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+        e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+      });
+    }
+    const cardExpiryInput = document.getElementById('card-expiry');
+    if (cardExpiryInput) {
+      cardExpiryInput.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+        e.target.value = v;
+      });
+    }
+  });
 </script>
 </body>
 </html>
