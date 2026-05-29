@@ -87,6 +87,17 @@
     border-color: #00dbe9;
   }
 
+  .modal-backdrop { background: rgba(24, 35, 38, 0.58); }
+
+  .two-line-clamp {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* ── Custom scrollbar for main scroll ── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -841,7 +852,8 @@
           </p>
         </div>
         <div class="flex gap-sm w-full md:w-auto">
-          <button class="flex-1 md:flex-none px-md py-sm bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded-xl border border-outline-variant/30 hover:bg-surface-variant transition-all active:scale-95">EDIT PROFILE</button>
+          <button id="go-admin-dashboard-btn" type="button" class="hidden flex-1 md:flex-none px-md py-sm bg-primary text-on-primary font-label-caps text-label-caps rounded-xl hover:brightness-110 transition-all active:scale-95">ADMIN DASHBOARD</button>
+          <button id="open-profile-edit-btn" type="button" class="flex-1 md:flex-none px-md py-sm bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded-xl border border-outline-variant/30 hover:bg-surface-variant transition-all active:scale-95">EDIT PROFILE</button>
           <button class="flex-1 md:flex-none px-md py-sm bg-error text-on-error font-label-caps text-label-caps rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs" onclick="handleLogout(event)">
             <span class="material-symbols-outlined text-[18px]">logout</span>LOGOUT
           </button>
@@ -852,29 +864,47 @@
     <!-- Dashboard Bento -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
 
-      <!-- Profile Overview -->
-      <div class="md:col-span-8 glass-panel rounded-xl p-md flex flex-col gap-md">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-sm">
-            <span class="material-symbols-outlined text-primary">insights</span>
-            <h2 id="profile-overview-title" class="font-headline-sm text-headline-sm leading-none">Automation Highlights</h2>
-          </div>
-          <span id="profile-overview-subtitle" class="font-label-caps text-label-caps text-primary-fixed-dim">4 ACTIVE RULES</span>
-        </div>
-        <div id="profile-overview-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-base"></div>
-      </div>
-
-      <!-- Security Logs -->
-      <div class="md:col-span-4 glass-panel rounded-xl p-md flex flex-col gap-md">
+      <div class="md:col-span-12 glass-panel rounded-xl p-md flex flex-col gap-md">
         <div class="flex items-center gap-sm">
-          <span class="material-symbols-outlined text-error">security</span>
-          <h2 class="font-headline-sm text-headline-sm leading-none">Security Logs</h2>
+          <span class="material-symbols-outlined text-primary">military_tech</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Buyer Level</h2>
         </div>
-        <div id="security-logs-list" class="space-y-sm overflow-y-auto max-h-[300px] pr-2"></div>
-        <button class="w-full py-2 bg-surface-container-highest text-on-surface-variant font-label-caps text-[11px] rounded-lg hover:text-primary transition-colors">VIEW FULL ARCHIVE</button>
+        <div class="space-y-sm">
+          <div class="flex items-baseline justify-between">
+            <span class="text-body-sm text-on-surface-variant">Purchases in month</span>
+            <span id="profile-buyer-level-count" class="font-label-caps text-label-caps text-primary">0/50</span>
+          </div>
+          <div class="h-3 w-full rounded-full bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+            <div id="profile-buyer-level-bar" class="h-full bg-primary transition-all" style="width:0%"></div>
+          </div>
+          <p id="profile-buyer-level-percent" class="text-body-sm text-on-surface-variant">0% of monthly goal</p>
+        </div>
       </div>
 
-      <!-- Deployment History -->
+      <div class="md:col-span-6 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">login</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Login Sessions</h2>
+        </div>
+        <div id="profile-login-sessions" class="space-y-sm"></div>
+      </div>
+
+      <div class="md:col-span-6 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">credit_card</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Saved Payment Methods</h2>
+        </div>
+        <div id="profile-payment-methods" class="space-y-sm"></div>
+      </div>
+
+      <div class="md:col-span-12 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">support_agent</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Support Claims</h2>
+        </div>
+        <div id="profile-support-claims" class="space-y-sm"></div>
+      </div>
+
       <div class="md:col-span-12 glass-panel rounded-xl p-md overflow-hidden">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-md">
           <div class="flex items-center gap-sm">
@@ -887,11 +917,11 @@
             <thead>
               <tr class="border-b border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant">
                 <th class="pb-base px-sm">ORDER ID</th>
-                <th class="pb-base px-sm">PRODUCT NAME</th>
-                <th class="pb-base px-sm">CATEGORY</th>
                 <th class="pb-base px-sm">DATE</th>
                 <th class="pb-base px-sm">STATUS</th>
-                <th class="pb-base px-sm text-right">ACTION</th>
+                <th class="pb-base px-sm">ORDER ITEMS</th>
+                <th class="pb-base px-sm">TOTAL</th>
+                <th class="pb-base px-sm text-right">ACTIONS</th>
               </tr>
             </thead>
             <tbody id="purchase-history-body" class="text-body-sm font-body-sm"></tbody>
@@ -985,62 +1015,285 @@
   </div>
 </div>
 
+<div id="profile-edit-popup" class="hidden fixed inset-0 z-[75] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-edit-close="true"></div>
+  <div class="relative w-full max-w-xl glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Edit Profile</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Update your user data.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-edit-close="true" aria-label="Close edit profile popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <form id="profile-edit-form" class="space-y-sm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Username</span>
+          <input id="profile-edit-username" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Password</span>
+          <input id="profile-edit-password" type="password" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">First Name</span>
+          <input id="profile-edit-first-name" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Last Name</span>
+          <input id="profile-edit-last-name" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs md:col-span-2">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Email</span>
+          <input id="profile-edit-email" type="email" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+      </div>
+      <div class="flex justify-end gap-sm pt-xs">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-edit-close="true">CANCEL</button>
+        <button type="submit" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">SAVE CHANGES</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="profile-edit-confirm-popup" class="hidden fixed inset-0 z-[76] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-confirm-close="true"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-sm">
+      <h3 class="font-headline-sm text-headline-sm">Confirm profile update</h3>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-confirm-close="true" aria-label="Close confirm popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <p class="text-body-sm text-on-surface-variant mb-md">Are you sure you want to save these profile changes?</p>
+    <div class="flex justify-end gap-sm">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-confirm-close="true">CANCEL</button>
+      <button id="confirm-profile-save-btn" type="button" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<div id="payment-method-delete-confirm-popup" class="hidden fixed inset-0 z-[76] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-payment-method-confirm-close="true"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-sm">
+      <h3 class="font-headline-sm text-headline-sm">Confirm payment method removal</h3>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-payment-method-confirm-close="true" aria-label="Close payment method confirm popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <p class="text-body-sm text-on-surface-variant mb-md">Are you sure you want to remove this saved payment method?</p>
+    <div class="flex justify-end gap-sm">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-payment-method-confirm-close="true">CANCEL</button>
+      <button id="confirm-payment-method-delete-btn" type="button" class="px-md py-sm rounded-xl bg-error text-on-error font-label-caps text-label-caps active:scale-95 transition-all">REMOVE</button>
+    </div>
+  </div>
+</div>
+
+<div id="profile-order-detail-popup" class="hidden fixed inset-0 z-[77] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-order-detail-close="true"></div>
+  <div class="relative w-full max-w-2xl glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Order Detail</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Read-only order information.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-order-detail-close="true" aria-label="Close order detail popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Order ID</span>
+        <input id="order-detail-id" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Date</span>
+        <input id="order-detail-date" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Status</span>
+        <input id="order-detail-status" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Order Items</span>
+        <input id="order-detail-items-count" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs md:col-span-2">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Total</span>
+        <input id="order-detail-total" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+    </div>
+    <div class="flex justify-end pt-md">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-order-detail-close="true">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<div id="profile-order-items-popup" class="hidden fixed inset-0 z-[78] modal-backdrop overflow-y-auto p-4 md:p-8">
+  <div class="min-h-full w-full flex items-center justify-center">
+    <div class="glass-panel modal-enter w-full max-w-4xl rounded-2xl p-6 md:p-8 shadow-2xl">
+      <div class="flex items-start justify-between gap-3 mb-5">
+        <div>
+          <h3 id="profile-order-items-title" class="font-headline-md text-headline-md">Order Items</h3>
+          <p class="text-body-sm text-on-surface-variant mt-xs">Read-only order item detail.</p>
+        </div>
+        <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-order-items-close="true" aria-label="Close order items popup">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Items</p>
+          <p id="profile-order-items-count" class="font-headline-sm text-headline-sm">0</p>
+        </div>
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Quantity</p>
+          <p id="profile-order-items-total-qty" class="font-headline-sm text-headline-sm">0</p>
+        </div>
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Total</p>
+          <p id="profile-order-items-total-amount" class="font-headline-sm text-headline-sm">$0.00</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-outline-variant/30">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant">
+              <th class="py-sm px-sm">#</th>
+              <th class="py-sm px-sm">PRODUCT</th>
+              <th class="py-sm px-sm">QTY</th>
+              <th class="py-sm px-sm">UNIT PRICE</th>
+              <th class="py-sm px-sm">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody id="profile-order-items-body" class="text-body-sm"></tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-5">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-order-items-close="true">CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const USER_PROFILES = {
   admin: {
     key: 'admin',
     displayName: 'Admin',
-    role: 'SYSTEM ADMINISTRATOR',
     location: 'Buenos Aires, Argentina',
     avatar: { initials: 'AD', colors: ['#006970', '#00f0ff'] },
-    overviewTitle: 'Automation Highlights',
-    overviewSubtitle: '4 ACTIVE RULES',
-    overviewItems: [
-      { icon: 'routine', title: 'Night Mode', text: 'Lights, climate and audio sync' },
-      { icon: 'security', title: 'Security', text: 'Door and motion alerts enabled' },
-      { icon: 'bolt', title: 'Energy', text: 'Smart plugs saving 18% this month' },
-      { icon: 'hub', title: 'Scenes', text: 'Away, Work and Relax presets' },
-      { icon: 'speaker', title: 'Voice', text: '3 assistants paired across rooms' },
-      { icon: 'devices', title: 'Inventory', text: '24 active devices monitored' }
+    profileData: {
+      username: 'admin',
+      email: 'admin@aio.com',
+      password: 'admin123',
+      firstName: 'Admin',
+      lastName: 'Main',
+      roleId: 1
+    },
+    loginSessions: [
+      { dateTime: '2026-05-29 14:02', detail: 'Web - Chrome / Windows' },
+      { dateTime: '2026-05-29 09:41', detail: 'Web - Edge / Windows' },
+      { dateTime: '2026-05-28 21:15', detail: 'Web - Chrome / macOS' }
     ],
-    logs: [
-      { time: '14:02', title: 'LOGIN OK' },
-      { time: '13:46', title: 'SCAN OK' },
-      { time: '12:20', title: 'DEVICE LINKED' },
-      { time: '10:15', title: 'ACCESS BLOCKED' }
+    paymentMethods: [
+      { label: 'Visa ending in 4432', detail: 'Expires 11/28' },
+      { label: 'Mastercard ending in 9011', detail: 'Expires 06/27' }
+    ],
+    supportClaims: [
+      { dateTime: '2026-05-18 17:30', title: 'Refund delay', status: 'Closed' },
+      { dateTime: '2026-05-12 10:45', title: 'Invoice correction', status: 'In progress' },
+      { dateTime: '2026-05-06 08:10', title: 'Duplicate charge review', status: 'Open' }
     ],
     history: [
-      { id: 'ORD-2024-001', product: 'Apple HomePod mini', category: 'SPEAKER', date: '2024-11-20 09:12', status: 'DELIVERED' },
-      { id: 'ORD-2024-002', product: 'Amazon Echo (4th Gen)', category: 'SPEAKER', date: '2024-11-15 14:45', status: 'SHIPPED' },
-      { id: 'ORD-2024-003', product: 'Google Nest Hub (2nd Gen)', category: 'DISPLAY', date: '2024-10-30 11:20', status: 'DELIVERED' }
+      {
+        id: 'ORD-2026-001',
+        date: '2026-05-29 14:15',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Apple HomePod mini', quantity: 1, unitPrice: 99 },
+          { name: 'Apple TV 4K', quantity: 1, unitPrice: 129 }
+        ]
+      },
+      {
+        id: 'ORD-2026-002',
+        date: '2026-05-19 10:05',
+        status: 'SHIPPED',
+        orderItems: [
+          { name: 'Amazon Echo Show 8 (3rd Gen)', quantity: 2, unitPrice: 149.99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-003',
+        date: '2026-04-30 18:22',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Google Nest Audio', quantity: 1, unitPrice: 99.99 },
+          { name: 'Google Nest Hub (2nd Gen)', quantity: 1, unitPrice: 99.99 }
+        ]
+      }
     ]
   },
   user: {
     key: 'user',
     displayName: 'User',
-    role: 'HOME USER',
     location: 'Córdoba, Argentina',
     avatar: { initials: 'US', colors: ['#5d5e61', '#00dbe9'] },
-    overviewTitle: 'Home Snapshot',
-    overviewSubtitle: '3 ACTIVE ROOMS',
-    overviewItems: [
-      { icon: 'home', title: 'Living room', text: 'Speaker + display routines' },
-      { icon: 'thermostat', title: 'Climate', text: '21.4°C target with auto schedule' },
-      { icon: 'camera_indoor', title: 'Security', text: 'Camera armed while away' },
-      { icon: 'music_note', title: 'Media', text: 'Streaming shortcuts ready' },
-      { icon: 'lightbulb', title: 'Lighting', text: 'Sunset scene on tap' },
-      { icon: 'favorite', title: 'Favorites', text: 'HomePod mini and Nest Hub' }
+    profileData: {
+      username: 'user',
+      email: 'user@example.com',
+      password: 'user123',
+      firstName: 'User',
+      lastName: 'Demo',
+      roleId: 2
+    },
+    loginSessions: [
+      { dateTime: '2026-05-29 08:20', detail: 'Web - Chrome / Android' },
+      { dateTime: '2026-05-28 22:09', detail: 'Web - Safari / iOS' },
+      { dateTime: '2026-05-26 19:44', detail: 'Web - Edge / Windows' }
     ],
-    logs: [
-      { time: '18:10', title: 'SCENE ON' },
-      { time: '15:22', title: 'TEMP ADJUSTED' },
-      { time: '13:40', title: 'VOICE MATCH' },
-      { time: '08:05', title: 'DEVICE ONLINE' }
+    paymentMethods: [
+      { label: 'Amex ending in 7744', detail: 'Expires 02/29' },
+      { label: 'Visa debit ending in 2250', detail: 'Expires 09/27' }
+    ],
+    supportClaims: [
+      { dateTime: '2026-05-22 13:52', title: 'Delivery date change requested because courier attempted delivery at the wrong address twice and the package status was not updated in real time by the carrier system', status: 'Resolved' },
+      { dateTime: '2026-05-16 09:18', title: 'Product setup help', status: 'Closed' },
+      { dateTime: '2026-05-10 20:10', title: 'Warranty inquiry', status: 'In progress' }
     ],
     history: [
-      { id: 'ORD-2024-101', product: 'Amazon Echo Show 8', category: 'DISPLAY', date: '2024-11-21 19:02', status: 'DELIVERED' },
-      { id: 'ORD-2024-102', product: 'Google Nest Audio', category: 'AUDIO', date: '2024-11-03 12:34', status: 'PROCESSING' },
-      { id: 'ORD-2024-103', product: 'Apple TV 4K', category: 'STREAMING', date: '2024-10-18 17:10', status: 'DELIVERED' }
+      {
+        id: 'ORD-2026-101',
+        date: '2026-05-27 19:02',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Amazon Echo Show 8 (3rd Gen)', quantity: 1, unitPrice: 149.99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-102',
+        date: '2026-05-08 12:34',
+        status: 'PROCESSING',
+        orderItems: [
+          { name: 'Google Nest Audio', quantity: 1, unitPrice: 99.99 },
+          { name: 'Apple HomePod mini', quantity: 1, unitPrice: 99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-103',
+        date: '2026-04-18 17:10',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Apple TV 4K', quantity: 1, unitPrice: 129 }
+        ]
+      }
     ]
   }
 };
@@ -1051,12 +1304,15 @@ let newsletterFeedbackTimeoutId = null;
 let supportFeedbackTimeoutId = null;
 let currentProductId = 'homepodMini';
 let cartState = {};
+let pendingProfilePayload = null;
+let currentProfileOrderId = null;
+let pendingPaymentMethodIndex = null;
 
 const storeFilterState = {
   query: '',
-  category: new Set(),
-  assistant: new Set(),
-  connectivity: new Set(),
+  category: '',
+  assistant: '',
+  connectivity: '',
   maxPrice: ''
 };
 
@@ -1230,16 +1486,40 @@ function handlePopupDismiss(event) {
   if (shouldClose) closePopups();
 }
 
+function formatProfileDateTime(value) {
+  const [datePart, timePart = ''] = String(value || '').split(' ');
+  const [year, month, day] = datePart.split('-');
+  if (!year || !month || !day) return String(value || '');
+  return `${day}/${month}/${year}${timePart ? ' ' + timePart : ''}`;
+}
+
+function getOrderSummary(order) {
+  const items = Array.isArray(order?.orderItems) ? order.orderItems : [];
+  const itemCount = items.reduce((acc, item) => acc + Number(item.quantity || 0), 0);
+  const total = items.reduce((acc, item) => acc + (Number(item.quantity || 0) * Number(item.unitPrice || 0)), 0);
+  return { itemCount, total };
+}
+
+function getCurrentProfile() {
+  return USER_PROFILES[currentUserKey] || USER_PROFILES.user;
+}
+
+function hasAdminRoleInStorage() {
+  const storedRole = String(localStorage.getItem('role') || '').trim();
+  return storedRole === 'ADMIN';
+}
+
+function getProfileOrderById(orderId) {
+  const profile = getCurrentProfile();
+  return (profile.history || []).find((order) => String(order.id) === String(orderId));
+}
+
 function renderProfile(userKey = currentUserKey) {
   const profile = USER_PROFILES[userKey] || USER_PROFILES.user;
   currentUserKey = profile.key;
   localStorage.setItem('aio-current-user', currentUserKey);
-
-  const formatOrderDate = (value) => {
-    const [datePart] = String(value).split(' ');
-    const [year, month, day] = datePart.split('-');
-    return `${day}/${month}/${year}`;
-  };
+  const isAdminByStorage = hasAdminRoleInStorage();
+  const resolvedRole = isAdminByStorage ? 'SYSTEM ADMINISTRATOR' : 'HOME USER';
 
   const avatar = document.getElementById('profile-avatar');
   if (avatar) {
@@ -1250,55 +1530,93 @@ function renderProfile(userKey = currentUserKey) {
   const role = document.getElementById('profile-role');
   const name = document.getElementById('profile-name');
   const location = document.getElementById('profile-location');
-  const overviewTitle = document.getElementById('profile-overview-title');
-  const overviewSubtitle = document.getElementById('profile-overview-subtitle');
-  const overviewItems = document.getElementById('profile-overview-items');
-  const logsList = document.getElementById('security-logs-list');
+  const goAdminDashboardBtn = document.getElementById('go-admin-dashboard-btn');
+  const loginSessionsList = document.getElementById('profile-login-sessions');
+  const paymentMethodsList = document.getElementById('profile-payment-methods');
+  const supportClaimsList = document.getElementById('profile-support-claims');
+  const buyerCount = document.getElementById('profile-buyer-level-count');
+  const buyerBar = document.getElementById('profile-buyer-level-bar');
+  const buyerPercent = document.getElementById('profile-buyer-level-percent');
   const historyBody = document.getElementById('purchase-history-body');
 
-  if (role) role.textContent = profile.role;
-  if (name) name.textContent = profile.displayName;
+  if (role) role.textContent = resolvedRole;
+  if (name) name.textContent = `${profile.profileData.firstName} ${profile.profileData.lastName}`.trim();
   if (location) location.innerHTML = `<span class="material-symbols-outlined text-[16px]">location_on</span>${profile.location}`;
-  if (overviewTitle) overviewTitle.textContent = profile.overviewTitle;
-  if (overviewSubtitle) overviewSubtitle.textContent = profile.overviewSubtitle;
+  if (goAdminDashboardBtn) {
+    goAdminDashboardBtn.classList.toggle('hidden', !isAdminByStorage);
+  }
 
-  if (overviewItems) {
-    overviewItems.innerHTML = profile.overviewItems.map((item) => `
-      <div class="p-sm bg-surface-container-low border border-outline-variant/20 rounded-xl hover:border-primary-fixed-dim/50 transition-all group">
-        <div class="flex justify-between items-start mb-sm">
-          <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">${item.icon}</span>
-          <div class="w-2 h-2 rounded-full bg-primary-fixed-dim cyber-glow"></div>
+  if (loginSessionsList) {
+    loginSessionsList.innerHTML = profile.loginSessions.map((entry) => `
+      <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex flex-col gap-1">
+        <div class="font-label-caps text-[11px] text-on-surface">${formatProfileDateTime(entry.dateTime)}</div>
+        <div class="text-body-sm text-on-surface-variant">${entry.detail}</div>
+      </div>
+    `).join('');
+  }
+
+  if (paymentMethodsList) {
+    if (profile.paymentMethods.length === 0) {
+      paymentMethodsList.innerHTML = '<div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low text-body-sm text-on-surface-variant">No saved payment methods.</div>';
+    } else {
+      paymentMethodsList.innerHTML = profile.paymentMethods.map((method, index) => `
+        <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex items-start justify-between gap-sm">
+          <div>
+            <div class="font-label-caps text-[11px] text-on-surface">${method.label}</div>
+            <div class="text-body-sm text-on-surface-variant">${method.detail}</div>
+          </div>
+          <div class="flex items-center gap-sm shrink-0">
+            <span class="material-symbols-outlined text-primary">payments</span>
+            <button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" aria-label="Remove payment method" data-profile-action="delete-payment-method" data-payment-method-index="${index}">
+              <span class="material-symbols-outlined text-[18px] leading-none">delete</span>
+            </button>
+          </div>
         </div>
-        <h3 class="font-label-caps text-label-caps mb-xs">${item.title}</h3>
-        <p class="text-[10px] text-on-surface-variant">${item.text}</p>
+      `).join('');
+    }
+  }
+
+  if (supportClaimsList) {
+    supportClaimsList.innerHTML = profile.supportClaims.map((claim) => `
+      <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex flex-col gap-1">
+        <div class="font-label-caps text-[11px] text-on-surface">${formatProfileDateTime(claim.dateTime)}</div>
+        <div class="flex items-start justify-between gap-sm">
+          <div class="text-body-sm text-on-surface-variant two-line-clamp flex-1 min-w-0">${claim.title}</div>
+          <div class="flex items-center gap-xs text-primary shrink-0">
+            <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+            <span>${claim.status}</span>
+          </div>
+        </div>
       </div>
     `).join('');
   }
 
-  if (logsList) {
-    logsList.innerHTML = profile.logs.map((entry) => `
-      <div class="flex items-center gap-sm pb-sm border-b border-outline-variant/20 last:border-b-0">
-        <div class="text-[10px] font-mono text-on-surface-variant whitespace-nowrap">${entry.time}</div>
-        <div class="font-label-caps text-[11px] text-on-surface">${entry.title}</div>
-      </div>
-    `).join('');
-  }
+  const monthlyOrders = (profile.history || []).filter((order) => {
+    const [orderDate] = String(order.date || '').split(' ');
+    const [lastDate] = String(profile.history?.[0]?.date || '').split(' ');
+    if (!orderDate || !lastDate) return false;
+    return orderDate.slice(0, 7) === lastDate.slice(0, 7);
+  }).length;
+  const monthlyProgress = Math.min(100, Math.round((monthlyOrders / 50) * 100));
+
+  if (buyerCount) buyerCount.textContent = `${monthlyOrders}/50`;
+  if (buyerBar) buyerBar.style.width = `${monthlyProgress}%`;
+  if (buyerPercent) buyerPercent.textContent = `${monthlyProgress}% of monthly goal`;
 
   if (historyBody) {
     historyBody.innerHTML = profile.history.map((order) => `
-      <tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors relative">
+      <tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors">
         <td class="py-md px-sm font-mono text-[12px]">${order.id}</td>
-        <td class="py-md px-sm">${order.product}</td>
-        <td class="py-md px-sm"><span class="px-2 py-0.5 bg-secondary-container rounded text-[10px]">${order.category}</span></td>
-        <td class="py-md px-sm text-on-surface-variant">${formatOrderDate(order.date)} ${String(order.date).split(' ')[1] || ''}</td>
+        <td class="py-md px-sm text-on-surface-variant">${formatProfileDateTime(order.date)}</td>
         <td class="py-md px-sm"><div class="flex items-center gap-xs text-primary"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div>${order.status}</div></td>
+        <td class="py-md px-sm">${getOrderSummary(order).itemCount}</td>
+        <td class="py-md px-sm">${formatMoney(getOrderSummary(order).total)}</td>
         <td class="py-md px-sm text-right relative">
-          <button class="material-symbols-outlined text-on-surface-variant" onclick="toggleOrderMenu(event, '${order.id}')">more_vert</button>
-          <div id="order-menu-${order.id}" class="hidden absolute right-2 top-12 z-20 w-40 rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-xl shadow-primary/10 p-1 text-left" onclick="event.stopPropagation()">
-            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Ver detalle</button>
-            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Reenviar</button>
-            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" onclick="closeAllOrderMenus()">Descargar factura</button>
-            <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-error/10 text-sm text-error" onclick="closeAllOrderMenus()">Eliminar</button>
+          <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-primary" onclick="toggleOrderMenu(event, '${order.id}')">more_vert</button>
+          <div id="order-menu-${order.id}" class="hidden absolute right-2 top-10 z-20 w-44 rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-xl shadow-primary/10 p-1 text-left">
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-detail" data-order-id="${order.id}">Ver detalle</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-items" data-order-id="${order.id}">Ver Ítems</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="download-invoice" data-order-id="${order.id}">Descargar factura</button>
           </div>
         </td>
       </tr>
@@ -1314,10 +1632,146 @@ function toggleOrderMenu(event, orderId) {
   event.stopPropagation();
   const menu = document.getElementById(`order-menu-${orderId}`);
   if (!menu) return;
-
   const isHidden = menu.classList.contains('hidden');
   closeAllOrderMenus();
   if (isHidden) menu.classList.remove('hidden');
+}
+
+function openProfileEditPopup() {
+  const profile = getCurrentProfile();
+  document.getElementById('profile-edit-username').value = profile.profileData.username || '';
+  document.getElementById('profile-edit-email').value = profile.profileData.email || '';
+  document.getElementById('profile-edit-password').value = profile.profileData.password || '';
+  document.getElementById('profile-edit-first-name').value = profile.profileData.firstName || '';
+  document.getElementById('profile-edit-last-name').value = profile.profileData.lastName || '';
+  document.getElementById('profile-edit-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileEditPopup() {
+  document.getElementById('profile-edit-popup').classList.add('hidden');
+  if (document.getElementById('profile-edit-confirm-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openProfileEditConfirmPopup() {
+  document.getElementById('profile-edit-confirm-popup').classList.remove('hidden');
+}
+
+function closeProfileEditConfirmPopup() {
+  document.getElementById('profile-edit-confirm-popup').classList.add('hidden');
+  if (document.getElementById('profile-edit-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openPaymentMethodDeleteConfirmPopup(methodIndex) {
+  const profile = getCurrentProfile();
+  if (!Number.isInteger(methodIndex)) return;
+  if (methodIndex < 0 || methodIndex >= profile.paymentMethods.length) return;
+  pendingPaymentMethodIndex = methodIndex;
+  document.getElementById('payment-method-delete-confirm-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closePaymentMethodDeleteConfirmPopup() {
+  document.getElementById('payment-method-delete-confirm-popup').classList.add('hidden');
+  pendingPaymentMethodIndex = null;
+  if (
+    document.getElementById('profile-edit-popup').classList.contains('hidden') &&
+    document.getElementById('profile-edit-confirm-popup').classList.contains('hidden') &&
+    document.getElementById('profile-order-detail-popup').classList.contains('hidden') &&
+    document.getElementById('profile-order-items-popup').classList.contains('hidden')
+  ) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function confirmDeletePaymentMethod() {
+  const profile = getCurrentProfile();
+  if (!Number.isInteger(pendingPaymentMethodIndex)) return;
+  if (pendingPaymentMethodIndex < 0 || pendingPaymentMethodIndex >= profile.paymentMethods.length) {
+    closePaymentMethodDeleteConfirmPopup();
+    return;
+  }
+  profile.paymentMethods.splice(pendingPaymentMethodIndex, 1);
+  closePaymentMethodDeleteConfirmPopup();
+  renderProfile(currentUserKey);
+}
+
+function saveProfileChanges() {
+  if (!pendingProfilePayload) return;
+  const profile = getCurrentProfile();
+  profile.profileData = { ...pendingProfilePayload };
+  profile.displayName = pendingProfilePayload.firstName || pendingProfilePayload.username;
+  if (profile.avatar?.initials) {
+    const initials = `${(pendingProfilePayload.firstName || 'U').charAt(0)}${(pendingProfilePayload.lastName || 'S').charAt(0)}`.toUpperCase();
+    profile.avatar.initials = initials;
+  }
+  pendingProfilePayload = null;
+  closeProfileEditConfirmPopup();
+  closeProfileEditPopup();
+  renderProfile(currentUserKey);
+}
+
+function openProfileOrderDetailPopup(orderId) {
+  const order = getProfileOrderById(orderId);
+  if (!order) return;
+  const summary = getOrderSummary(order);
+  currentProfileOrderId = String(order.id);
+  document.getElementById('order-detail-id').value = order.id;
+  document.getElementById('order-detail-date').value = formatProfileDateTime(order.date);
+  document.getElementById('order-detail-status').value = order.status;
+  document.getElementById('order-detail-items-count').value = String(summary.itemCount);
+  document.getElementById('order-detail-total').value = formatMoney(summary.total);
+  document.getElementById('profile-order-detail-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileOrderDetailPopup() {
+  document.getElementById('profile-order-detail-popup').classList.add('hidden');
+  if (document.getElementById('profile-order-items-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openProfileOrderItemsPopup(orderId) {
+  const order = getProfileOrderById(orderId);
+  if (!order) return;
+  currentProfileOrderId = String(order.id);
+  const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+  const itemCount = items.length;
+  const totalQty = items.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  const totalAmount = items.reduce((sum, item) => sum + (Number(item.quantity || 0) * Number(item.unitPrice || 0)), 0);
+
+  document.getElementById('profile-order-items-title').textContent = `Order ${order.id} items`;
+  document.getElementById('profile-order-items-count').textContent = String(itemCount);
+  document.getElementById('profile-order-items-total-qty').textContent = String(totalQty);
+  document.getElementById('profile-order-items-total-amount').textContent = formatMoney(totalAmount);
+
+  const body = document.getElementById('profile-order-items-body');
+  if (items.length === 0) {
+    body.innerHTML = '<tr><td colspan="5" class="py-md px-sm text-on-surface-variant">No order items for this order.</td></tr>';
+  } else {
+    body.innerHTML = items.map((item, index) => `
+      <tr class="border-b border-outline-variant/20 last:border-b-0">
+        <td class="py-sm px-sm">${index + 1}</td>
+        <td class="py-sm px-sm">${item.name}</td>
+        <td class="py-sm px-sm">${item.quantity}</td>
+        <td class="py-sm px-sm">${formatMoney(item.unitPrice)}</td>
+        <td class="py-sm px-sm">${formatMoney(Number(item.quantity || 0) * Number(item.unitPrice || 0))}</td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('profile-order-items-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileOrderItemsPopup() {
+  document.getElementById('profile-order-items-popup').classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
 }
 
 function handleLogout(event) {
@@ -1325,6 +1779,11 @@ function handleLogout(event) {
   localStorage.removeItem('aio-current-user');
   currentUserKey = 'user';
   globalThis.location.href = '../auth/Login.html';
+}
+
+function goToAdminDashboard() {
+  if (!hasAdminRoleInStorage()) return;
+  globalThis.location.href = '../admin/AdminDashboard.html';
 }
 
 // ── Router ──────────────────────────────────────
@@ -1524,9 +1983,9 @@ function getVisibleStoreProducts() {
 
     const searchable = (product.title + ' ' + product.description + ' ' + product.category).toLowerCase();
     const matchesQuery = !query || searchable.includes(query);
-    const matchesCategory = !storeFilterState.category.size || storeFilterState.category.has(product.categoryKey);
-    const matchesAssistant = !storeFilterState.assistant.size || storeFilterState.assistant.has(product.assistantKey);
-    const matchesConnectivity = !storeFilterState.connectivity.size || product.connectivityKeys.some((key) => storeFilterState.connectivity.has(key));
+    const matchesCategory = !storeFilterState.category || storeFilterState.category === product.categoryKey;
+    const matchesAssistant = !storeFilterState.assistant || storeFilterState.assistant === product.assistantKey;
+    const matchesConnectivity = !storeFilterState.connectivity || product.connectivityKeys.includes(storeFilterState.connectivity);
     const maxPrice = Number.parseFloat(storeFilterState.maxPrice);
     const hasMaxPrice = Number.isFinite(maxPrice) && maxPrice >= 0;
     const matchesPrice = !hasMaxPrice || product.priceValue <= maxPrice;
@@ -1579,7 +2038,7 @@ function updateFilterChipStyles() {
   document.querySelectorAll('.filter-chip').forEach((chip) => {
     const group = chip.dataset.filterGroup;
     const value = chip.dataset.filterValue;
-    const isActive = storeFilterState[group]?.has(value);
+    const isActive = storeFilterState[group] === value;
     chip.classList.toggle('bg-primary-container/30', !!isActive);
     chip.classList.toggle('text-on-primary-container', !!isActive);
     chip.classList.toggle('border', !!isActive);
@@ -1590,21 +2049,17 @@ function updateFilterChipStyles() {
 }
 
 function toggleStoreFilter(group, value) {
-  if (!storeFilterState[group]) return;
-  if (storeFilterState[group].has(value)) {
-    storeFilterState[group].delete(value);
-  } else {
-    storeFilterState[group].add(value);
-  }
+  if (!(group in storeFilterState)) return;
+  storeFilterState[group] = storeFilterState[group] === value ? '' : value;
   updateFilterChipStyles();
   renderStoreProducts();
 }
 
 function clearStoreFilters() {
   storeFilterState.query = '';
-  storeFilterState.category.clear();
-  storeFilterState.assistant.clear();
-  storeFilterState.connectivity.clear();
+  storeFilterState.category = '';
+  storeFilterState.assistant = '';
+  storeFilterState.connectivity = '';
   storeFilterState.maxPrice = '';
 
   const input = document.getElementById('store-search-input');
@@ -1739,7 +2194,6 @@ const initPage = location.hash.replace('#', '') || 'home';
 applyTheme(currentTheme);
 navigate(PAGES.includes(initPage) ? initPage : 'home');
 
-document.addEventListener('click', closeAllOrderMenus);
 document.addEventListener('click', handleFooterPopupLinks);
 document.addEventListener('click', handlePopupDismiss);
 document.addEventListener('click', (event) => {
@@ -1749,8 +2203,64 @@ document.addEventListener('click', (event) => {
   const value = chip.dataset.filterValue;
   if (group && value) toggleStoreFilter(group, value);
 });
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('[id^="order-menu-"]') && !event.target.closest('button[onclick^="toggleOrderMenu"]')) {
+    closeAllOrderMenus();
+  }
+
+  const actionBtn = event.target.closest('button[data-profile-action]');
+  if (!actionBtn) return;
+
+  const action = actionBtn.dataset.profileAction;
+  if (action === 'download-invoice') {
+    closeAllOrderMenus();
+    return;
+  }
+  if (action === 'delete-payment-method') {
+    const methodIndex = Number(actionBtn.dataset.paymentMethodIndex);
+    if (!Number.isInteger(methodIndex)) return;
+    openPaymentMethodDeleteConfirmPopup(methodIndex);
+    return;
+  }
+
+  const orderId = actionBtn.dataset.orderId;
+  if (!orderId) return;
+
+  if (action === 'view-order-detail') {
+    closeAllOrderMenus();
+    openProfileOrderDetailPopup(orderId);
+  }
+  if (action === 'view-order-items') {
+    closeAllOrderMenus();
+    openProfileOrderItemsPopup(orderId);
+  }
+});
+document.addEventListener('click', (event) => {
+  if (event.target.closest('[data-profile-edit-close="true"]')) {
+    closeProfileEditPopup();
+  }
+  if (event.target.closest('[data-profile-confirm-close="true"]')) {
+    closeProfileEditConfirmPopup();
+  }
+  if (event.target.closest('[data-profile-order-detail-close="true"]')) {
+    closeProfileOrderDetailPopup();
+  }
+  if (event.target.closest('[data-profile-order-items-close="true"]')) {
+    closeProfileOrderItemsPopup();
+  }
+  if (event.target.closest('[data-payment-method-confirm-close="true"]')) {
+    closePaymentMethodDeleteConfirmPopup();
+  }
+});
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closePopups();
+  if (event.key === 'Escape') {
+    closePopups();
+    closeProfileEditConfirmPopup();
+    closeProfileEditPopup();
+    closeProfileOrderDetailPopup();
+    closeProfileOrderItemsPopup();
+    closePaymentMethodDeleteConfirmPopup();
+  }
 });
 
 
@@ -1863,6 +2373,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const clearFiltersBtn = document.getElementById('store-clear-filters');
   if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearStoreFilters);
+
+  const openProfileEditBtn = document.getElementById('open-profile-edit-btn');
+  if (openProfileEditBtn) {
+    openProfileEditBtn.addEventListener('click', openProfileEditPopup);
+  }
+
+  const goAdminDashboardBtn = document.getElementById('go-admin-dashboard-btn');
+  if (goAdminDashboardBtn) {
+    goAdminDashboardBtn.addEventListener('click', goToAdminDashboard);
+  }
+
+  const profileEditForm = document.getElementById('profile-edit-form');
+  if (profileEditForm) {
+    profileEditForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      pendingProfilePayload = {
+        username: String(document.getElementById('profile-edit-username').value || '').trim(),
+        email: String(document.getElementById('profile-edit-email').value || '').trim(),
+        password: String(document.getElementById('profile-edit-password').value || ''),
+        firstName: String(document.getElementById('profile-edit-first-name').value || '').trim(),
+        lastName: String(document.getElementById('profile-edit-last-name').value || '').trim(),
+        roleId: Number(getCurrentProfile().profileData.roleId || 2)
+      };
+      if (!pendingProfilePayload.username || !pendingProfilePayload.email || !pendingProfilePayload.password) {
+        return;
+      }
+      openProfileEditConfirmPopup();
+    });
+  }
+
+  const confirmProfileSaveBtn = document.getElementById('confirm-profile-save-btn');
+  if (confirmProfileSaveBtn) {
+    confirmProfileSaveBtn.addEventListener('click', saveProfileChanges);
+  }
+
+  const confirmPaymentMethodDeleteBtn = document.getElementById('confirm-payment-method-delete-btn');
+  if (confirmPaymentMethodDeleteBtn) {
+    confirmPaymentMethodDeleteBtn.addEventListener('click', confirmDeletePaymentMethod);
+  }
 
   updateFilterChipStyles();
   renderStoreProducts();
