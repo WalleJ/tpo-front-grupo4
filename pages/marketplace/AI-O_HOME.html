@@ -1,0 +1,3147 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-O HOME MARKETPLACE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary-fixed": "#e2e2e5","primary-fixed-dim": "#00dbe9","tertiary-fixed-dim": "#c6c6c9","on-tertiary-fixed": "#1a1c1e","secondary-fixed": "#e2e2e4","error": "#ba1a1a","surface-container-lowest": "#ffffff","outline-variant": "#b9cacb","on-secondary-container": "#616365","on-primary": "#ffffff","surface-bright": "#fcf8f9","inverse-surface": "#313031","tertiary-container": "#d9d9dc","on-tertiary": "#ffffff","on-background": "#1c1b1c","on-tertiary-fixed-variant": "#454749","background": "#fcf8f9","surface-container-low": "#f6f3f4","on-surface-variant": "#3b494b","surface-variant": "#e5e2e3","primary-fixed": "#7df4ff","on-tertiary-container": "#5d5f61","outline": "#6a7a7b","secondary-container": "#dfdfe1","surface-dim": "#dcd9da","secondary": "#5d5e60","surface-container-highest": "#e5e2e3","on-secondary-fixed-variant": "#454749","tertiary": "#5d5e61","inverse-on-surface": "#f3f0f1","surface-container-high": "#ebe7e8","on-primary-container": "#006970","primary": "#006970","surface": "#fcf8f9","on-secondary": "#ffffff","on-secondary-fixed": "#1a1c1d","error-container": "#ffdad6","on-primary-fixed-variant": "#004f54","surface-container": "#f0edee","secondary-fixed-dim": "#c6c6c8","on-surface": "#1c1b1c","inverse-primary": "#00dbe9","primary-container": "#00f0ff","on-error-container": "#93000a","on-primary-fixed": "#002022","surface-tint": "#006970","on-error": "#ffffff"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: { "xl": "80px", "base": "8px", "xs": "4px", "sm": "12px", "md": "24px", "margin": "32px", "lg": "48px", "gutter": "24px" },
+        fontFamily: { "headline-sm": ["Sora"], "label-caps": ["Sora"], "body-md": ["Sora"], "headline-lg": ["Sora"], "body-lg": ["Sora"], "headline-md": ["Sora"], "display": ["Sora"], "body-sm": ["Sora"] },
+        fontSize: {
+          "headline-sm": ["20px", {"lineHeight":"1.4","fontWeight":"500"}],
+          "label-caps": ["12px", {"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"700"}],
+          "body-md": ["16px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-lg": ["32px", {"lineHeight":"1.2","letterSpacing":"-0.01em","fontWeight":"600"}],
+          "body-lg": ["18px", {"lineHeight":"1.6","fontWeight":"400"}],
+          "headline-md": ["24px", {"lineHeight":"1.3","fontWeight":"600"}],
+          "display": ["64px", {"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "body-sm": ["14px", {"lineHeight":"1.5","fontWeight":"400"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  /* ── Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { min-height: 100dvh; font-family: 'Sora', sans-serif; background: #fcf8f9; color: #1c1b1c; }
+
+  /* ── Glass panels ── */
+  .glass-panel {
+    background: rgba(252,248,249,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(185,202,203,0.3);
+  }
+  .glass-panel-white {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(185,202,203,0.3);
+  }
+
+  /* ── Material Icons ── */
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Mesh gradient background ── */
+  .mesh-gradient {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(0,219,233,0.07) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(0,105,112,0.07) 0px, transparent 55%);
+  }
+
+  /* ── Scrollable sliders (hide scrollbar) ── */
+  .slider-container {
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .slider-container::-webkit-scrollbar { display: none; }
+
+  /* ── Cyber glow ── */
+  .cyber-glow { box-shadow: 0 0 15px rgba(0,219,233,0.25); }
+
+  /* ── Page transitions ── */
+  .page { display: none; animation: fadeIn 0.25s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Focus input glow ── */
+  .cyber-glow-focus:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,219,233,0.3);
+    border-color: #00dbe9;
+  }
+
+  .modal-backdrop { background: rgba(24, 35, 38, 0.58); }
+
+  .two-line-clamp {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Custom scrollbar for main scroll ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,105,112,0.2); border-radius: 9999px; }
+
+  /* ── Theme toggle ── */
+  html.dark body { background: #081012; color: #edf6f6; }
+  html.dark .glass-panel,
+  html.dark .glass-panel-white {
+    background: rgba(10, 17, 19, 0.88);
+    border-color: rgba(125, 160, 163, 0.16);
+  }
+  html.dark header,
+  html.dark footer,
+  html.dark nav.md\:hidden {
+    background: rgba(8, 16, 18, 0.92);
+  }
+  html.dark .mesh-gradient {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(0,219,233,0.12) 0px, transparent 55%),
+      radial-gradient(at 100% 100%, rgba(0,105,112,0.14) 0px, transparent 55%),
+      linear-gradient(180deg, rgba(8,16,18,0.98), rgba(8,16,18,0.92));
+  }
+  html.dark .bg-surface { background-color: #081012 !important; }
+  html.dark .bg-surface-container-low,
+  html.dark .bg-surface-container-lowest,
+  html.dark .bg-surface-container,
+  html.dark .bg-surface-container-high,
+  html.dark .bg-surface-container-highest,
+  html.dark .bg-surface-variant {
+    background-color: #10191b !important;
+  }
+  html.dark .text-on-surface { color: #edf6f6 !important; }
+  html.dark .text-on-surface-variant { color: #9cb3b6 !important; }
+  html.dark .text-outline,
+  html.dark .text-outline-variant { color: #7f9496 !important; }
+
+  /* ── Cart slide transitions ── */
+  .cart-slide-wrapper { position: relative; overflow: hidden; }
+  .cart-panel { width: 100%; }
+
+  /* ── Purchase button wave ── */
+  @keyframes purchaseWave {
+    0%   { box-shadow: 0 0 0 0 rgba(0,219,233,0.55); }
+    70%  { box-shadow: 0 0 0 22px rgba(0,219,233,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,219,233,0); }
+  }
+  .purchase-wave { animation: purchaseWave 0.7s ease forwards; }
+
+  /* ── Celebration ── */
+  @keyframes celebrationBounce {
+    0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+    60%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+    80%  { transform: scale(0.92) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes confettiFloat {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(90px) rotate(400deg) scale(0.5); opacity: 0; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to   { background-position:  200% center; }
+  }
+  .shimmer-text {
+    background: linear-gradient(90deg, #006970, #00dbe9, #00f0ff, #006970);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s linear infinite;
+  }
+  .celebration-icon { animation: celebrationBounce 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes countdownShrink {
+    from { width: 100%; }
+    to   { width: 0%;   }
+  }
+  .countdown-bar { animation: countdownShrink 5s linear forwards; }
+  .confetti-piece {
+    position: absolute;
+    border-radius: 3px;
+    animation: confettiFloat 1.6s ease-in forwards;
+    pointer-events: none;
+  }
+  @keyframes spinOnce {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .spin-once { animation: spinOnce 0.9s linear infinite; }
+</style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ══════════════════════════════════════════
+     TOP APP BAR (shared)
+══════════════════════════════════════════ -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+  <div class="flex justify-between items-center h-16 px-gutter max-w-[1280px] mx-auto">
+    <button onclick="navigate('home')" class="flex items-center gap-sm group">
+      <span class="material-symbols-outlined text-primary">blur_on</span>
+      <h1 class="font-display text-headline-md tracking-tighter text-primary">AI-O HOME</h1>
+    </button>
+    <nav class="hidden md:flex items-center gap-lg" id="desktop-nav">
+      <button onclick="navigate('home')"    data-page="home"    class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Home</button>
+      <button onclick="navigate('store')"   data-page="store"   class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Store</button>
+      <button onclick="navigate('cart')"    data-page="cart"    class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Cart</button>
+      <button onclick="navigate('profile')" data-page="profile" class="nav-link font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">Profile</button>
+    </nav>
+    <button onclick="toggleTheme()" class="w-10 h-10 inline-flex items-center justify-center rounded-full hover:bg-primary/5 active:scale-95 transition-all" aria-label="Toggle theme">
+      <span id="theme-icon" class="material-symbols-outlined block leading-none text-on-surface-variant">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active pt-16 pb-24 md:pb-0">
+
+  <!-- Hero -->
+  <section class="relative min-h-[600px] flex items-center overflow-hidden mesh-gradient">
+    <div class="max-w-[1280px] mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-lg items-center py-xl">
+      <div class="md:col-span-6 z-10">
+        <div class="inline-flex items-center gap-xs px-sm py-1 bg-primary-container/20 border border-primary/20 rounded-full mb-md">
+          <span class="material-symbols-outlined text-[14px] text-on-primary-container">bolt</span>
+          <span class="font-label-caps text-[10px] uppercase tracking-widest text-on-primary-container">AI Voice Assistant Ready</span>
+        </div>
+        <h2 class="font-display text-on-surface leading-none text-3xl md:text-5xl mb-sm font-bold">Your home, <span class="text-primary">powered by real AI.</span></h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-md">Discover smart devices with AI voice assistants to automate your home with voice commands, routines and centralized control.</p>
+        <div class="flex flex-wrap gap-md">
+          <button onclick="navigate('store')" class="bg-primary text-on-primary px-lg py-md rounded-xl font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20">VIEW AI PRODUCTS</button>
+          <button onclick="navigate('product')" class="glass-panel text-on-surface border border-outline-variant/50 px-lg py-md rounded-xl font-label-caps text-label-caps active:scale-95 transition-all">VIEW FEATURED</button>
+        </div>
+      </div>
+      <div class="md:col-span-6 relative h-[400px] md:h-[550px]">
+        <div class="absolute inset-0 bg-primary/5 rounded-[48px] rotate-3 blur-3xl"></div>
+        <img alt="Smart speakers with voice assistants" class="w-full h-full object-contain relative z-10 drop-shadow-2xl"
+          src="../../public/images/Smart%20speakers%20with%20voice%20assistants.jpg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="border-y border-outline-variant/20 bg-surface-container-low py-md">
+    <div class="max-w-[1280px] mx-auto px-gutter grid grid-cols-2 md:grid-cols-4 gap-md text-center">
+      <div><div class="font-display text-headline-md text-primary">3</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Top Assistants</div></div>
+      <div><div class="font-display text-headline-md text-primary">50+</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Real Products</div></div>
+      <div><div class="font-display text-headline-md text-primary">Matter</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Compatibility</div></div>
+      <div><div class="font-display text-headline-md text-primary">24/7</div><div class="font-label-caps text-[10px] text-on-surface-variant uppercase">Voice Control</div></div>
+    </div>
+  </section>
+
+  <!-- Featured Categories -->
+  <section class="py-xl max-w-[1280px] mx-auto px-gutter">
+    <div class="flex justify-between items-end mb-lg">
+      <div>
+        <h3 class="font-headline-lg text-headline-lg mb-xs">Featured Products</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant">Real devices with AI assistants for your home.</p>
+      </div>
+      <button onclick="navigate('store')" class="text-primary font-label-caps text-label-caps flex items-center gap-xs hover:underline">
+        EXPLORE FULL CATALOG <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </button>
+    </div>
+    <div class="flex flex-col gap-xl">
+
+      <!-- Neural Hubs Slider -->
+      <div class="relative group auto-slider" data-interval="4500">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Smart Speakers with AI Assistants</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('homepodMini')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Apple HomePod mini" class="w-full h-full object-cover" src="../../public/images/Apple%20HomePod%20mini.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Apple HomePod mini</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ECOSYSTEM</p><p class="text-body-sm font-medium">Apple Home</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('echo4')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Echo (4th Gen)" class="w-full h-full object-cover" src="../../public/images/Amazon%20Echo%20(4th%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Echo (4th Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">HUB</p><p class="text-body-sm font-medium">Zigbee / Matter</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('nestAudio')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Google Nest Audio" class="w-full h-full object-cover" src="../../public/images/Google%20Nest%20Audio.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Google Nest Audio</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Assistant</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">FUNCTION</p><p class="text-body-sm font-medium">Voice Match</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Smart Displays Slider -->
+      <div class="relative group auto-slider" data-interval="4000">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Smart Displays</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('nestHub2')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Google Nest Hub (2nd Gen)" class="w-full h-full object-cover" src="../../public/images/Google%20Nest%20Hub%20(2nd%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Google Nest Hub (2nd Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Assistant</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">DISPLAY</p><p class="text-body-sm font-medium">7in Touch</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('echoShow8')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Echo Show 8 (3rd Gen)" class="w-full h-full object-cover" src="../../public/images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Echo Show 8 (3rd Gen)</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">DISPLAY</p><p class="text-body-sm font-medium">8in HD</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Streaming & Voice Control Slider -->
+      <div class="relative group auto-slider" data-interval="5000">
+        <div class="flex justify-between items-center mb-md">
+          <h4 class="font-headline-md text-headline-md">Streaming & Voice Control</h4>
+          <div class="flex gap-xs">
+            <button class="prev-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_left</span></button>
+            <button class="next-btn p-2 rounded-full border border-outline-variant/30 hover:bg-primary/5 transition-colors inline-flex items-center justify-center"><span class="material-symbols-outlined text-[20px] text-primary leading-none">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="slider-container flex gap-md overflow-x-auto snap-x snap-mandatory pb-4">
+          <div onclick="showProductDetail('appleTv4k')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Apple TV 4K" class="w-full h-full object-cover" src="../../public/images/Apple%20TV%204K.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Apple TV 4K</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">VIDEO</p><p class="text-body-sm font-medium">4K HDR</p></div>
+            </div>
+          </div>
+          <div onclick="showProductDetail('fireTvCube')" class="slider-item min-w-[320px] md:min-w-[400px] snap-center glass-panel-white rounded-2xl p-md border border-outline-variant/30 shadow-sm cursor-pointer hover:border-primary/50 transition-colors">
+            <div class="aspect-video rounded-xl bg-surface-container mb-md overflow-hidden">
+              <img alt="Amazon Fire TV Cube" class="w-full h-full object-cover" src="../../public/images/Amazon%20Fire%20TV%20Cube.jpg">
+            </div>
+            <h5 class="font-headline-sm mb-xs">Amazon Fire TV Cube</h5>
+            <div class="grid grid-cols-2 gap-sm border-t border-outline-variant/20 pt-sm mt-sm">
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">ASSISTANT</p><p class="text-body-sm font-medium">AI Voice</p></div>
+              <div><p class="text-[10px] uppercase font-bold text-on-surface-variant opacity-60">VIDEO</p><p class="text-body-sm font-medium">4K Ultra HD</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-dots flex justify-center gap-xs mt-md">
+          <div class="dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+          <div class="dot w-2 h-2 rounded-full bg-outline-variant/50 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Promo card -->
+      <div class="glass-panel-white border border-outline-variant/30 rounded-2xl p-lg flex items-center gap-lg shadow-sm">
+        <div class="flex-1">
+          <div class="flex items-center gap-xs mb-sm">
+            <span class="material-symbols-outlined text-primary">new_releases</span>
+            <span class="font-label-caps text-label-caps text-primary">JUST ANNOUNCED</span>
+          </div>
+          <h4 class="font-headline-md mb-xs">New: Apple HomePod mini</h4>
+          <p class="font-body-sm text-on-surface-variant">360 Audio, AI voice assistant and smart home automation in a compact form factor.</p>
+        </div>
+        <button onclick="showProductDetail('homepodMini')" class="bg-primary-container text-on-primary-container px-md py-sm rounded-lg font-label-caps text-[10px] hover:shadow-md transition-shadow whitespace-nowrap">VIEW OFFER</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Newsletter CTA -->
+  <section class="max-w-[1280px] mx-auto px-gutter pb-xl">
+    <div class="bg-surface-container-highest rounded-[32px] p-lg md:p-xl flex flex-col md:flex-row items-center gap-lg text-center md:text-left relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      <div class="flex-1 z-10">
+        <h3 class="font-headline-lg text-headline-lg mb-sm">Get updates on the latest AI-powered smart home devices</h3>
+        <p class="font-body-md text-body-md text-on-surface-variant">Subscribe to get notified of new launches, discounts and AI assistant comparisons.</p>
+      </div>
+      <div class="w-full md:w-[440px] z-10">
+        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-sm w-full">
+          <input id="newsletter-email" class="bg-surface-container-lowest border border-outline-variant/50 px-md py-sm rounded-xl font-label-caps text-label-caps w-full md:w-80 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="email@domain.com" type="email" required>
+          <button type="submit" class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-all">SUBSCRIBE</button>
+        </form>
+        <p id="newsletter-feedback" class="mt-sm text-body-sm w-full break-words whitespace-normal leading-snug min-h-[22px]" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px] uppercase tracking-widest">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: ADMIN
+══════════════════════════════════════════ -->
+<div id="page-admin" class="page pt-16 pb-24 md:pb-0">
+  <main class="max-w-7xl mx-auto px-gutter py-lg">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-xl">
+      <div>
+        <h1 class="text-headline-lg font-headline-lg text-on-surface mb-xs">Device Administration</h1>
+        <p class="text-body-md text-on-surface-variant">Manage your store's product catalog and inventory.</p>
+      </div>
+      <div class="flex gap-sm w-full md:w-auto">
+        <button onclick="navigate('profile')" class="bg-primary hover:bg-on-primary-container text-white px-md py-sm rounded-lg flex items-center gap-xs transition-all active:scale-95 shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+          <span class="text-label-caps">ADD NEW PRODUCT</span>
+        </button>
+        <button onclick="handleLogout(event)" class="flex-1 md:flex-none px-md py-sm bg-error text-on-error font-label-caps text-label-caps rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs">
+          <span class="material-symbols-outlined text-[18px]">logout</span>LOGOUT
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex items-center gap-sm mb-lg overflow-x-auto pb-xs">
+      <button class="px-md py-base rounded-full bg-primary text-white text-label-caps whitespace-nowrap">ALL PRODUCTS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">TVS & DISPLAYS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">AUDIO SYSTEMS</button>
+      <button class="px-md py-base rounded-full glass-panel text-on-surface-variant hover:bg-surface-variant text-label-caps whitespace-nowrap transition-colors">CLIMATE CONTROL</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <!-- Device List Container -->
+      <div class="lg:col-span-8 space-y-md">
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Samsung 8K QLED TV" class="w-full h-full object-cover" src="../../public/images/Samsung%208K%20QLED%20TV.jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-primary px-xs bg-primary/10 rounded">TV-001</span>
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-label-caps text-on-surface-variant">ACTIVE</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Samsung 8K QLED TV</h3>
+            <p class="text-body-sm text-on-surface-variant">Smart TV • Living Room Display</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Amazon Echo (4th Gen)" class="w-full h-full object-cover" src="../../public/images/Amazon%20Echo%20(4th%20Gen).jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-on-secondary-fixed-variant px-xs bg-secondary-container rounded">AUD-042</span>
+              <span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+              <span class="text-label-caps text-on-surface-variant">STANDBY</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Amazon Echo (4th Gen)</h3>
+            <p class="text-body-sm text-on-surface-variant">Smart Speaker • Living Room</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+        <div class="glass-panel p-md rounded-xl flex items-center gap-md group hover:border-primary/40 transition-all duration-300">
+          <div class="w-24 h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+            <img alt="Nest Learning Thermostat" class="w-full h-full object-cover" src="../../public/images/Nest%20Learning%20Thermostat.jpg" />
+          </div>
+          <div class="flex-grow">
+            <div class="flex items-center gap-sm mb-xs">
+              <span class="text-label-caps text-primary px-xs bg-primary/10 rounded">VAC-08</span>
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-label-caps text-on-surface-variant">OPTIMIZED</span>
+            </div>
+            <h3 class="text-headline-sm font-headline-sm text-on-surface">Nest Learning Thermostat</h3>
+            <p class="text-body-sm text-on-surface-variant">Climate Control • Hallway</p>
+          </div>
+          <div class="flex items-center gap-xs">
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="View Details">
+              <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-primary/10 text-on-surface-variant hover:text-primary transition-all" title="Edit Device">
+              <span class="material-symbols-outlined" data-icon="edit">edit</span>
+            </button>
+            <button class="p-base rounded-lg hover:bg-error/10 text-on-surface-variant hover:text-error transition-all" title="Decommission">
+              <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Panel: Technical Specs -->
+      <aside class="lg:col-span-4">
+        <div class="glass-panel rounded-xl overflow-hidden border border-primary/20 shadow-xl shadow-primary/5 sticky top-[100px]">
+          <div class="p-md bg-primary/5 border-b border-outline-variant/30">
+            <div class="flex justify-between items-center mb-xs">
+              <h2 class="text-label-caps text-primary">PRODUCT ANALYTICS</h2>
+              <span class="material-symbols-outlined text-primary" data-icon="monitoring">monitoring</span>
+            </div>
+            <p class="text-headline-sm font-bold text-on-surface">Samsung 8K QLED</p>
+          </div>
+          <div class="p-md space-y-md">
+            <div class="space-y-sm">
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">BRAND</span>
+                <span class="text-body-sm font-bold text-on-surface">Samsung</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">MODEL</span>
+                <span class="text-body-sm font-bold text-on-surface">QN900C Series</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">RESOLUTION</span>
+                <span class="text-body-sm font-bold text-on-surface">8K (7680×4320)</span>
+              </div>
+              <div class="flex justify-between items-center py-xs border-b border-outline-variant/20">
+                <span class="text-label-caps text-on-surface-variant">IN STOCK</span>
+                <span class="text-body-sm font-bold text-on-surface">24 units</span>
+              </div>
+            </div>
+            <div class="h-32 w-full bg-surface-container-low rounded-lg relative overflow-hidden group">
+              <div class="absolute inset-0 flex items-end gap-1 px-base py-base">
+                <div class="w-full bg-primary/20 h-[40%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/30 h-[65%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/40 h-[85%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/60 h-[45%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/20 h-[30%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/70 h-[95%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/40 h-[60%] rounded-t-xs"></div>
+                <div class="w-full bg-primary/20 h-[50%] rounded-t-xs"></div>
+              </div>
+              <div class="absolute top-2 left-2 text-[10px] font-bold text-primary opacity-50">MONTHLY SALES</div>
+            </div>
+            <button class="w-full py-base border border-outline-variant hover:border-primary text-label-caps text-on-surface-variant hover:text-primary transition-all rounded-lg flex justify-center items-center gap-xs">
+              <span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+              PRODUCT DETAILS
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="bg-surface-container border-t border-outline-variant/50 mt-xl">
+      <div class="w-full max-w-7xl mx-auto px-md py-lg flex flex-col md:flex-row justify-between items-center gap-sm">
+        <span class="text-label-caps text-on-surface-variant">© 2024 AI-O HOME MARKETPLACE</span>
+        <div class="flex gap-md">
+          <a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Security Protocols</a>
+          <span class="text-body-sm text-on-surface-variant opacity-50">|</span>
+          <span class="text-body-sm text-on-surface-variant">Installer ID: 882-99</span>
+          <span class="text-body-sm text-on-surface-variant opacity-50">|</span>
+          <a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">System Status</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: STORE
+══════════════════════════════════════════ -->
+<div id="page-store" class="page pt-16 pb-24 md:pb-0">
+  <main class="max-w-[1280px] mx-auto px-margin pt-12">
+
+    <!-- Hero Search -->
+    <section class="mb-lg">
+      <div class="flex flex-col gap-md">
+        <div class="w-full max-w-2xl mx-auto">
+          <h2 class="font-headline-lg text-headline-lg mb-sm">Hardware Catalog</h2>
+          <p class="text-on-surface-variant font-body-md mb-md">Find the perfect smart home device for your needs.</p>
+          <div class="relative group cyber-glow-focus rounded-xl bg-surface-container-low border border-outline-variant/50 transition-all">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input id="store-search-input" class="w-full bg-transparent border-none pl-12 pr-4 py-4 focus:ring-0 font-body-md" placeholder="Search products, brands, or categories..." type="text">
+          </div>
+        </div>
+        <div class="mt-md p-md glass-panel rounded-2xl overflow-x-auto mx-auto" id="store-filter-panel">
+          <div class="flex flex-wrap md:flex-nowrap items-end gap-sm min-w-max">
+          <div class="flex flex-col gap-xs shrink-0">
+            <label class="font-label-caps text-outline text-[10px] uppercase">Category</label>
+            <div class="flex gap-xs flex-wrap">
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="category" data-filter-value="speaker">Speakers</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="category" data-filter-value="display">Displays</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="category" data-filter-value="streaming">Streaming</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="category" data-filter-value="climate">Climate</button>
+            </div>
+          </div>
+          <div class="w-px h-10 bg-outline-variant/30 mx-1 hidden md:block shrink-0"></div>
+          <div class="flex flex-col gap-xs shrink-0">
+            <label class="font-label-caps text-outline text-[10px] uppercase">Assistant</label>
+            <div class="flex gap-xs flex-wrap">
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="assistant" data-filter-value="siri">Siri</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="assistant" data-filter-value="alexa">Alexa</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="assistant" data-filter-value="google">Google Assistant</button>
+            </div>
+          </div>
+          <div class="w-px h-10 bg-outline-variant/30 mx-1 hidden md:block shrink-0"></div>
+          <div class="flex flex-col gap-xs shrink-0">
+            <label class="font-label-caps text-outline text-[10px] uppercase">Connectivity</label>
+            <div class="flex gap-xs flex-wrap">
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="connectivity" data-filter-value="matter">Matter</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="connectivity" data-filter-value="wifi">Wi-Fi</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="connectivity" data-filter-value="zigbee">Zigbee</button>
+              <button type="button" class="filter-chip px-sm py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-[11px] hover:bg-outline-variant/30 transition-colors" data-filter-group="connectivity" data-filter-value="thread">Thread</button>
+            </div>
+          </div>
+          <div class="w-px h-10 bg-outline-variant/30 mx-1 hidden md:block shrink-0"></div>
+          <div class="flex flex-col gap-xs shrink-0 min-w-[150px]">
+            <label for="store-max-price" class="font-label-caps text-outline text-[10px] uppercase">Max Price (USD)</label>
+            <input id="store-max-price" type="number" min="0" step="1" class="w-[150px] bg-surface-container-lowest border border-outline-variant/50 px-2 py-1.5 rounded-lg text-[13px] leading-tight focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="e.g. 140">
+          </div>
+        </div>
+        </div>
+        <div class="flex justify-end mt-sm">
+          <button type="button" id="store-clear-filters" class="px-md py-2 rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container transition-colors">Clear Filters</button>
+        </div>
+        <div class="flex justify-between items-center mt-sm px-xs">
+          <p id="store-results-count" class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wide">Showing 0 products</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Grid -->
+    <div id="store-product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md mb-xl"></div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin mt-lg">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PRODUCT DETAIL
+══════════════════════════════════════════ -->
+<div id="page-product" class="page pt-16 pb-24 md:pb-0">
+  <main class="pt-10 pb-32 max-w-[1280px] mx-auto px-gutter">
+    <nav class="mb-md flex items-center gap-xs">
+      <button onclick="navigate('store')" class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors group">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        <span class="font-label-caps text-label-caps">BACK TO MARKETPLACE</span>
+      </button>
+    </nav>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+
+      <!-- Left: Product Visual -->
+      <div class="lg:col-span-7 space-y-md">
+        <div class="glass-panel rounded-xl overflow-hidden relative aspect-square md:aspect-[4/3] flex items-center justify-center p-lg">
+          <img id="product-image" alt="Apple HomePod mini" class="w-full h-full object-contain mix-blend-multiply"
+            src="../../public/images/Apple%20HomePod%20mini.jpg">
+          <div class="absolute top-md right-md flex flex-col gap-sm">
+            <div class="glass-panel px-sm py-xs rounded-full flex items-center gap-xs">
+              <span class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse"></span>
+              <span class="font-label-caps text-label-caps text-primary">IN STOCK</span>
+            </div>
+          </div>
+        </div>
+        <!-- Thumbnails -->
+        <div class="grid grid-cols-4 gap-md">
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-primary cursor-pointer">
+            <img class="w-full h-full object-cover rounded" src="../../public/images/Apple%20HomePod%20mini.jpg" alt="Apple HomePod mini">
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">photo</span>
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">photo</span>
+          </div>
+          <div class="glass-panel rounded-lg aspect-square p-sm border border-transparent hover:border-outline-variant transition-colors cursor-pointer flex items-center justify-center">
+            <span class="material-symbols-outlined text-outline">videocam</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Config -->
+      <div class="lg:col-span-5 space-y-lg">
+        <section>
+          <span id="product-category" class="font-label-caps text-label-caps text-primary tracking-widest mb-xs block">AI SMART SPEAKER</span>
+          <h1 id="product-title" class="font-headline-lg text-headline-lg text-on-surface mb-sm">Apple HomePod mini</h1>
+          <p id="product-description" class="font-body-lg text-on-surface-variant">Compact smart speaker with AI voice assistant, home automation and multi-room audio.</p>
+        </section>
+        <div class="flex items-baseline gap-sm">
+          <span id="product-price" class="font-display text-headline-lg font-bold" style="color:#00f0ff">$99.00</span>
+          <span id="product-old-price" class="font-label-caps text-label-caps text-outline line-through">$129.00</span>
+        </div>
+        <!-- Specs Bento -->
+        <div class="grid grid-cols-2 gap-md">
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">memory</span><div class="font-label-caps text-label-caps text-outline">PROCESSING</div><div class="font-headline-sm text-headline-sm">Apple S5</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">hub</span><div class="font-label-caps text-label-caps text-outline">CONNECTIVITY</div><div class="font-headline-sm text-headline-sm">Wi-Fi + Thread</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">settings_voice</span><div class="font-label-caps text-label-caps text-outline">ASSISTANT</div><div class="font-headline-sm text-headline-sm">AI Voice</div></div>
+          <div class="glass-panel p-md rounded-xl space-y-xs"><span class="material-symbols-outlined text-primary">home</span><div class="font-label-caps text-label-caps text-outline">ECOSYSTEM</div><div class="font-headline-sm text-headline-sm">Apple Home</div></div>
+        </div>
+        <!-- Compatibility -->
+        <section class="space-y-md">
+          <div class="font-label-caps text-label-caps text-outline-variant">SYSTEM COMPATIBILITY</div>
+          <div class="flex flex-wrap gap-md items-center opacity-60">
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">settings_voice</span><span class="font-label-caps text-[10px]">VOICE AI</span></div>
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">record_voice_over</span><span class="font-label-caps text-[10px]">MULTI-ASSISTANT</span></div>
+            <div class="flex items-center gap-xs"><span class="material-symbols-outlined text-[24px]">smart_toy</span><span class="font-label-caps text-[10px]">VOICE CONTROL</span></div>
+          </div>
+        </section>
+        <!-- Actions -->
+        <div class="space-y-md pt-md">
+          <button onclick="addCurrentProductToCart()" class="w-full bg-primary text-on-primary py-md px-lg rounded-xl font-headline-sm text-headline-sm flex items-center justify-center gap-md hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">
+            <span>Add to Cart</span>
+            <span class="material-symbols-outlined">shopping_cart</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Spec Table -->
+    <div class="mt-xl glass-panel rounded-xl overflow-hidden">
+      <div class="border-b border-outline-variant/20 p-md flex items-center justify-between">
+        <h3 class="font-headline-sm text-headline-sm">Detailed Technical Specification</h3>
+        <button type="button" onclick="toggleTechSpecs()" class="p-1 rounded-md hover:bg-primary/5 transition-colors" aria-label="Toggle technical specification">
+          <span id="tech-spec-toggle-icon" class="material-symbols-outlined">expand_less</span>
+        </button>
+      </div>
+      <div id="tech-spec-content" class="p-lg grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">TECHNICAL SPECS</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Chip</span><span>Apple S5</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>AI Engine</span><span>Machine Learning</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Memory</span><span>256MB RAM</span></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">CONNECTIVITY</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Wi-Fi</span><span>Wi-Fi 5 (802.11ac)</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Bluetooth</span><span>Bluetooth 5.0</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Thread</span><span>Thread 1.0</span></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <h4 class="font-label-caps text-label-caps text-primary">POWER</h4>
+          <ul class="space-y-xs text-body-sm text-on-surface-variant">
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Power Input</span><span>20W (included adapter)</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Standby Power</span><span>1.8W</span></li>
+            <li class="flex justify-between border-b border-outline-variant/10 pb-xs"><span>Connector</span><span>Proprietary (Apple)</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: CART
+══════════════════════════════════════════ -->
+<div id="page-cart" class="page pt-16 pb-24 md:pb-0">
+  <div id="cart-slide-wrapper" class="cart-slide-wrapper">
+
+    <!-- ════ Panel 1: Shopping Cart ════ -->
+    <div id="cart-panel-cart" class="cart-panel" style="position:relative;transform:translateX(0);opacity:1;">
+      <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
+        <div class="mb-lg flex flex-col gap-xs">
+          <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">CHECKOUT SUMMARY</span>
+          <h2 class="font-headline-lg text-headline-lg text-on-surface">Shopping Cart</h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+          <!-- Cart Items -->
+          <div class="lg:col-span-8 flex flex-col gap-md">
+            <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
+              <div class="flex flex-col">
+                <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
+                <span class="font-label-caps text-label-caps">Your payment data is protected</span>
+              </div>
+            </div>
+            <div id="cart-items-container" class="flex flex-col gap-md"></div>
+          </div>
+          <!-- Order Summary -->
+          <div class="lg:col-span-4 sticky top-24">
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">receipt_long</span>
+                <h4 class="font-headline-sm text-headline-sm">ORDER SUMMARY</h4>
+              </div>
+              <div id="order-summary-lines" class="flex flex-col gap-sm"></div>
+              <div class="flex flex-col gap-xs mt-xs border-t border-outline-variant/20 pt-sm">
+                <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Shipping</span><span id="summary-shipping" class="text-body-sm font-medium">$0.00</span></div>
+                <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Taxes</span><span id="summary-taxes" class="text-body-sm font-medium">$0.00</span></div>
+                <div class="flex justify-between items-center gap-2 text-primary"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">Discount</span><span id="summary-discount" class="text-body-sm font-medium">-$0.00</span></div>
+              </div>
+              <div class="mt-md pt-md border-t border-primary/20 flex justify-between items-baseline">
+                <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
+                <div id="summary-total" class="font-bold text-3xl tracking-tighter text-primary">$0.00</div>
+              </div>
+              <div class="flex flex-col gap-base mt-md">
+                <button id="cart-checkout-btn" onclick="goToCheckout()" class="w-full font-label-caps text-label-caps py-md rounded-xl shadow-lg bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
+                  Checkout <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+              <div class="mt-md bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
+                <div class="flex items-start gap-sm">
+                  <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
+                  <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+          <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+          <div class="flex gap-md">
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ════ Panel 2: Checkout ════ -->
+    <div id="cart-panel-checkout" class="cart-panel" style="position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;">
+      <main class="pt-12 pb-40 px-gutter max-w-[1280px] mx-auto">
+        <div class="mb-lg flex flex-col gap-xs">
+          <button onclick="goBackToCart()" class="inline-flex items-center gap-xs text-primary font-label-caps text-label-caps hover:opacity-75 transition-opacity mb-xs w-fit">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>Back to cart
+          </button>
+          <span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">SECURE CHECKOUT</span>
+          <h2 class="font-headline-lg text-headline-lg text-on-surface">Order Details</h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+          <!-- Read-only items -->
+          <div class="lg:col-span-8 flex flex-col gap-md">
+            <div class="glass-panel rounded-xl px-md py-sm flex items-center gap-sm bg-primary-container/10 border-primary-container/30">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">lock</span>
+              <div class="flex flex-col">
+                <span class="font-label-caps text-[10px] leading-tight">SECURE CHECKOUT</span>
+                <span class="font-label-caps text-label-caps">Your payment data is protected</span>
+              </div>
+            </div>
+            <div id="checkout-items-container" class="flex flex-col gap-md"></div>
+          </div>
+          <!-- Purchase details & payment -->
+          <div class="lg:col-span-4 sticky top-24 flex flex-col gap-md">
+            <!-- Billing details -->
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">receipt</span>
+                <h4 class="font-headline-sm text-headline-sm">PURCHASE DETAILS</h4>
+              </div>
+              <div class="flex flex-col gap-sm">
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Full Name</span>
+                  <input id="checkout-billing-name" type="text" autocomplete="name" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="Name on invoice">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Email</span>
+                  <input id="checkout-billing-email" type="email" autocomplete="email" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="email@domain.com">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Tax ID / DNI (optional)</span>
+                  <input id="checkout-billing-taxid" type="text" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="XX-XXXXXXXX-X">
+                </label>
+                <label class="flex flex-col gap-xs">
+                  <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Shipping Address</span>
+                  <input id="checkout-billing-address" type="text" autocomplete="street-address" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-body-sm" placeholder="Street, City, Province">
+                </label>
+              </div>
+            </div>
+            <!-- Payment method -->
+            <div class="glass-panel rounded-2xl p-lg flex flex-col gap-md shadow-lg shadow-primary/5">
+              <div class="flex items-center gap-sm pb-md border-b border-outline-variant/30">
+                <span class="material-symbols-outlined text-primary">credit_card</span>
+                <h4 class="font-headline-sm text-headline-sm">PAYMENT METHOD</h4>
+              </div>
+              <div id="checkout-payment-methods" class="flex flex-col gap-sm"></div>
+              <button type="button" onclick="openAddCardPopup()" class="inline-flex items-center gap-xs text-primary font-label-caps text-label-caps hover:opacity-75 transition-opacity mt-xs w-fit">
+                <span class="material-symbols-outlined text-[18px]">add_card</span>ADD NEW CARD
+              </button>
+            </div>
+            <!-- Totals summary -->
+            <div class="glass-panel rounded-2xl p-md flex flex-col gap-sm shadow-sm">
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Shipping</span><span id="co-summary-shipping" class="text-body-sm font-medium">$0.00</span></div>
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Taxes</span><span id="co-summary-taxes" class="text-body-sm font-medium">$0.00</span></div>
+              <div class="flex justify-between items-center gap-2"><span class="text-on-surface-variant font-label-caps text-[10px] uppercase">Discount</span><span id="co-summary-discount" class="text-body-sm font-medium">-$0.00</span></div>
+              <div class="flex justify-between items-baseline pt-sm border-t border-primary/20">
+                <span class="font-label-caps text-label-caps text-primary uppercase">TOTAL</span>
+                <div id="co-summary-total" class="font-bold text-2xl tracking-tighter text-primary">$0.00</div>
+              </div>
+            </div>
+            <!-- Buy Now -->
+            <button id="buy-now-btn" onclick="handlePurchase()" class="w-full font-headline-sm text-headline-sm py-md rounded-xl shadow-lg shadow-primary/20 bg-primary text-white hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-sm">
+              <span class="material-symbols-outlined">shopping_bag</span>Buy Now
+            </button>
+            <div class="bg-surface-container-low rounded-lg p-sm border border-outline-variant/20">
+              <div class="flex items-start gap-sm">
+                <span class="material-symbols-outlined text-[16px] text-primary mt-1">info</span>
+                <p class="font-body-sm text-[11px] leading-relaxed text-on-surface-variant">By completing this purchase, you agree to AI-O's terms and conditions. Orders are processed within 1–2 business days.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+          <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+          <div class="flex gap-md">
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+            <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PROFILE / DASHBOARD
+══════════════════════════════════════════ -->
+<div id="page-profile" class="page relative pt-16 pb-24 md:pb-0">
+
+  <!-- ── Purchase Success Overlay ── -->
+  <div id="profile-success-overlay" class="hidden absolute inset-0 z-20 bg-surface flex flex-col items-center justify-start gap-md p-lg pt-24 md:pt-28" style="min-height:100%;">
+    <div class="relative flex flex-col items-center gap-md max-w-sm w-full text-center">
+      <!-- Confetti container -->
+      <div id="confetti-container" class="absolute inset-x-0 top-0 h-28 pointer-events-none overflow-hidden"></div>
+      <!-- Celebration icon -->
+      <div id="celebration-emoji" class="celebration-icon text-[88px] select-none leading-none">🎉</div>
+      <!-- Stars decoration -->
+      <div class="flex gap-sm text-2xl select-none">✨⭐✨</div>
+      <div>
+        <h2 class="shimmer-text font-display text-4xl font-bold mb-sm">Purchase Complete!</h2>
+        <p class="text-on-surface-variant font-body-md text-body-md">Your order has been placed successfully. A confirmation will be sent to your email.</p>
+      </div>
+      <!-- Action buttons -->
+      <div class="flex flex-col gap-sm w-full mt-xs">
+        <button class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-primary text-white font-label-caps text-label-caps active:scale-95 transition-all shadow-lg shadow-primary/20 hover:brightness-110">
+          <span class="material-symbols-outlined">download</span>DOWNLOAD INVOICE
+        </button>
+        <button onclick="sendInvoiceEmail()" class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl border border-primary text-primary font-label-caps text-label-caps hover:bg-primary/5 active:scale-95 transition-all">
+          <span class="material-symbols-outlined">mail</span>SEND INVOICE BY EMAIL
+        </button>
+        <!-- Return to cart with countdown bar -->
+        <div class="relative overflow-hidden rounded-xl">
+          <button id="return-to-cart-btn" disabled onclick="returnToEmptyCart()" class="w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps transition-all opacity-60 cursor-not-allowed">
+            <span class="material-symbols-outlined">shopping_cart</span><span id="return-to-cart-label">RETURN TO CART</span>
+          </button>
+          <div id="countdown-bar" class="countdown-bar absolute bottom-0 left-0 h-1 bg-primary rounded-b"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="pt-10 pb-32 px-gutter max-w-[1280px] mx-auto">
+
+    <!-- Profile Header -->
+    <section class="mb-lg">
+      <div class="flex flex-col md:flex-row items-center md:items-end gap-md">
+        <div class="relative group">
+          <div class="w-32 h-32 rounded-xl overflow-hidden border-2 border-primary/20 p-1 bg-surface">
+            <img id="profile-avatar" alt="Profile picture" class="w-full h-full object-cover rounded-lg"
+              src="">
+          </div>
+          <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary-fixed-dim text-on-primary-fixed rounded-lg cyber-glow flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">verified_user</span>
+          </div>
+        </div>
+        <div class="text-center md:text-left flex-1">
+          <span id="profile-role" class="font-label-caps text-label-caps text-primary-fixed-dim bg-on-primary-fixed-variant px-3 py-1 rounded-full mb-base inline-block">SYSTEM ADMINISTRATOR</span>
+          <h1 id="profile-name" class="font-headline-lg text-headline-lg text-on-surface">Admin</h1>
+          <p id="profile-location" class="font-body-md text-on-surface-variant flex items-center justify-center md:justify-start gap-xs">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>Buenos Aires, Argentina
+          </p>
+        </div>
+        <div class="flex gap-sm w-full md:w-auto">
+          <button id="go-admin-dashboard-btn" type="button" class="hidden flex-1 md:flex-none px-md py-sm bg-primary text-on-primary font-label-caps text-label-caps rounded-xl hover:brightness-110 transition-all active:scale-95">ADMIN DASHBOARD</button>
+          <button id="open-profile-edit-btn" type="button" class="flex-1 md:flex-none px-md py-sm bg-surface-container-high text-on-surface font-label-caps text-label-caps rounded-xl border border-outline-variant/30 hover:bg-surface-variant transition-all active:scale-95">EDIT PROFILE</button>
+          <button class="flex-1 md:flex-none px-md py-sm bg-error text-on-error font-label-caps text-label-caps rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-xs" onclick="handleLogout(event)">
+            <span class="material-symbols-outlined text-[18px]">logout</span>LOGOUT
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Bento -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+
+      <div class="md:col-span-12 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">military_tech</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Buyer Level</h2>
+        </div>
+        <div class="space-y-sm">
+          <div class="flex items-baseline justify-between">
+            <span class="text-body-sm text-on-surface-variant">Purchases in month</span>
+            <span id="profile-buyer-level-count" class="font-label-caps text-label-caps text-primary">0/50</span>
+          </div>
+          <div class="h-3 w-full rounded-full bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+            <div id="profile-buyer-level-bar" class="h-full bg-primary transition-all" style="width:0%"></div>
+          </div>
+          <p id="profile-buyer-level-percent" class="text-body-sm text-on-surface-variant">0% of monthly goal</p>
+        </div>
+      </div>
+
+      <div class="md:col-span-6 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">login</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Login Sessions</h2>
+        </div>
+        <div id="profile-login-sessions" class="space-y-sm"></div>
+      </div>
+
+      <div class="md:col-span-6 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">credit_card</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Saved Payment Methods</h2>
+        </div>
+        <div id="profile-payment-methods" class="space-y-sm"></div>
+      </div>
+
+      <div class="md:col-span-12 glass-panel rounded-xl p-md flex flex-col gap-md">
+        <div class="flex items-center gap-sm">
+          <span class="material-symbols-outlined text-primary">support_agent</span>
+          <h2 class="font-headline-sm text-headline-sm leading-none">Support Claims</h2>
+        </div>
+        <div id="profile-support-claims" class="space-y-sm"></div>
+      </div>
+
+      <div class="md:col-span-12 glass-panel rounded-xl p-md overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-md">
+          <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary">rocket_launch</span>
+            <h2 class="font-headline-sm text-headline-sm leading-none">Purchase History</h2>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant">
+                <th class="pb-base px-sm">ORDER ID</th>
+                <th class="pb-base px-sm">DATE</th>
+                <th class="pb-base px-sm">STATUS</th>
+                <th class="pb-base px-sm">ORDER ITEMS</th>
+                <th class="pb-base px-sm">TOTAL</th>
+                <th class="pb-base px-sm text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="purchase-history-body" class="text-body-sm font-body-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <footer class="bg-surface-container-low border-t border-outline-variant/20 py-md px-margin">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+      <span class="font-label-caps text-on-surface-variant text-[11px]">© 2024 AI-O HOME MARKETPLACE. ENGINEERED FOR PRECISION.</span>
+      <div class="flex gap-md">
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Privacy Protocol</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Technical Specs</a>
+        <a href="#" class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-all">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BOTTOM NAV (Mobile)
+══════════════════════════════════════════ -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-20 bg-surface/90 backdrop-blur-lg flex justify-around items-center px-4 pb-2 border-t border-outline-variant/50 shadow-[0_-4px_20px_rgba(0,105,112,0.05)] z-50">
+  <button onclick="navigate('home')"    data-page="home"    class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-label-caps text-[10px]">Home</span>
+  </button>
+  <button onclick="navigate('store')"   data-page="store"   class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">shopping_bag</span>
+    <span class="font-label-caps text-[10px]">Store</span>
+  </button>
+  <button onclick="navigate('cart')"    data-page="cart"    class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">shopping_cart</span>
+    <span class="font-label-caps text-[10px]">Cart</span>
+  </button>
+  <button onclick="navigate('profile')" data-page="profile" class="mobile-nav-btn flex flex-col items-center justify-center text-secondary hover:text-primary active:scale-90 transition-all gap-0.5">
+    <span class="material-symbols-outlined">person</span>
+    <span class="font-label-caps text-[10px]">Profile</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     FOOTER POPUPS
+══════════════════════════════════════════ -->
+<div id="info-popup" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-popup-close="true"></div>
+  <div class="relative w-full max-w-lg glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-sm">
+      <h3 id="info-popup-title" class="font-headline-md text-headline-md">Information</h3>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-popup-close="true" aria-label="Close popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <p id="info-popup-text" class="text-body-md text-on-surface-variant leading-relaxed"></p>
+    <div class="mt-md flex justify-end">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-popup-close="true">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<div id="support-popup" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-popup-close="true"></div>
+  <div class="relative w-full max-w-xl glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Contact Support</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Send us your email and a short description. Our team will contact you soon.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-popup-close="true" aria-label="Close support popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <form id="support-form" class="space-y-sm">
+      <div>
+        <label for="support-email" class="font-label-caps text-[10px] uppercase text-on-surface-variant block mb-xs">Email</label>
+        <input id="support-email" type="email" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="email@domain.com">
+      </div>
+      <div>
+        <label for="support-detail" class="font-label-caps text-[10px] uppercase text-on-surface-variant block mb-xs">Issue detail</label>
+        <textarea id="support-detail" required rows="4" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm resize-none focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Write your question or issue details"></textarea>
+      </div>
+      <p id="support-feedback" class="text-body-sm min-h-[20px]" aria-live="polite"></p>
+      <div class="flex justify-end gap-sm pt-xs">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-popup-close="true">CANCEL</button>
+        <button type="submit" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">SEND</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="profile-edit-popup" class="hidden fixed inset-0 z-[75] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-edit-close="true"></div>
+  <div class="relative w-full max-w-xl glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Edit Profile</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Update your user data.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-edit-close="true" aria-label="Close edit profile popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <form id="profile-edit-form" class="space-y-sm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Username</span>
+          <input id="profile-edit-username" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Password</span>
+          <input id="profile-edit-password" type="password" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">First Name</span>
+          <input id="profile-edit-first-name" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Last Name</span>
+          <input id="profile-edit-last-name" type="text" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+        <label class="flex flex-col gap-xs md:col-span-2">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Email</span>
+          <input id="profile-edit-email" type="email" required class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+        </label>
+      </div>
+      <div class="flex justify-end gap-sm pt-xs">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-edit-close="true">CANCEL</button>
+        <button type="submit" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">SAVE CHANGES</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="profile-edit-confirm-popup" class="hidden fixed inset-0 z-[76] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-confirm-close="true"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-sm">
+      <h3 class="font-headline-sm text-headline-sm">Confirm profile update</h3>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-confirm-close="true" aria-label="Close confirm popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <p class="text-body-sm text-on-surface-variant mb-md">Are you sure you want to save these profile changes?</p>
+    <div class="flex justify-end gap-sm">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-confirm-close="true">CANCEL</button>
+      <button id="confirm-profile-save-btn" type="button" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<div id="payment-method-delete-confirm-popup" class="hidden fixed inset-0 z-[76] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-payment-method-confirm-close="true"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-sm">
+      <h3 class="font-headline-sm text-headline-sm">Confirm payment method removal</h3>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-payment-method-confirm-close="true" aria-label="Close payment method confirm popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <p class="text-body-sm text-on-surface-variant mb-md">Are you sure you want to remove this saved payment method?</p>
+    <div class="flex justify-end gap-sm">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-payment-method-confirm-close="true">CANCEL</button>
+      <button id="confirm-payment-method-delete-btn" type="button" class="px-md py-sm rounded-xl bg-error text-on-error font-label-caps text-label-caps active:scale-95 transition-all">REMOVE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add New Card Popup ── -->
+<div id="add-card-popup" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" onclick="closeAddCardPopup()"></div>
+  <div class="relative w-full max-w-md glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Add New Card</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Enter your card details to pay.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" onclick="closeAddCardPopup()" aria-label="Close">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <form id="add-card-form" class="space-y-sm" onsubmit="handleAddCard(event)">
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Cardholder Name</span>
+        <input id="card-name" type="text" required autocomplete="cc-name" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Name as shown on card">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Card Number</span>
+        <input id="card-number" type="text" required autocomplete="cc-number" maxlength="19" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono tracking-widest" placeholder="•••• •••• •••• ••••">
+      </label>
+      <div class="grid grid-cols-2 gap-sm">
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Expiry (MM/YY)</span>
+          <input id="card-expiry" type="text" required autocomplete="cc-exp" maxlength="5" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono" placeholder="MM/YY">
+        </label>
+        <label class="flex flex-col gap-xs">
+          <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">CVV</span>
+          <input id="card-cvv" type="text" required autocomplete="cc-csc" maxlength="4" inputmode="numeric" class="w-full rounded-xl border border-outline-variant/50 bg-surface-container-lowest px-md py-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-mono" placeholder="•••">
+        </label>
+      </div>
+      <label class="flex items-center gap-sm cursor-pointer pt-xs">
+        <input id="card-save" type="checkbox" checked class="rounded border-outline-variant accent-primary w-4 h-4">
+        <span class="font-body-sm text-body-sm text-on-surface">Save as new payment method in my profile</span>
+      </label>
+      <p id="add-card-error" class="text-error text-body-sm min-h-[18px]" aria-live="polite"></p>
+      <div class="flex justify-end gap-sm pt-xs">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" onclick="closeAddCardPopup()">CANCEL</button>
+        <button type="submit" class="px-md py-sm rounded-xl bg-primary text-on-primary font-label-caps text-label-caps active:scale-95 transition-all">ADD CARD</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="profile-order-detail-popup" class="hidden fixed inset-0 z-[77] flex items-center justify-center p-md">
+  <div class="absolute inset-0 bg-on-surface/45" data-profile-order-detail-close="true"></div>
+  <div class="relative w-full max-w-2xl glass-panel-white rounded-2xl border border-outline-variant/40 shadow-2xl p-lg">
+    <div class="flex items-start justify-between gap-md mb-md">
+      <div>
+        <h3 class="font-headline-md text-headline-md">Order Detail</h3>
+        <p class="text-body-sm text-on-surface-variant mt-xs">Read-only order information.</p>
+      </div>
+      <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-order-detail-close="true" aria-label="Close order detail popup">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Order ID</span>
+        <input id="order-detail-id" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Date</span>
+        <input id="order-detail-date" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Status</span>
+        <input id="order-detail-status" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Order Items</span>
+        <input id="order-detail-items-count" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+      <label class="flex flex-col gap-xs md:col-span-2">
+        <span class="font-label-caps text-[10px] uppercase text-on-surface-variant">Total</span>
+        <input id="order-detail-total" type="text" disabled class="w-full rounded-xl border border-outline-variant/50 bg-surface-container px-md py-sm text-on-surface-variant">
+      </label>
+    </div>
+    <div class="flex justify-end pt-md">
+      <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-order-detail-close="true">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<div id="profile-order-items-popup" class="hidden fixed inset-0 z-[78] modal-backdrop overflow-y-auto p-4 md:p-8">
+  <div class="min-h-full w-full flex items-center justify-center">
+    <div class="glass-panel modal-enter w-full max-w-4xl rounded-2xl p-6 md:p-8 shadow-2xl">
+      <div class="flex items-start justify-between gap-3 mb-5">
+        <div>
+          <h3 id="profile-order-items-title" class="font-headline-md text-headline-md">Order Items</h3>
+          <p class="text-body-sm text-on-surface-variant mt-xs">Read-only order item detail.</p>
+        </div>
+        <button type="button" class="p-2 rounded-lg hover:bg-primary/5 transition-colors" data-profile-order-items-close="true" aria-label="Close order items popup">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Items</p>
+          <p id="profile-order-items-count" class="font-headline-sm text-headline-sm">0</p>
+        </div>
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Quantity</p>
+          <p id="profile-order-items-total-qty" class="font-headline-sm text-headline-sm">0</p>
+        </div>
+        <div class="rounded-xl border border-outline-variant/30 bg-surface-container-low p-sm">
+          <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Total</p>
+          <p id="profile-order-items-total-amount" class="font-headline-sm text-headline-sm">$0.00</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-outline-variant/30">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-outline-variant/30 font-label-caps text-[10px] text-on-surface-variant">
+              <th class="py-sm px-sm">#</th>
+              <th class="py-sm px-sm">PRODUCT</th>
+              <th class="py-sm px-sm">QTY</th>
+              <th class="py-sm px-sm">UNIT PRICE</th>
+              <th class="py-sm px-sm">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody id="profile-order-items-body" class="text-body-sm"></tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-5">
+        <button type="button" class="px-md py-sm rounded-xl border border-outline-variant/40 font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" data-profile-order-items-close="true">CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const USER_PROFILES = {
+  admin: {
+    key: 'admin',
+    displayName: 'Admin',
+    location: 'Buenos Aires, Argentina',
+    avatar: { initials: 'AD', colors: ['#006970', '#00f0ff'] },
+    profileData: {
+      username: 'admin',
+      email: 'admin@aio.com',
+      password: 'admin123',
+      firstName: 'Admin',
+      lastName: 'Main',
+      roleId: 1
+    },
+    loginSessions: [
+      { dateTime: '2026-05-29 14:02', detail: 'Web - Chrome / Windows' },
+      { dateTime: '2026-05-29 09:41', detail: 'Web - Edge / Windows' },
+      { dateTime: '2026-05-28 21:15', detail: 'Web - Chrome / macOS' }
+    ],
+    paymentMethods: [
+      { label: 'Visa ending in 4432', detail: 'Expires 11/28' },
+      { label: 'Mastercard ending in 9011', detail: 'Expires 06/27' }
+    ],
+    supportClaims: [
+      { dateTime: '2026-05-18 17:30', title: 'Refund delay', status: 'Closed' },
+      { dateTime: '2026-05-12 10:45', title: 'Invoice correction', status: 'In progress' },
+      { dateTime: '2026-05-06 08:10', title: 'Duplicate charge review', status: 'Open' }
+    ],
+    history: [
+      {
+        id: 'ORD-2026-001',
+        date: '2026-05-29 14:15',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Apple HomePod mini', quantity: 1, unitPrice: 99 },
+          { name: 'Apple TV 4K', quantity: 1, unitPrice: 129 }
+        ]
+      },
+      {
+        id: 'ORD-2026-002',
+        date: '2026-05-19 10:05',
+        status: 'SHIPPED',
+        orderItems: [
+          { name: 'Amazon Echo Show 8 (3rd Gen)', quantity: 2, unitPrice: 149.99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-003',
+        date: '2026-04-30 18:22',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Google Nest Audio', quantity: 1, unitPrice: 99.99 },
+          { name: 'Google Nest Hub (2nd Gen)', quantity: 1, unitPrice: 99.99 }
+        ]
+      }
+    ]
+  },
+  user: {
+    key: 'user',
+    displayName: 'User',
+    location: 'Córdoba, Argentina',
+    avatar: { initials: 'US', colors: ['#5d5e61', '#00dbe9'] },
+    profileData: {
+      username: 'user',
+      email: 'user@example.com',
+      password: 'user123',
+      firstName: 'User',
+      lastName: 'Demo',
+      roleId: 2
+    },
+    loginSessions: [
+      { dateTime: '2026-05-29 08:20', detail: 'Web - Chrome / Android' },
+      { dateTime: '2026-05-28 22:09', detail: 'Web - Safari / iOS' },
+      { dateTime: '2026-05-26 19:44', detail: 'Web - Edge / Windows' }
+    ],
+    paymentMethods: [
+      { label: 'Amex ending in 7744', detail: 'Expires 02/29' },
+      { label: 'Visa debit ending in 2250', detail: 'Expires 09/27' }
+    ],
+    supportClaims: [
+      { dateTime: '2026-05-22 13:52', title: 'Delivery date change requested because courier attempted delivery at the wrong address twice and the package status was not updated in real time by the carrier system', status: 'Resolved' },
+      { dateTime: '2026-05-16 09:18', title: 'Product setup help', status: 'Closed' },
+      { dateTime: '2026-05-10 20:10', title: 'Warranty inquiry', status: 'In progress' }
+    ],
+    history: [
+      {
+        id: 'ORD-2026-101',
+        date: '2026-05-27 19:02',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Amazon Echo Show 8 (3rd Gen)', quantity: 1, unitPrice: 149.99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-102',
+        date: '2026-05-08 12:34',
+        status: 'PROCESSING',
+        orderItems: [
+          { name: 'Google Nest Audio', quantity: 1, unitPrice: 99.99 },
+          { name: 'Apple HomePod mini', quantity: 1, unitPrice: 99 }
+        ]
+      },
+      {
+        id: 'ORD-2026-103',
+        date: '2026-04-18 17:10',
+        status: 'DELIVERED',
+        orderItems: [
+          { name: 'Apple TV 4K', quantity: 1, unitPrice: 129 }
+        ]
+      }
+    ]
+  }
+};
+
+let currentUserKey = localStorage.getItem('aio-current-user') || 'user';
+let currentTheme = localStorage.getItem('aio-theme') || 'light';
+let newsletterFeedbackTimeoutId = null;
+let supportFeedbackTimeoutId = null;
+let currentProductId = 'homepodMini';
+let cartState = {};
+let pendingProfilePayload = null;
+let currentProfileOrderId = null;
+let pendingPaymentMethodIndex = null;
+
+const storeFilterState = {
+  query: '',
+  category: '',
+  assistant: '',
+  connectivity: '',
+  maxPrice: ''
+};
+
+const TAX_RATE = 0.105;
+const SHIPPING_FLAT = 9.99;
+
+const INFO_POPUP_CONTENT = {
+  privacy: {
+    title: 'Privacy Protocol',
+    text: 'AI-O HOME only uses your information to process orders, improve your shopping experience and answer support requests. We do not sell personal data to third parties.'
+  },
+  specs: {
+    title: 'Technical Specs',
+    text: 'All devices include verified compatibility details, connectivity standards and power requirements. Specifications are validated by product source and can be updated after firmware releases.'
+  }
+};
+
+function buildAvatarDataUri(profile) {
+  const [startColor, endColor] = profile.avatar.colors;
+  const initials = profile.avatar.initials;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${startColor}"/><stop offset="100%" stop-color="${endColor}"/></linearGradient></defs><rect width="256" height="256" rx="40" fill="url(#g)"/><circle cx="196" cy="56" r="44" fill="#ffffff" fill-opacity="0.12"/><circle cx="52" cy="216" r="70" fill="#ffffff" fill-opacity="0.08"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="Sora,Arial,sans-serif" font-size="92" font-weight="700" fill="#ffffff">${initials}</text></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.classList.toggle('light', !isDark);
+
+  const themeIcon = document.getElementById('theme-icon');
+  if (themeIcon) {
+    themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+  }
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('aio-theme', currentTheme);
+  applyTheme(currentTheme);
+}
+
+function toggleTechSpecs() {
+  const content = document.getElementById('tech-spec-content');
+  const icon = document.getElementById('tech-spec-toggle-icon');
+  if (!content || !icon) return;
+
+  const isHidden = content.classList.toggle('hidden');
+  icon.textContent = isHidden ? 'expand_more' : 'expand_less';
+}
+
+function handleNewsletterSubscribe(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById('newsletter-email');
+  const feedback = document.getElementById('newsletter-feedback');
+  if (!emailInput || !feedback) return;
+
+  const email = String(emailInput.value || '').trim();
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  clearTimeout(newsletterFeedbackTimeoutId);
+  feedback.classList.remove('text-primary', 'text-error');
+
+  if (!isValidEmail) {
+    feedback.classList.add('text-error');
+    feedback.textContent = 'Please enter a valid email address.';
+    newsletterFeedbackTimeoutId = setTimeout(() => {
+      feedback.textContent = '';
+      feedback.classList.remove('text-error');
+    }, 4500);
+    return;
+  }
+
+  feedback.classList.add('text-primary');
+  feedback.textContent = 'Subscription successful. A confirmation email was sent to ' + email + '.';
+  emailInput.value = '';
+  newsletterFeedbackTimeoutId = setTimeout(() => {
+    feedback.textContent = '';
+    feedback.classList.remove('text-primary');
+  }, 4500);
+}
+
+function closePopups() {
+  const infoPopup = document.getElementById('info-popup');
+  const supportPopup = document.getElementById('support-popup');
+  if (infoPopup) infoPopup.classList.add('hidden');
+  if (supportPopup) supportPopup.classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
+function openInfoPopup(type) {
+  const config = INFO_POPUP_CONTENT[type];
+  const infoPopup = document.getElementById('info-popup');
+  const title = document.getElementById('info-popup-title');
+  const text = document.getElementById('info-popup-text');
+  if (!config || !infoPopup || !title || !text) return;
+
+  closePopups();
+  title.textContent = config.title;
+  text.textContent = config.text;
+  infoPopup.classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function openSupportPopup() {
+  const supportPopup = document.getElementById('support-popup');
+  const feedback = document.getElementById('support-feedback');
+  if (!supportPopup) return;
+
+  closePopups();
+  if (feedback) {
+    feedback.textContent = '';
+    feedback.classList.remove('text-primary', 'text-error');
+  }
+
+  supportPopup.classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function handleSupportSubmit(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById('support-email');
+  const detailInput = document.getElementById('support-detail');
+  const feedback = document.getElementById('support-feedback');
+  if (!emailInput || !detailInput || !feedback) return;
+
+  const email = String(emailInput.value || '').trim();
+  const detail = String(detailInput.value || '').trim();
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  clearTimeout(supportFeedbackTimeoutId);
+  feedback.classList.remove('text-primary', 'text-error');
+
+  if (!isValidEmail || detail.length < 8) {
+    feedback.classList.add('text-error');
+    feedback.textContent = 'Enter a valid email and at least 8 characters in the detail.';
+    supportFeedbackTimeoutId = setTimeout(() => {
+      feedback.textContent = '';
+      feedback.classList.remove('text-error');
+    }, 4500);
+    return;
+  }
+
+  feedback.classList.add('text-primary');
+  feedback.textContent = 'Support request sent. We will contact ' + email + ' shortly.';
+  detailInput.value = '';
+  supportFeedbackTimeoutId = setTimeout(() => {
+    feedback.textContent = '';
+    feedback.classList.remove('text-primary');
+  }, 4500);
+}
+
+function handleFooterPopupLinks(event) {
+  const link = event.target.closest('a');
+  if (!link || !link.closest('footer')) return;
+
+  const label = String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  if (label === 'privacy protocol') {
+    event.preventDefault();
+    openInfoPopup('privacy');
+  } else if (label === 'technical specs') {
+    event.preventDefault();
+    openInfoPopup('specs');
+  } else if (label === 'support') {
+    event.preventDefault();
+    openSupportPopup();
+  }
+}
+
+function handlePopupDismiss(event) {
+  const shouldClose = event.target.closest('[data-popup-close="true"]');
+  if (shouldClose) closePopups();
+}
+
+function formatProfileDateTime(value) {
+  const [datePart, timePart = ''] = String(value || '').split(' ');
+  const [year, month, day] = datePart.split('-');
+  if (!year || !month || !day) return String(value || '');
+  return `${day}/${month}/${year}${timePart ? ' ' + timePart : ''}`;
+}
+
+function getOrderSummary(order) {
+  const items = Array.isArray(order?.orderItems) ? order.orderItems : [];
+  const itemCount = items.reduce((acc, item) => acc + Number(item.quantity || 0), 0);
+  const total = items.reduce((acc, item) => acc + (Number(item.quantity || 0) * Number(item.unitPrice || 0)), 0);
+  return { itemCount, total };
+}
+
+function getCurrentProfile() {
+  return USER_PROFILES[currentUserKey] || USER_PROFILES.user;
+}
+
+function hasAdminRoleInStorage() {
+  const storedRole = String(localStorage.getItem('role') || '').trim();
+  return storedRole === 'ADMIN';
+}
+
+function getProfileOrderById(orderId) {
+  const profile = getCurrentProfile();
+  return (profile.history || []).find((order) => String(order.id) === String(orderId));
+}
+
+function renderProfile(userKey = currentUserKey) {
+  const profile = USER_PROFILES[userKey] || USER_PROFILES.user;
+  currentUserKey = profile.key;
+  localStorage.setItem('aio-current-user', currentUserKey);
+  const isAdminByStorage = hasAdminRoleInStorage();
+  const resolvedRole = isAdminByStorage ? 'SYSTEM ADMINISTRATOR' : 'HOME USER';
+
+  const avatar = document.getElementById('profile-avatar');
+  if (avatar) {
+    avatar.src = buildAvatarDataUri(profile);
+    avatar.alt = `${profile.displayName} profile picture`;
+  }
+
+  const role = document.getElementById('profile-role');
+  const name = document.getElementById('profile-name');
+  const location = document.getElementById('profile-location');
+  const goAdminDashboardBtn = document.getElementById('go-admin-dashboard-btn');
+  const loginSessionsList = document.getElementById('profile-login-sessions');
+  const paymentMethodsList = document.getElementById('profile-payment-methods');
+  const supportClaimsList = document.getElementById('profile-support-claims');
+  const buyerCount = document.getElementById('profile-buyer-level-count');
+  const buyerBar = document.getElementById('profile-buyer-level-bar');
+  const buyerPercent = document.getElementById('profile-buyer-level-percent');
+  const historyBody = document.getElementById('purchase-history-body');
+
+  if (role) role.textContent = resolvedRole;
+  if (name) name.textContent = `${profile.profileData.firstName} ${profile.profileData.lastName}`.trim();
+  if (location) location.innerHTML = `<span class="material-symbols-outlined text-[16px]">location_on</span>${profile.location}`;
+  if (goAdminDashboardBtn) {
+    goAdminDashboardBtn.classList.toggle('hidden', !isAdminByStorage);
+  }
+
+  if (loginSessionsList) {
+    loginSessionsList.innerHTML = profile.loginSessions.map((entry) => `
+      <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex flex-col gap-1">
+        <div class="font-label-caps text-[11px] text-on-surface">${formatProfileDateTime(entry.dateTime)}</div>
+        <div class="text-body-sm text-on-surface-variant">${entry.detail}</div>
+      </div>
+    `).join('');
+  }
+
+  if (paymentMethodsList) {
+    if (profile.paymentMethods.length === 0) {
+      paymentMethodsList.innerHTML = '<div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low text-body-sm text-on-surface-variant">No saved payment methods.</div>';
+    } else {
+      paymentMethodsList.innerHTML = profile.paymentMethods.map((method, index) => `
+        <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex items-start justify-between gap-sm">
+          <div>
+            <div class="font-label-caps text-[11px] text-on-surface">${method.label}</div>
+            <div class="text-body-sm text-on-surface-variant">${method.detail}</div>
+          </div>
+          <div class="flex items-center gap-sm shrink-0">
+            <span class="material-symbols-outlined text-primary">payments</span>
+            <button type="button" class="w-8 h-8 inline-flex items-center justify-center rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" aria-label="Remove payment method" data-profile-action="delete-payment-method" data-payment-method-index="${index}">
+              <span class="material-symbols-outlined text-[18px] leading-none">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  if (supportClaimsList) {
+    supportClaimsList.innerHTML = profile.supportClaims.map((claim) => `
+      <div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low flex flex-col gap-1">
+        <div class="font-label-caps text-[11px] text-on-surface">${formatProfileDateTime(claim.dateTime)}</div>
+        <div class="flex items-start justify-between gap-sm">
+          <div class="text-body-sm text-on-surface-variant two-line-clamp flex-1 min-w-0">${claim.title}</div>
+          <div class="flex items-center gap-xs text-primary shrink-0">
+            <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+            <span>${claim.status}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const monthlyOrders = (profile.history || []).filter((order) => {
+    const [orderDate] = String(order.date || '').split(' ');
+    const [lastDate] = String(profile.history?.[0]?.date || '').split(' ');
+    if (!orderDate || !lastDate) return false;
+    return orderDate.slice(0, 7) === lastDate.slice(0, 7);
+  }).length;
+  const monthlyProgress = Math.min(100, Math.round((monthlyOrders / 50) * 100));
+
+  if (buyerCount) buyerCount.textContent = `${monthlyOrders}/50`;
+  if (buyerBar) buyerBar.style.width = `${monthlyProgress}%`;
+  if (buyerPercent) buyerPercent.textContent = `${monthlyProgress}% of monthly goal`;
+
+  if (historyBody) {
+    historyBody.innerHTML = profile.history.map((order) => `
+      <tr class="border-b border-outline-variant/10 hover:bg-primary/5 transition-colors">
+        <td class="py-md px-sm font-mono text-[12px]">${order.id}</td>
+        <td class="py-md px-sm text-on-surface-variant">${formatProfileDateTime(order.date)}</td>
+        <td class="py-md px-sm"><div class="flex items-center gap-xs text-primary"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div>${order.status}</div></td>
+        <td class="py-md px-sm">${getOrderSummary(order).itemCount}</td>
+        <td class="py-md px-sm">${formatMoney(getOrderSummary(order).total)}</td>
+        <td class="py-md px-sm text-right relative">
+          <button type="button" class="material-symbols-outlined text-on-surface-variant hover:text-primary" onclick="toggleOrderMenu(event, '${order.id}')">more_vert</button>
+          <div id="order-menu-${order.id}" class="hidden absolute right-2 top-10 z-20 w-44 rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-xl shadow-primary/10 p-1 text-left">
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-detail" data-order-id="${order.id}">View Details</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="view-order-items" data-order-id="${order.id}">View Items</button>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary/5 text-sm" data-profile-action="download-invoice" data-order-id="${order.id}">Download Invoice</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function closeAllOrderMenus() {
+  document.querySelectorAll('[id^="order-menu-"]').forEach((menu) => menu.classList.add('hidden'));
+}
+
+function toggleOrderMenu(event, orderId) {
+  event.stopPropagation();
+  const menu = document.getElementById(`order-menu-${orderId}`);
+  if (!menu) return;
+  const isHidden = menu.classList.contains('hidden');
+  closeAllOrderMenus();
+  if (isHidden) menu.classList.remove('hidden');
+}
+
+function openProfileEditPopup() {
+  const profile = getCurrentProfile();
+  document.getElementById('profile-edit-username').value = profile.profileData.username || '';
+  document.getElementById('profile-edit-email').value = profile.profileData.email || '';
+  document.getElementById('profile-edit-password').value = profile.profileData.password || '';
+  document.getElementById('profile-edit-first-name').value = profile.profileData.firstName || '';
+  document.getElementById('profile-edit-last-name').value = profile.profileData.lastName || '';
+  document.getElementById('profile-edit-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileEditPopup() {
+  document.getElementById('profile-edit-popup').classList.add('hidden');
+  if (document.getElementById('profile-edit-confirm-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openProfileEditConfirmPopup() {
+  document.getElementById('profile-edit-confirm-popup').classList.remove('hidden');
+}
+
+function closeProfileEditConfirmPopup() {
+  document.getElementById('profile-edit-confirm-popup').classList.add('hidden');
+  if (document.getElementById('profile-edit-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openPaymentMethodDeleteConfirmPopup(methodIndex) {
+  const profile = getCurrentProfile();
+  if (!Number.isInteger(methodIndex)) return;
+  if (methodIndex < 0 || methodIndex >= profile.paymentMethods.length) return;
+  pendingPaymentMethodIndex = methodIndex;
+  document.getElementById('payment-method-delete-confirm-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closePaymentMethodDeleteConfirmPopup() {
+  document.getElementById('payment-method-delete-confirm-popup').classList.add('hidden');
+  pendingPaymentMethodIndex = null;
+  if (
+    document.getElementById('profile-edit-popup').classList.contains('hidden') &&
+    document.getElementById('profile-edit-confirm-popup').classList.contains('hidden') &&
+    document.getElementById('profile-order-detail-popup').classList.contains('hidden') &&
+    document.getElementById('profile-order-items-popup').classList.contains('hidden')
+  ) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function confirmDeletePaymentMethod() {
+  const profile = getCurrentProfile();
+  if (!Number.isInteger(pendingPaymentMethodIndex)) return;
+  if (pendingPaymentMethodIndex < 0 || pendingPaymentMethodIndex >= profile.paymentMethods.length) {
+    closePaymentMethodDeleteConfirmPopup();
+    return;
+  }
+  profile.paymentMethods.splice(pendingPaymentMethodIndex, 1);
+  closePaymentMethodDeleteConfirmPopup();
+  renderProfile(currentUserKey);
+}
+
+function saveProfileChanges() {
+  if (!pendingProfilePayload) return;
+  const profile = getCurrentProfile();
+  profile.profileData = { ...pendingProfilePayload };
+  profile.displayName = pendingProfilePayload.firstName || pendingProfilePayload.username;
+  if (profile.avatar?.initials) {
+    const initials = `${(pendingProfilePayload.firstName || 'U').charAt(0)}${(pendingProfilePayload.lastName || 'S').charAt(0)}`.toUpperCase();
+    profile.avatar.initials = initials;
+  }
+  pendingProfilePayload = null;
+  closeProfileEditConfirmPopup();
+  closeProfileEditPopup();
+  renderProfile(currentUserKey);
+}
+
+function openProfileOrderDetailPopup(orderId) {
+  const order = getProfileOrderById(orderId);
+  if (!order) return;
+  const summary = getOrderSummary(order);
+  currentProfileOrderId = String(order.id);
+  document.getElementById('order-detail-id').value = order.id;
+  document.getElementById('order-detail-date').value = formatProfileDateTime(order.date);
+  document.getElementById('order-detail-status').value = order.status;
+  document.getElementById('order-detail-items-count').value = String(summary.itemCount);
+  document.getElementById('order-detail-total').value = formatMoney(summary.total);
+  document.getElementById('profile-order-detail-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileOrderDetailPopup() {
+  document.getElementById('profile-order-detail-popup').classList.add('hidden');
+  if (document.getElementById('profile-order-items-popup').classList.contains('hidden')) {
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+
+function openProfileOrderItemsPopup(orderId) {
+  const order = getProfileOrderById(orderId);
+  if (!order) return;
+  currentProfileOrderId = String(order.id);
+  const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+  const itemCount = items.length;
+  const totalQty = items.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  const totalAmount = items.reduce((sum, item) => sum + (Number(item.quantity || 0) * Number(item.unitPrice || 0)), 0);
+
+  document.getElementById('profile-order-items-title').textContent = `Order ${order.id} items`;
+  document.getElementById('profile-order-items-count').textContent = String(itemCount);
+  document.getElementById('profile-order-items-total-qty').textContent = String(totalQty);
+  document.getElementById('profile-order-items-total-amount').textContent = formatMoney(totalAmount);
+
+  const body = document.getElementById('profile-order-items-body');
+  if (items.length === 0) {
+    body.innerHTML = '<tr><td colspan="5" class="py-md px-sm text-on-surface-variant">No order items for this order.</td></tr>';
+  } else {
+    body.innerHTML = items.map((item, index) => `
+      <tr class="border-b border-outline-variant/20 last:border-b-0">
+        <td class="py-sm px-sm">${index + 1}</td>
+        <td class="py-sm px-sm">${item.name}</td>
+        <td class="py-sm px-sm">${item.quantity}</td>
+        <td class="py-sm px-sm">${formatMoney(item.unitPrice)}</td>
+        <td class="py-sm px-sm">${formatMoney(Number(item.quantity || 0) * Number(item.unitPrice || 0))}</td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('profile-order-items-popup').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeProfileOrderItemsPopup() {
+  document.getElementById('profile-order-items-popup').classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
+function handleLogout(event) {
+  event?.preventDefault();
+  localStorage.removeItem('aio-current-user');
+  currentUserKey = 'user';
+  globalThis.location.href = '../auth/Login.html';
+}
+
+function goToAdminDashboard() {
+  if (!hasAdminRoleInStorage()) return;
+  globalThis.location.href = '../admin/AdminDashboard.html';
+}
+
+// ── Router ──────────────────────────────────────
+const PAGES = ['home', 'store', 'product', 'cart', 'profile', 'admin'];
+
+function navigate(pageId) {
+  if (!PAGES.includes(pageId)) return;
+
+  // Hide all pages
+  PAGES.forEach(id => {
+    const el = document.getElementById('page-' + id);
+    if (el) el.classList.remove('active');
+  });
+
+  // Show target
+  const target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+
+  // Update desktop nav
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const active = link.dataset.page === pageId;
+    link.classList.toggle('text-primary', active);
+    link.classList.toggle('font-bold', active);
+    link.classList.toggle('text-on-surface-variant', !active);
+  });
+
+  // Update mobile nav
+  document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+    const active = btn.dataset.page === pageId;
+    btn.classList.toggle('text-primary', active);
+    btn.classList.toggle('text-secondary', !active);
+    // Pill highlight for active mobile button
+    if (active) {
+      btn.classList.add('bg-primary-container/30', 'rounded-xl', 'px-4', 'py-1.5');
+    } else {
+      btn.classList.remove('bg-primary-container/30', 'rounded-xl', 'px-4', 'py-1.5');
+    }
+  });
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Push state (no reload SPA)
+  history.pushState({ page: pageId }, '', '#' + pageId);
+
+  if (pageId === 'profile') {
+    renderProfile(currentUserKey);
+  }
+
+  if (pageId === 'cart') {
+    renderCart();
+  }
+
+  // Re-init sliders if navigating to home
+  if (pageId === 'home') initSliders();
+}
+
+const STORE_PRODUCTS = {
+  homepodMini: {
+    id: 'homepodMini',
+    category: 'AI SMART SPEAKER',
+    title: 'Apple HomePod mini',
+    description: 'Compact smart speaker with AI voice assistant, home automation and Intercom.',
+    price: '$99.00',
+    oldPrice: '$129.00',
+    image: '../../public/images/Apple%20HomePod%20mini.jpg',
+    inStore: true,
+    categoryKey: 'speaker',
+    assistantKey: 'siri',
+    connectivityKeys: ['matter', 'thread', 'wifi'],
+    priceValue: 99,
+    badge: 'AI VOICE',
+    specs: ['Apple S5 Chip', 'AI Voice + Home', 'Thread / Matter', 'Temp Sensor']
+  },
+  echo4: {
+    id: 'echo4',
+    category: 'ALEXA HUB',
+    title: 'Amazon Echo (4th Gen)',
+    description: 'Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../public/images/Amazon%20Echo%20(4th%20Gen).jpg',
+    inStore: true,
+    categoryKey: 'speaker',
+    assistantKey: 'alexa',
+    connectivityKeys: ['zigbee', 'matter', 'wifi'],
+    priceValue: 99.99,
+    badge: 'AI HUB',
+    specs: ['AZ1 Neural Edge', 'Zigbee Hub', 'AI Voice', 'Wi-Fi + BT']
+  },
+  nestAudio: {
+    id: 'nestAudio',
+    category: 'GOOGLE SPEAKER',
+    title: 'Google Nest Audio',
+    description: 'AI-powered smart speaker with stereo pairing and Voice Match.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../public/images/Google%20Nest%20Audio.jpg',
+    inStore: true,
+    categoryKey: 'speaker',
+    assistantKey: 'google',
+    connectivityKeys: ['wifi'],
+    priceValue: 99.99,
+    badge: 'AI VOICE',
+    specs: ['AI Assistant', 'Stereo Pair', 'Voice Match', 'Wi-Fi + BT']
+  },
+  nestHub2: {
+    id: 'nestHub2',
+    category: 'GOOGLE SMART DISPLAY',
+    title: 'Google Nest Hub (2nd Gen)',
+    description: 'Smart display with AI assistant, media controls and sleep sensing.',
+    price: '$99.99',
+    oldPrice: '$129.99',
+    image: '../../public/images/Google%20Nest%20Hub%20(2nd%20Gen).jpg',
+    inStore: true,
+    categoryKey: 'display',
+    assistantKey: 'google',
+    connectivityKeys: ['wifi', 'matter'],
+    priceValue: 99.99,
+    badge: 'SMART DISPLAY',
+    specs: ['7in Display', 'AI Assistant', 'Sleep Sensing', 'Cast Ready']
+  },
+  ecobeeThermostat: {
+    id: 'ecobeeThermostat',
+    category: 'SMART CLIMATE CONTROL',
+    title: 'ecobee SmartThermostat',
+    description: 'Smart thermostat with voice control, room sensors and AI assistant compatibility.',
+    price: '$249.99',
+    oldPrice: '$299.99',
+    image: '../../public/images/ecobee%20SmartThermostat.jpg',
+    inStore: true,
+    categoryKey: 'climate',
+    assistantKey: 'alexa',
+    connectivityKeys: ['matter', 'wifi'],
+    priceValue: 249.99,
+    badge: 'CLIMATE',
+    specs: ['Auto Schedule', 'Room Sensor', 'Energy Star', 'Matter Ready']
+  },
+  echoShow8: {
+    id: 'echoShow8',
+    category: 'AI SMART DISPLAY',
+    title: 'Amazon Echo Show 8 (3rd Gen)',
+    description: 'AI-powered smart display with 8in screen, calls, routines and home control.',
+    price: '$149.99',
+    oldPrice: '$179.99',
+    image: '../../public/images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg',
+    inStore: true,
+    categoryKey: 'display',
+    assistantKey: 'alexa',
+    connectivityKeys: ['matter', 'wifi', 'zigbee'],
+    priceValue: 149.99,
+    badge: 'AI DISPLAY',
+    specs: ['8in HD Screen', '13MP Camera', 'AI Ready', 'Matter Hub']
+  },
+  appleTv4k: {
+    id: 'appleTv4k',
+    category: 'AI STREAMING DEVICE',
+    title: 'Apple TV 4K',
+    description: 'Streaming box with tvOS, Apple ecosystem integration and AI voice control.',
+    price: '$129.00',
+    oldPrice: '$159.00',
+    image: '../../public/images/Apple%20TV%204K.jpg',
+    inStore: true,
+    categoryKey: 'streaming',
+    assistantKey: 'siri',
+    connectivityKeys: ['wifi'],
+    priceValue: 129,
+    badge: 'AI TV',
+    specs: ['4K HDR', 'Voice Remote', 'tvOS Apps', 'Wi-Fi + ETH']
+  },
+  fireTvCube: {
+    id: 'fireTvCube',
+    category: 'STREAMING & VOICE',
+    title: 'Amazon Fire TV Cube',
+    description: 'Hands-free 4K streaming device with Alexa voice control and HDMI passthrough.',
+    price: '$139.99',
+    oldPrice: '$169.99',
+    image: '../../public/images/Amazon%20Fire%20TV%20Cube.jpg',
+    inStore: false,
+    categoryKey: 'streaming',
+    assistantKey: 'alexa',
+    connectivityKeys: ['wifi'],
+    priceValue: 139.99,
+    badge: 'STREAMING',
+    specs: ['4K Ultra HD', 'Hands-free', 'AI Voice', 'HDMI passthrough']
+  }
+};
+
+function formatMoney(value) {
+  return '$' + Number(value).toFixed(2);
+}
+
+function getVisibleStoreProducts() {
+  const query = storeFilterState.query.trim().toLowerCase();
+  return Object.values(STORE_PRODUCTS).filter((product) => {
+    if (!product.inStore) return false;
+
+    const searchable = (product.title + ' ' + product.description + ' ' + product.category).toLowerCase();
+    const matchesQuery = !query || searchable.includes(query);
+    const matchesCategory = !storeFilterState.category || storeFilterState.category === product.categoryKey;
+    const matchesAssistant = !storeFilterState.assistant || storeFilterState.assistant === product.assistantKey;
+    const matchesConnectivity = !storeFilterState.connectivity || product.connectivityKeys.includes(storeFilterState.connectivity);
+    const maxPrice = Number.parseFloat(storeFilterState.maxPrice);
+    const hasMaxPrice = Number.isFinite(maxPrice) && maxPrice >= 0;
+    const matchesPrice = !hasMaxPrice || product.priceValue <= maxPrice;
+
+    return matchesQuery && matchesCategory && matchesAssistant && matchesConnectivity && matchesPrice;
+  });
+}
+
+function renderStoreProducts() {
+  const container = document.getElementById('store-product-grid');
+  const countLabel = document.getElementById('store-results-count');
+  if (!container) return;
+
+  const products = getVisibleStoreProducts();
+  if (countLabel) {
+    countLabel.textContent = 'Showing ' + products.length + ' product' + (products.length === 1 ? '' : 's');
+  }
+
+  if (!products.length) {
+    container.innerHTML = '<div class="col-span-full glass-panel rounded-2xl p-lg text-center"><p class="font-headline-sm mb-xs">No products found</p><p class="text-on-surface-variant text-body-sm">Try another search or clear active filters.</p></div>';
+    return;
+  }
+
+  container.innerHTML = products.map((product) => {
+    const specs = product.specs.slice(0, 4).map((spec) => '<div class="flex items-center gap-xs justify-center"><span class="material-symbols-outlined text-[16px] text-outline">check_circle</span><span class="font-label-caps text-[11px] text-on-surface-variant">' + spec + '</span></div>').join('');
+    return `
+      <div class="group flex flex-col glass-panel rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300">
+        <div class="relative h-64 bg-surface-container-highest flex items-center justify-center p-md overflow-hidden">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${product.image}" alt="${product.title}">
+          <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/10 backdrop-blur-md border border-primary/20"><span class="font-label-caps text-[10px] text-primary">${product.badge}</span></div>
+        </div>
+        <div class="p-md flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-xs">
+            <h3 class="font-headline-sm text-on-surface">${product.title}</h3>
+            <span class="font-bold text-headline-sm" style="color:#00f0ff">${formatMoney(product.priceValue)}</span>
+          </div>
+          <p class="text-body-sm text-on-surface-variant mb-md">${product.description}</p>
+          <div class="grid grid-cols-2 gap-y-2 mb-md pt-md border-t border-outline-variant/20">${specs}</div>
+          <div class="mt-auto flex items-center justify-between gap-sm">
+            <button onclick="showProductDetail('${product.id}')" class="bg-surface text-on-surface px-md py-2 rounded-lg font-label-caps border border-outline-variant hover:bg-surface-container transition-all active:scale-95">View Details</button>
+            <button onclick="addToCart('${product.id}')" class="bg-primary/5 hover:bg-primary text-primary hover:text-white px-md py-2 rounded-lg font-label-caps transition-all active:scale-95">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateFilterChipStyles() {
+  document.querySelectorAll('.filter-chip').forEach((chip) => {
+    const group = chip.dataset.filterGroup;
+    const value = chip.dataset.filterValue;
+    const isActive = storeFilterState[group] === value;
+    chip.classList.toggle('bg-primary-container/30', !!isActive);
+    chip.classList.toggle('text-on-primary-container', !!isActive);
+    chip.classList.toggle('border', !!isActive);
+    chip.classList.toggle('border-primary/20', !!isActive);
+    chip.classList.toggle('bg-surface-variant', !isActive);
+    chip.classList.toggle('text-on-surface-variant', !isActive);
+  });
+}
+
+function toggleStoreFilter(group, value) {
+  if (!(group in storeFilterState)) return;
+  storeFilterState[group] = storeFilterState[group] === value ? '' : value;
+  updateFilterChipStyles();
+  renderStoreProducts();
+}
+
+function clearStoreFilters() {
+  storeFilterState.query = '';
+  storeFilterState.category = '';
+  storeFilterState.assistant = '';
+  storeFilterState.connectivity = '';
+  storeFilterState.maxPrice = '';
+
+  const input = document.getElementById('store-search-input');
+  if (input) input.value = '';
+  const maxPriceInput = document.getElementById('store-max-price');
+  if (maxPriceInput) maxPriceInput.value = '';
+
+  updateFilterChipStyles();
+  renderStoreProducts();
+}
+
+function addToCart(productId) {
+  const product = STORE_PRODUCTS[productId];
+  if (!product) return;
+  cartState[productId] = (cartState[productId] || 0) + 1;
+  renderCart();
+  navigate('cart');
+}
+
+function addCurrentProductToCart() {
+  addToCart(currentProductId);
+}
+
+function removeFromCart(productId) {
+  delete cartState[productId];
+  renderCart();
+}
+
+function changeCartQuantity(productId, delta) {
+  const currentQty = cartState[productId] || 0;
+  const nextQty = currentQty + delta;
+  if (nextQty <= 0) {
+    removeFromCart(productId);
+    return;
+  }
+  cartState[productId] = nextQty;
+  renderCart();
+}
+
+function getCartItems() {
+  return Object.entries(cartState)
+    .map(([productId, quantity]) => ({ productId, quantity, product: STORE_PRODUCTS[productId] }))
+    .filter((entry) => entry.product && entry.quantity > 0);
+}
+
+function renderCart() {
+  const itemsContainer = document.getElementById('cart-items-container');
+  const summaryLines = document.getElementById('order-summary-lines');
+  const summaryShipping = document.getElementById('summary-shipping');
+  const summaryTaxes = document.getElementById('summary-taxes');
+  const summaryDiscount = document.getElementById('summary-discount');
+  const summaryTotal = document.getElementById('summary-total');
+
+  if (!itemsContainer || !summaryLines || !summaryShipping || !summaryTaxes || !summaryDiscount || !summaryTotal) return;
+
+  const items = getCartItems();
+  const subtotal = items.reduce((acc, item) => acc + (item.product.priceValue * item.quantity), 0);
+  const shipping = items.length ? SHIPPING_FLAT : 0;
+  const taxes = subtotal * TAX_RATE;
+  const discount = subtotal >= 250 ? 10 : 0;
+  const total = Math.max(subtotal + shipping + taxes - discount, 0);
+
+  if (items.length === 0) {
+    itemsContainer.innerHTML = '<div class="glass-panel rounded-xl p-lg text-center"><p class="font-headline-sm mb-xs">Your cart is empty</p><p class="text-on-surface-variant text-body-sm">Add products from Store to start your order.</p></div>';
+    summaryLines.innerHTML = '<div class="text-on-surface-variant text-body-sm">No items yet.</div>';
+  } else {
+    itemsContainer.innerHTML = items.map(({ productId, quantity, product }) => `
+      <div class="glass-panel rounded-xl p-md flex flex-col md:flex-row gap-md items-center group hover:border-primary/40 transition-colors">
+        <div class="w-full md:w-32 h-32 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+          <img alt="${product.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="${product.image}">
+        </div>
+        <div class="flex-grow">
+          <div class="flex justify-between items-start mb-xs gap-sm">
+            <h3 class="font-headline-sm text-headline-sm">${product.title}</h3>
+            <span class="font-headline-sm text-headline-sm" style="color:#00f0ff">${formatMoney(product.priceValue * quantity)}</span>
+          </div>
+          <p class="text-on-surface-variant font-body-sm text-body-sm mb-md">${product.description}</p>
+          <div class="flex items-center gap-md flex-wrap">
+            <div class="flex items-center gap-sm bg-surface-container-low border border-outline-variant/30 px-sm py-xs rounded-lg">
+              <button type="button" onclick="changeCartQuantity('${productId}', -1)" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">remove</button>
+              <span class="font-label-caps text-label-caps w-4 text-center">${String(quantity).padStart(2, '0')}</span>
+              <button type="button" onclick="changeCartQuantity('${productId}', 1)" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">add</button>
+            </div>
+            <button type="button" onclick="removeFromCart('${productId}')" class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors font-label-caps text-label-caps">
+              <span class="material-symbols-outlined text-[18px]">delete</span>REMOVE
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    summaryLines.innerHTML = items.map(({ quantity, product }) => `
+      <div class="flex justify-between items-center gap-2">
+        <span class="text-on-surface-variant font-label-caps text-[10px] uppercase truncate">${product.title} x${quantity}</span>
+        <span class="text-body-sm font-medium">${formatMoney(product.priceValue * quantity)}</span>
+      </div>
+    `).join('');
+  }
+
+  summaryShipping.textContent = formatMoney(shipping);
+  summaryTaxes.textContent = formatMoney(taxes);
+  summaryDiscount.textContent = '-$' + Number(discount).toFixed(2);
+  summaryTotal.textContent = formatMoney(total);
+}
+
+function showProductDetail(productId) {
+  const product = STORE_PRODUCTS[productId];
+  if (!product) return;
+
+  currentProductId = productId;
+  document.getElementById('product-image').src = product.image;
+  document.getElementById('product-image').alt = product.title;
+  const firstThumb = document.querySelector('#page-product .grid.grid-cols-4 img');
+  if (firstThumb) { firstThumb.src = product.image; firstThumb.alt = product.title; }
+  document.getElementById('product-category').innerText = product.category;
+  document.getElementById('product-title').innerText = product.title;
+  document.getElementById('product-description').innerText = product.description;
+  document.getElementById('product-price').innerText = product.price;
+  document.getElementById('product-old-price').innerText = product.oldPrice;
+
+  navigate('product');
+}
+
+// Handle browser back/forward
+globalThis.addEventListener('popstate', (e) => {
+  const page = e.state?.page || 'home';
+  navigate(page);
+});
+
+// Initial page from hash
+const initPage = location.hash.replace('#', '') || 'home';
+applyTheme(currentTheme);
+navigate(PAGES.includes(initPage) ? initPage : 'home');
+
+document.addEventListener('click', handleFooterPopupLinks);
+document.addEventListener('click', handlePopupDismiss);
+document.addEventListener('click', (event) => {
+  const chip = event.target.closest('.filter-chip');
+  if (!chip) return;
+  const group = chip.dataset.filterGroup;
+  const value = chip.dataset.filterValue;
+  if (group && value) toggleStoreFilter(group, value);
+});
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('[id^="order-menu-"]') && !event.target.closest('button[onclick^="toggleOrderMenu"]')) {
+    closeAllOrderMenus();
+  }
+
+  const actionBtn = event.target.closest('button[data-profile-action]');
+  if (!actionBtn) return;
+
+  const action = actionBtn.dataset.profileAction;
+  if (action === 'download-invoice') {
+    closeAllOrderMenus();
+    return;
+  }
+  if (action === 'delete-payment-method') {
+    const methodIndex = Number(actionBtn.dataset.paymentMethodIndex);
+    if (!Number.isInteger(methodIndex)) return;
+    openPaymentMethodDeleteConfirmPopup(methodIndex);
+    return;
+  }
+
+  const orderId = actionBtn.dataset.orderId;
+  if (!orderId) return;
+
+  if (action === 'view-order-detail') {
+    closeAllOrderMenus();
+    openProfileOrderDetailPopup(orderId);
+  }
+  if (action === 'view-order-items') {
+    closeAllOrderMenus();
+    openProfileOrderItemsPopup(orderId);
+  }
+});
+document.addEventListener('click', (event) => {
+  if (event.target.closest('[data-profile-edit-close="true"]')) {
+    closeProfileEditPopup();
+  }
+  if (event.target.closest('[data-profile-confirm-close="true"]')) {
+    closeProfileEditConfirmPopup();
+  }
+  if (event.target.closest('[data-profile-order-detail-close="true"]')) {
+    closeProfileOrderDetailPopup();
+  }
+  if (event.target.closest('[data-profile-order-items-close="true"]')) {
+    closeProfileOrderItemsPopup();
+  }
+  if (event.target.closest('[data-payment-method-confirm-close="true"]')) {
+    closePaymentMethodDeleteConfirmPopup();
+  }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closePopups();
+    closeProfileEditConfirmPopup();
+    closeProfileEditPopup();
+    closeProfileOrderDetailPopup();
+    closeProfileOrderItemsPopup();
+    closePaymentMethodDeleteConfirmPopup();
+  }
+});
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeAddCardPopup();
+    }
+  });
+
+
+// ── Slider Logic ─────────────────────────────────
+function initSliders() {
+  document.querySelectorAll('#page-home .auto-slider').forEach(sliderWrapper => {
+    // Avoid double-init
+    if (sliderWrapper._sliderInitialized) return;
+    sliderWrapper._sliderInitialized = true;
+
+    const container = sliderWrapper.querySelector('.slider-container');
+    const items     = sliderWrapper.querySelectorAll('.slider-item');
+    const dots      = sliderWrapper.querySelectorAll('.dot');
+    const prevBtn   = sliderWrapper.querySelector('.prev-btn');
+    const nextBtn   = sliderWrapper.querySelector('.next-btn');
+    const intervalTime = parseInt(sliderWrapper.dataset.interval) || 4000;
+
+    let currentIndex = 0;
+    let autoPlayInterval;
+    let isProgrammaticScroll = false;
+    let programmaticScrollTimer;
+
+    const updateSlider = (index) => {
+      currentIndex = ((index % items.length) + items.length) % items.length;
+
+      isProgrammaticScroll = true;
+      clearTimeout(programmaticScrollTimer);
+
+      const targetLeft = items[currentIndex].offsetLeft - container.offsetLeft;
+      container.scrollTo({ left: targetLeft, behavior: 'smooth' });
+
+      programmaticScrollTimer = setTimeout(() => { isProgrammaticScroll = false; }, 600);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-primary', i === currentIndex);
+        dot.classList.toggle('bg-outline-variant/50', i !== currentIndex);
+        dot.style.width = i === currentIndex ? '20px' : '8px';
+      });
+
+      items.forEach((item, i) => item.classList.toggle('opacity-60', i !== currentIndex));
+    };
+
+    const startAutoPlay = () => {
+      stopAutoPlay();
+      autoPlayInterval = setInterval(() => updateSlider(currentIndex + 1), intervalTime);
+    };
+
+    const stopAutoPlay = () => clearInterval(autoPlayInterval);
+
+    nextBtn?.addEventListener('click', () => { stopAutoPlay(); updateSlider(currentIndex + 1); startAutoPlay(); });
+    prevBtn?.addEventListener('click', () => { stopAutoPlay(); updateSlider(currentIndex - 1); startAutoPlay(); });
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { stopAutoPlay(); updateSlider(i); startAutoPlay(); }));
+
+    sliderWrapper.addEventListener('mouseenter', stopAutoPlay);
+    sliderWrapper.addEventListener('mouseleave', startAutoPlay);
+    sliderWrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
+    sliderWrapper.addEventListener('touchend', startAutoPlay, { passive: true });
+
+    let isScrolling;
+    container.addEventListener('scroll', () => {
+      if (isProgrammaticScroll) return;
+      clearTimeout(isScrolling);
+      isScrolling = setTimeout(() => {
+        const scrollLeft = container.scrollLeft;
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+
+        items.forEach((item, i) => {
+          const itemLeft = item.offsetLeft - container.offsetLeft;
+          const distance = Math.abs(itemLeft - scrollLeft);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = i;
+          }
+        });
+
+        if (nearestIndex !== currentIndex) updateSlider(nearestIndex);
+      }, 150);
+    });
+
+    updateSlider(0);
+    startAutoPlay();
+  });
+}
+
+// Init interactive sections on load
+document.addEventListener('DOMContentLoaded', () => {
+  initSliders();
+  const newsletterForm = document.getElementById('newsletter-form');
+  if (newsletterForm) newsletterForm.addEventListener('submit', handleNewsletterSubscribe);
+  const supportForm = document.getElementById('support-form');
+  if (supportForm) supportForm.addEventListener('submit', handleSupportSubmit);
+
+  const searchInput = document.getElementById('store-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (event) => {
+      storeFilterState.query = String(event.target.value || '');
+      renderStoreProducts();
+    });
+  }
+
+  const maxPriceInput = document.getElementById('store-max-price');
+  if (maxPriceInput) {
+    maxPriceInput.addEventListener('input', (event) => {
+      storeFilterState.maxPrice = String(event.target.value || '').trim();
+      renderStoreProducts();
+    });
+  }
+
+  const clearFiltersBtn = document.getElementById('store-clear-filters');
+  if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearStoreFilters);
+
+  const openProfileEditBtn = document.getElementById('open-profile-edit-btn');
+  if (openProfileEditBtn) {
+    openProfileEditBtn.addEventListener('click', openProfileEditPopup);
+  }
+
+  const goAdminDashboardBtn = document.getElementById('go-admin-dashboard-btn');
+  if (goAdminDashboardBtn) {
+    goAdminDashboardBtn.addEventListener('click', goToAdminDashboard);
+  }
+
+  const profileEditForm = document.getElementById('profile-edit-form');
+  if (profileEditForm) {
+    profileEditForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      pendingProfilePayload = {
+        username: String(document.getElementById('profile-edit-username').value || '').trim(),
+        email: String(document.getElementById('profile-edit-email').value || '').trim(),
+        password: String(document.getElementById('profile-edit-password').value || ''),
+        firstName: String(document.getElementById('profile-edit-first-name').value || '').trim(),
+        lastName: String(document.getElementById('profile-edit-last-name').value || '').trim(),
+        roleId: Number(getCurrentProfile().profileData.roleId || 2)
+      };
+      if (!pendingProfilePayload.username || !pendingProfilePayload.email || !pendingProfilePayload.password) {
+        return;
+      }
+      openProfileEditConfirmPopup();
+    });
+  }
+
+  const confirmProfileSaveBtn = document.getElementById('confirm-profile-save-btn');
+  if (confirmProfileSaveBtn) {
+    confirmProfileSaveBtn.addEventListener('click', saveProfileChanges);
+  }
+
+  const confirmPaymentMethodDeleteBtn = document.getElementById('confirm-payment-method-delete-btn');
+  if (confirmPaymentMethodDeleteBtn) {
+    confirmPaymentMethodDeleteBtn.addEventListener('click', confirmDeletePaymentMethod);
+  }
+
+  updateFilterChipStyles();
+  renderStoreProducts();
+  renderCart();
+});
+
+  // ══════════════════════════════════════════
+  //  CHECKOUT FLOW
+  // ══════════════════════════════════════════
+
+  let cartViewState = 'cart'; // 'cart' | 'checkout'
+  let selectedPaymentIndex = null;
+  let tempNewCard = null;
+  let purchaseSuccessOrderId = null;
+  let returnToCartTimer = null;
+
+  const SLIDE_DURATION = 460;
+
+  function goToCheckout() {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    renderCheckoutItems();
+    syncCheckoutTotals();
+    prefillBillingDetails();
+    // Reset payment selection if profile methods changed
+    const profile = getCurrentProfile();
+    if (selectedPaymentIndex === null && profile.paymentMethods.length > 0) {
+      selectedPaymentIndex = 0;
+    }
+    renderCheckoutPaymentMethods();
+
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    const wrapper = document.getElementById('cart-slide-wrapper');
+    if (!cartPanel || !checkoutPanel) return;
+
+    // Freeze wrapper height so the page doesn't jump during absolute positioning
+    if (wrapper) wrapper.style.minHeight = cartPanel.offsetHeight + 'px';
+
+    // Prep checkout off-screen right
+    const tr = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.38s ease';
+    cartPanel.style.transition = tr;
+    checkoutPanel.style.cssText = `position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;transition:${tr};`;
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      cartPanel.style.transform = 'translateX(-100%)';
+      cartPanel.style.opacity = '0';
+      checkoutPanel.style.transform = 'translateX(0)';
+      checkoutPanel.style.opacity = '1';
+      checkoutPanel.style.pointerEvents = '';
+    }));
+
+    setTimeout(() => {
+      cartPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(-100%);opacity:0;pointer-events:none;';
+      checkoutPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+      if (wrapper) wrapper.style.minHeight = '';
+      cartViewState = 'checkout';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, SLIDE_DURATION);
+  }
+
+  function goBackToCart() {
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    const wrapper = document.getElementById('cart-slide-wrapper');
+    if (!cartPanel || !checkoutPanel) return;
+
+    if (wrapper) wrapper.style.minHeight = checkoutPanel.offsetHeight + 'px';
+
+    const tr = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.38s ease';
+    checkoutPanel.style.transition = tr;
+    cartPanel.style.cssText = `position:absolute;top:0;left:0;right:0;transform:translateX(-100%);opacity:0;pointer-events:none;transition:${tr};`;
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      checkoutPanel.style.transform = 'translateX(100%)';
+      checkoutPanel.style.opacity = '0';
+      cartPanel.style.transform = 'translateX(0)';
+      cartPanel.style.opacity = '1';
+      cartPanel.style.pointerEvents = '';
+    }));
+
+    setTimeout(() => {
+      checkoutPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;';
+      cartPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+      if (wrapper) wrapper.style.minHeight = '';
+      cartViewState = 'cart';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, SLIDE_DURATION);
+  }
+
+  function renderCheckoutItems() {
+    const container = document.getElementById('checkout-items-container');
+    if (!container) return;
+    const items = getCartItems();
+    if (items.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = items.map(({ quantity, product }) => `
+      <div class="glass-panel rounded-xl p-md flex flex-col md:flex-row gap-md items-center">
+        <div class="w-full md:w-24 h-24 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+          <img alt="${product.title}" class="w-full h-full object-cover" src="${product.image}">
+        </div>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start gap-sm mb-xs">
+            <h3 class="font-headline-sm text-headline-sm truncate">${product.title}</h3>
+            <span class="font-headline-sm text-headline-sm shrink-0" style="color:#00f0ff">${formatMoney(product.priceValue * quantity)}</span>
+          </div>
+          <p class="text-on-surface-variant font-body-sm text-body-sm mb-sm two-line-clamp">${product.description}</p>
+          <div class="flex items-center gap-xs flex-wrap">
+            <span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Qty:</span>
+            <span class="font-label-caps text-label-caps bg-surface-container-low border border-outline-variant/30 px-sm py-xs rounded-lg">${String(quantity).padStart(2, '0')}</span>
+            <span class="font-label-caps text-[10px] text-on-surface-variant uppercase ml-xs">Unit:</span>
+            <span class="text-body-sm text-on-surface-variant">${formatMoney(product.priceValue)}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderCheckoutPaymentMethods() {
+    const container = document.getElementById('checkout-payment-methods');
+    if (!container) return;
+    const profile = getCurrentProfile();
+    const methods = profile.paymentMethods || [];
+
+    if (methods.length === 0 && !tempNewCard) {
+      container.innerHTML = '<div class="p-sm rounded-xl border border-outline-variant/20 bg-surface-container-low text-body-sm text-on-surface-variant">No saved payment methods. Add a new card below.</div>';
+      return;
+    }
+
+    let allMethods = methods.map((m, i) => ({ ...m, idx: i }));
+    let rows = allMethods.map(({ label, detail, idx }) => `
+      <label class="flex items-center gap-sm p-sm rounded-xl border cursor-pointer transition-colors ${selectedPaymentIndex === idx ? 'border-primary bg-primary/5' : 'border-outline-variant/30 bg-surface-container-low hover:border-primary/40'}">
+        <input type="radio" name="checkout-payment" value="${idx}" ${selectedPaymentIndex === idx ? 'checked' : ''} onchange="selectPaymentMethod(${idx})" class="accent-primary w-4 h-4 shrink-0">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1">payments</span>
+        <div class="flex-1 min-w-0">
+          <div class="font-label-caps text-[11px] text-on-surface truncate">${label}</div>
+          <div class="text-body-sm text-on-surface-variant">${detail}</div>
+        </div>
+      </label>
+    `).join('');
+
+    if (tempNewCard) {
+      rows += `
+        <label class="flex items-center gap-sm p-sm rounded-xl border cursor-pointer transition-colors ${selectedPaymentIndex === -1 ? 'border-primary bg-primary/5' : 'border-outline-variant/30 bg-surface-container-low hover:border-primary/40'}">
+          <input type="radio" name="checkout-payment" value="-1" ${selectedPaymentIndex === -1 ? 'checked' : ''} onchange="selectPaymentMethod(-1)" class="accent-primary w-4 h-4 shrink-0">
+          <span class="material-symbols-outlined text-primary">credit_card</span>
+          <div class="flex-1 min-w-0">
+            <div class="font-label-caps text-[11px] text-on-surface truncate">${tempNewCard.label}</div>
+            <div class="text-body-sm text-on-surface-variant">${tempNewCard.detail} · one-time use</div>
+          </div>
+        </label>
+      `;
+    }
+
+    container.innerHTML = rows;
+  }
+
+  function selectPaymentMethod(index) {
+    selectedPaymentIndex = index;
+    renderCheckoutPaymentMethods();
+  }
+
+  function syncCheckoutTotals() {
+    const items = getCartItems();
+    const subtotal = items.reduce((acc, item) => acc + (item.product.priceValue * item.quantity), 0);
+    const shipping = items.length ? SHIPPING_FLAT : 0;
+    const taxes = subtotal * TAX_RATE;
+    const discount = subtotal >= 250 ? 10 : 0;
+    const total = Math.max(subtotal + shipping + taxes - discount, 0);
+    const els = {
+      'co-summary-shipping': formatMoney(shipping),
+      'co-summary-taxes': formatMoney(taxes),
+      'co-summary-discount': '-$' + Number(discount).toFixed(2),
+      'co-summary-total': formatMoney(total)
+    };
+    Object.entries(els).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    });
+  }
+
+  function prefillBillingDetails() {
+    const profile = getCurrentProfile();
+    const nameInput = document.getElementById('checkout-billing-name');
+    const emailInput = document.getElementById('checkout-billing-email');
+    if (nameInput && !nameInput.value) {
+      nameInput.value = (`${profile.profileData.firstName || ''} ${profile.profileData.lastName || ''}`).trim();
+    }
+    if (emailInput && !emailInput.value) {
+      emailInput.value = profile.profileData.email || '';
+    }
+  }
+
+  // ── Add Card Popup ──────────────────────────────
+  function openAddCardPopup() {
+    const popup = document.getElementById('add-card-popup');
+    if (!popup) return;
+    const form = document.getElementById('add-card-form');
+    if (form) form.reset();
+    const saveCheck = document.getElementById('card-save');
+    if (saveCheck) saveCheck.checked = true;
+    const err = document.getElementById('add-card-error');
+    if (err) err.textContent = '';
+    popup.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeAddCardPopup() {
+    const popup = document.getElementById('add-card-popup');
+    if (popup) popup.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  function getCardBrand(digits) {
+    if (/^4/.test(digits)) return 'Visa';
+    if (/^5[1-5]/.test(digits) || /^2[2-7]/.test(digits)) return 'Mastercard';
+    if (/^3[47]/.test(digits)) return 'Amex';
+    if (/^6/.test(digits)) return 'Maestro';
+    return 'Card';
+  }
+
+  function handleAddCard(event) {
+    event.preventDefault();
+    const name = String(document.getElementById('card-name')?.value || '').trim();
+    const rawNum = String(document.getElementById('card-number')?.value || '').replace(/\s/g, '');
+    const expiry = String(document.getElementById('card-expiry')?.value || '').trim();
+    const cvv = String(document.getElementById('card-cvv')?.value || '').trim();
+    const shouldSave = document.getElementById('card-save')?.checked ?? false;
+    const errEl = document.getElementById('add-card-error');
+
+    const setErr = (msg) => { if (errEl) errEl.textContent = msg; };
+
+    if (name.length < 2) { setErr('Please enter the cardholder name.'); return; }
+    if (!/^\d{13,16}$/.test(rawNum)) { setErr('Enter a valid card number (13–16 digits).'); return; }
+    if (!/^\d{2}\/\d{2}$/.test(expiry)) { setErr('Enter expiry as MM/YY.'); return; }
+    if (!/^\d{3,4}$/.test(cvv)) { setErr('Enter a valid CVV (3–4 digits).'); return; }
+    setErr('');
+
+    const [mm, yy] = expiry.split('/');
+    const brand = getCardBrand(rawNum);
+    const last4 = rawNum.slice(-4);
+    const newMethod = {
+      label: `${brand} ending in ${last4}`,
+      detail: `Expires ${mm}/20${yy}`
+    };
+
+    if (shouldSave) {
+      const profile = getCurrentProfile();
+      profile.paymentMethods.push(newMethod);
+      selectedPaymentIndex = profile.paymentMethods.length - 1;
+      tempNewCard = null;
+      renderProfile(currentUserKey); // update profile payment methods list
+    } else {
+      tempNewCard = newMethod;
+      selectedPaymentIndex = -1;
+    }
+
+    closeAddCardPopup();
+    renderCheckoutPaymentMethods();
+  }
+
+  // ── Purchase ────────────────────────────────────
+  function handlePurchase() {
+    const items = getCartItems();
+    if (items.length === 0) return;
+
+    const profile = getCurrentProfile();
+    const hasSaved = selectedPaymentIndex !== null && selectedPaymentIndex >= 0 && selectedPaymentIndex < profile.paymentMethods.length;
+    const hasTemp = selectedPaymentIndex === -1 && tempNewCard !== null;
+
+    if (!hasSaved && !hasTemp) {
+      // Flash payment section to highlight it's required
+      const payEl = document.getElementById('checkout-payment-methods');
+      if (payEl) {
+        payEl.style.outline = '2px solid #ba1a1a';
+        payEl.style.borderRadius = '0.75rem';
+        setTimeout(() => { payEl.style.outline = ''; }, 1800);
+      }
+      return;
+    }
+
+    const btn = document.getElementById('buy-now-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.add('purchase-wave');
+      btn.innerHTML = '<span class="material-symbols-outlined spin-once">progress_activity</span><span>Processing…</span>';
+    }
+
+    setTimeout(() => {
+      // Build order
+      const orderId = 'ORD-' + Date.now().toString().slice(-7);
+      const orderDate = new Date().toISOString().slice(0, 16).replace('T', ' ');
+      const orderItems = items.map(({ product, quantity }) => ({
+        name: product.title, quantity, unitPrice: product.priceValue
+      }));
+      const profileData = getCurrentProfile();
+      profileData.history.unshift({ id: orderId, date: orderDate, status: 'PROCESSING', orderItems });
+
+      purchaseSuccessOrderId = orderId;
+
+      // Clear cart state
+      cartState = {};
+      selectedPaymentIndex = null;
+      tempNewCard = null;
+
+      // Reset buy button
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('purchase-wave');
+        btn.innerHTML = '<span class="material-symbols-outlined">shopping_bag</span>Buy Now';
+      }
+
+      // Reset checkout billing fields
+      ['checkout-billing-name','checkout-billing-email','checkout-billing-taxid','checkout-billing-address'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      // Navigate to profile → success overlay will appear
+      navigate('profile');
+    }, 1500);
+  }
+
+  function showPurchaseSuccess() {
+    const overlay = document.getElementById('profile-success-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('hidden');
+
+    // Re-trigger celebration icon animation
+    const emoji = document.getElementById('celebration-emoji');
+    if (emoji) {
+      emoji.style.animation = 'none';
+      void emoji.offsetHeight;
+      emoji.style.animation = '';
+    }
+
+    spawnConfetti();
+    startReturnCountdown();
+  }
+
+  function spawnConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+    container.innerHTML = '';
+    const colors = ['#006970', '#00dbe9', '#00f0ff', '#5d5e61', '#c6c6c9', '#00f0ff'];
+    for (let i = 0; i < 36; i++) {
+      const p = document.createElement('div');
+      const size = 6 + Math.random() * 8;
+      p.className = 'confetti-piece';
+      p.style.cssText = `
+        left:${Math.random() * 100}%;
+        top:${-10 - Math.random() * 30}px;
+        width:${size}px;
+        height:${size}px;
+        background:${colors[Math.floor(Math.random() * colors.length)]};
+        border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration:${1.2 + Math.random() * 1.2}s;
+        animation-delay:${Math.random() * 0.7}s;
+      `;
+      container.appendChild(p);
+    }
+  }
+
+  function startReturnCountdown() {
+    const btn = document.getElementById('return-to-cart-btn');
+    const bar = document.getElementById('countdown-bar');
+    if (btn) {
+      btn.disabled = true;
+      btn.className = 'w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps transition-all opacity-60 cursor-not-allowed';
+    }
+    if (bar) {
+      bar.style.animation = 'none';
+      void bar.offsetHeight;
+      bar.style.animation = 'countdownShrink 5s linear forwards';
+    }
+    clearTimeout(returnToCartTimer);
+    returnToCartTimer = setTimeout(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.className = 'w-full flex items-center justify-center gap-sm py-md px-lg rounded-xl bg-primary text-white font-label-caps text-label-caps transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-lg shadow-primary/20';
+      }
+    }, 5000);
+  }
+
+  function downloadInvoice() {
+    if (!purchaseSuccessOrderId) return;
+    const profile = getCurrentProfile();
+    const order = profile.history.find(o => o.id === purchaseSuccessOrderId);
+    if (!order) return;
+    const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+    const subtotal = items.reduce((s, i) => s + Number(i.quantity) * Number(i.unitPrice), 0);
+    const shipping = SHIPPING_FLAT;
+    const taxes = subtotal * TAX_RATE;
+    const discount = subtotal >= 250 ? 10 : 0;
+    const total = Math.max(subtotal + shipping + taxes - discount, 0);
+    const lines = items.map(i => `  ${i.name.padEnd(35)} x${i.quantity}  ${formatMoney(i.unitPrice).padStart(8)} = ${formatMoney(i.quantity * i.unitPrice)}`).join('\n');
+    const content = [
+      '========================================',
+      '        AI-O HOME MARKETPLACE',
+      '              INVOICE',
+      '========================================',
+      `Order ID : ${order.id}`,
+      `Date     : ${formatProfileDateTime(order.date)}`,
+      `Status   : ${order.status}`,
+      '----------------------------------------',
+      'ITEMS:',
+      lines,
+      '----------------------------------------',
+      `Subtotal : ${formatMoney(subtotal)}`,
+      `Shipping : ${formatMoney(shipping)}`,
+      `Taxes    : ${formatMoney(taxes)}`,
+      `Discount : -${formatMoney(discount)}`,
+      '----------------------------------------',
+      `TOTAL    : ${formatMoney(total)}`,
+      '========================================',
+      'Thank you for shopping at AI-O HOME!'
+    ].join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${order.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function sendInvoiceEmail() {
+    const profile = getCurrentProfile();
+    const email = profile.profileData.email || '';
+    const infoPopup = document.getElementById('info-popup');
+    const title = document.getElementById('info-popup-title');
+    const text = document.getElementById('info-popup-text');
+    if (infoPopup && title && text) {
+      title.textContent = 'Invoice Sent';
+      text.textContent = email
+        ? `Invoice for order ${purchaseSuccessOrderId || ''} has been sent to ${email}.`
+        : 'No email address is configured in your profile.';
+      infoPopup.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  function returnToEmptyCart() {
+    const btn = document.getElementById('return-to-cart-btn');
+    if (btn && btn.disabled) return;
+
+    // Hide success overlay
+    const overlay = document.getElementById('profile-success-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    purchaseSuccessOrderId = null;
+    clearTimeout(returnToCartTimer);
+
+    // Reset both cart panels to initial state
+    const cartPanel = document.getElementById('cart-panel-cart');
+    const checkoutPanel = document.getElementById('cart-panel-checkout');
+    if (cartPanel) cartPanel.style.cssText = 'position:relative;transform:translateX(0);opacity:1;';
+    if (checkoutPanel) checkoutPanel.style.cssText = 'position:absolute;top:0;left:0;right:0;transform:translateX(100%);opacity:0;pointer-events:none;';
+    cartViewState = 'cart';
+    cartState = {};
+
+    navigate('cart');
+  }
+
+  // Patch navigate to show success overlay when returning to profile after purchase
+  const _origNavigate = navigate;
+  navigate = function(pageId) {
+    _origNavigate(pageId);
+    if (pageId === 'profile' && purchaseSuccessOrderId) {
+      showPurchaseSuccess();
+    }
+  };
+
+  // Card number auto-formatting
+  document.addEventListener('DOMContentLoaded', () => {
+    const cardNumberInput = document.getElementById('card-number');
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+        e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+      });
+    }
+    const cardExpiryInput = document.getElementById('card-expiry');
+    if (cardExpiryInput) {
+      cardExpiryInput.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+        e.target.value = v;
+      });
+    }
+  });
+</script>
+</body>
+</html>
+
+
