@@ -1,0 +1,79 @@
+import type { Product } from '@/types/product.types';
+
+export const mockProducts: Product[] = [
+  {
+    id: 'homepodMini',
+    category: 'AI SMART SPEAKER',
+    categoryKey: 'speaker',
+    assistantKey: 'siri',
+    connectivityKeys: ['matter', 'thread', 'wifi'],
+    title: 'Apple HomePod mini',
+    description: 'Compact smart speaker with AI voice assistant, home automation and Intercom.',
+    priceValue: 99,
+    oldPrice: '$129.00',
+    image: '/images/Apple%20HomePod%20mini.jpg',
+    badge: 'AI VOICE',
+    inStore: true,
+    specs: ['Apple S5 Chip', 'AI Voice + Home', 'Thread / Matter', 'Temp Sensor']
+  },
+  {
+    id: 'echo4',
+    category: 'ALEXA HUB',
+    categoryKey: 'speaker',
+    assistantKey: 'alexa',
+    connectivityKeys: ['zigbee', 'matter', 'wifi'],
+    title: 'Amazon Echo (4th Gen)',
+    description: 'Smart speaker with AI assistant, built-in Zigbee hub and multi-room audio.',
+    priceValue: 99.99,
+    oldPrice: '$129.99',
+    image: '/images/Amazon%20Echo%20(4th%20Gen).jpg',
+    badge: 'AI HUB',
+    inStore: true,
+    specs: ['AZ1 Neural Edge', 'Zigbee Hub', 'AI Voice', 'Wi-Fi + BT']
+  },
+  {
+    id: 'nestAudio',
+    category: 'GOOGLE SPEAKER',
+    categoryKey: 'speaker',
+    assistantKey: 'google',
+    connectivityKeys: ['wifi'],
+    title: 'Google Nest Audio',
+    description: 'AI-powered smart speaker with stereo pairing and Voice Match.',
+    priceValue: 99.99,
+    oldPrice: '$129.99',
+    image: '/images/Google%20Nest%20Audio.jpg',
+    badge: 'AI VOICE',
+    inStore: true,
+    specs: ['AI Assistant', 'Stereo Pair', 'Voice Match', 'Wi-Fi + BT']
+  },
+  {
+    id: 'echoShow8',
+    category: 'AI SMART DISPLAY',
+    categoryKey: 'display',
+    assistantKey: 'alexa',
+    connectivityKeys: ['matter', 'wifi', 'zigbee'],
+    title: 'Amazon Echo Show 8 (3rd Gen)',
+    description: 'AI-powered smart display with 8in screen, calls, routines and home control.',
+    priceValue: 149.99,
+    oldPrice: '$179.99',
+    image: '/images/Amazon%20Echo%20Show%208%20(3rd%20Gen).jpg',
+    badge: 'AI DISPLAY',
+    inStore: true,
+    specs: ['8in HD Screen', '13MP Camera', 'AI Ready', 'Matter Hub']
+  },
+  {
+    id: 'appleTv4k',
+    category: 'AI STREAMING DEVICE',
+    categoryKey: 'streaming',
+    assistantKey: 'siri',
+    connectivityKeys: ['wifi'],
+    title: 'Apple TV 4K',
+    description: 'Streaming box with tvOS, Apple ecosystem integration and AI voice control.',
+    priceValue: 129,
+    oldPrice: '$159.00',
+    image: '/images/Apple%20TV%204K.jpg',
+    badge: 'AI TV',
+    inStore: true,
+    specs: ['4K HDR', 'Voice Remote', 'tvOS Apps', 'Wi-Fi + ETH']
+  }
+];

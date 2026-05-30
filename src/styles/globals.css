@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* , *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: 'Sora', sans-serif;
+  background: #fcf8f9;
+  color: #1c1b1c;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.mesh-gradient {
+  background-image:
+    radial-gradient(at 0% 0%, rgba(0, 219, 233, 0.07) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(0, 105, 112, 0.07) 0px, transparent 55%);
+}
+
+.glass-panel {
+  background: rgba(252, 248, 249, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(185, 202, 203, 0.3);
+}
+
+.glass-panel-white {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(185, 202, 203, 0.3);
+}
+
+.modal-backdrop {
+  background: rgba(24, 35, 38, 0.58);
+}
+
+.cyber-glow-focus:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 219, 233, 0.3);
+  border-color: #00dbe9;
+}
+
+.slider-container {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+html.dark body {
+  background: #081012;
+  color: #edf6f6;
+}
+
+html.dark .glass-panel,
+html.dark .glass-panel-white {
+  background: rgba(10, 17, 19, 0.88);
+  border-color: rgba(125, 160, 163, 0.16);
+}
+
+html.dark .mesh-gradient {
+  background-image:
+    radial-gradient(at 0% 0%, rgba(0, 219, 233, 0.12) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(0, 105, 112, 0.14) 0px, transparent 55%),
+    linear-gradient(180deg, rgba(8, 16, 18, 0.98), rgba(8, 16, 18, 0.92));
+}
