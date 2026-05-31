@@ -107,7 +107,7 @@
       else if (username === 'user' && password === 'user') role = 'USER';
       if (role) {
         localStorage.setItem('role', role);
-        window.location.href = role === 'ADMIN' ? '../admin/AdminDashboardSketch.html' : '../shop/ShopSketch.html#home';
+        window.location.href = role === 'ADMIN' ? '../admin/AdminDashboardSketch.html' : '../markketplace/AI-O_HOME_Sketch.html#home';
       } else {
         document.getElementById('login-error').textContent = 'INVALID CREDENTIALS';
       }
