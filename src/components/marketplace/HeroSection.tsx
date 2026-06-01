@@ -15,6 +15,7 @@ export function HeroSection() {
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-md">Discover smart devices with AI voice assistants to automate your home with voice commands, routines and centralized control.</p>
           <div className="flex flex-wrap gap-md">
             <button onClick={() => navigate('/marketplace/store')} className="bg-primary text-on-primary px-lg py-md rounded-xl font-label-caps text-label-caps">VIEW AI PRODUCTS</button>
+            <button onClick={() => navigate('/marketplace/product/homepodMini')} className="border border-primary/30 text-primary px-lg py-md rounded-xl font-label-caps text-label-caps hover:bg-primary/5 transition-all">VIEW FEATURED</button>
           </div>
         </div>
         <div className="md:col-span-6 relative h-[400px] md:h-[550px]">

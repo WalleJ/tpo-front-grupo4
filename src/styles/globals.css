@@ -45,6 +45,71 @@ body {
   background: rgba(24, 35, 38, 0.58);
 }
 
+.cart-slide-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.cart-panel-transition {
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.38s ease;
+  will-change: transform, opacity;
+}
+
+@keyframes purchaseWave {
+  0% { box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.55); }
+  70% { box-shadow: 0 0 0 22px rgba(0, 219, 233, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+}
+
+.purchase-wave {
+  animation: purchaseWave 0.7s ease forwards;
+}
+
+@keyframes celebrationBounce {
+  0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.25) rotate(5deg); opacity: 1; }
+  80% { transform: scale(0.92) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.celebration-icon {
+  animation: celebrationBounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #006970, #00dbe9, #00f0ff, #006970);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes countdownShrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+.countdown-bar {
+  animation: countdownShrink 5s linear forwards;
+}
+
+@keyframes spinOnce {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-once {
+  animation: spinOnce 0.9s linear infinite;
+}
+
 .cyber-glow-focus:focus-within {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 219, 233, 0.3);

@@ -62,6 +62,21 @@ export const mockProducts: Product[] = [
     specs: ['8in HD Screen', '13MP Camera', 'AI Ready', 'Matter Hub']
   },
   {
+    id: 'nestHub2',
+    category: 'GOOGLE SMART DISPLAY',
+    categoryKey: 'display',
+    assistantKey: 'google',
+    connectivityKeys: ['wifi', 'matter'],
+    title: 'Google Nest Hub (2nd Gen)',
+    description: 'Smart display with AI assistant, media controls and sleep sensing.',
+    priceValue: 99.99,
+    oldPrice: '$129.99',
+    image: '/images/Google%20Nest%20Hub%20(2nd%20Gen).jpg',
+    badge: 'SMART DISPLAY',
+    inStore: true,
+    specs: ['7in Display', 'AI Assistant', 'Sleep Sensing', 'Cast Ready']
+  },
+  {
     id: 'appleTv4k',
     category: 'AI STREAMING DEVICE',
     categoryKey: 'streaming',
@@ -75,5 +90,20 @@ export const mockProducts: Product[] = [
     badge: 'AI TV',
     inStore: true,
     specs: ['4K HDR', 'Voice Remote', 'tvOS Apps', 'Wi-Fi + ETH']
+  },
+  {
+    id: 'fireTvCube',
+    category: 'STREAMING & VOICE',
+    categoryKey: 'streaming',
+    assistantKey: 'alexa',
+    connectivityKeys: ['wifi'],
+    title: 'Amazon Fire TV Cube',
+    description: 'Hands-free 4K streaming device with Alexa voice control and HDMI passthrough.',
+    priceValue: 139.99,
+    oldPrice: '$169.99',
+    image: '/images/Amazon%20Fire%20TV%20Cube.jpg',
+    badge: 'STREAMING',
+    inStore: false,
+    specs: ['4K Ultra HD', 'Hands-free', 'AI Voice', 'HDMI passthrough']
   }
 ];

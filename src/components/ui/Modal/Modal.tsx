@@ -6,14 +6,21 @@ interface ModalProps extends PropsWithChildren {
   subtitle?: string;
   onClose: () => void;
   footer?: ReactNode;
+  maxWidthClass?: string;
 }
 
-export function Modal({ isOpen, title, subtitle, onClose, children, footer }: ModalProps) {
+export function Modal({ isOpen, title, subtitle, onClose, children, footer, maxWidthClass = 'max-w-2xl' }: Readonly<ModalProps>) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 modal-backdrop px-4 py-6 md:p-8 overflow-y-auto" onClick={onClose}>
-      <div className="max-w-2xl mx-auto" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 modal-backdrop px-4 py-6 md:p-8 overflow-y-auto">
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute inset-0 w-full h-full"
+        aria-label="Close modal"
+      />
+      <div className={`${maxWidthClass} mx-auto relative`}>
         <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
           <div className="flex items-start justify-between gap-3 mb-5">
             <div>
