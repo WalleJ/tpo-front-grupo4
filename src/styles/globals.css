@@ -146,9 +146,47 @@ html.dark .glass-panel-white {
   border-color: rgba(125, 160, 163, 0.16);
 }
 
+html.dark header,
+html.dark footer,
+html.dark nav.md\:hidden {
+  background: rgba(8, 16, 18, 0.92);
+}
+
 html.dark .mesh-gradient {
   background-image:
     radial-gradient(at 0% 0%, rgba(0, 219, 233, 0.12) 0px, transparent 55%),
     radial-gradient(at 100% 100%, rgba(0, 105, 112, 0.14) 0px, transparent 55%),
     linear-gradient(180deg, rgba(8, 16, 18, 0.98), rgba(8, 16, 18, 0.92));
+}
+
+html.dark .bg-surface {
+  background-color: #081012 !important;
+}
+
+html.dark .bg-surface-container-low,
+html.dark .bg-surface-container-lowest,
+html.dark .bg-surface-container,
+html.dark .bg-surface-container-high,
+html.dark .bg-surface-container-highest,
+html.dark .bg-surface-variant {
+  background-color: #10191b !important;
+}
+
+html.dark .text-on-surface {
+  color: #edf6f6 !important;
+}
+
+html.dark .text-on-surface-variant {
+  color: #9cb3b6 !important;
+}
+
+html.dark .text-outline,
+html.dark .text-outline-variant {
+  color: #7f9496 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  color: #edf6f6;
 }

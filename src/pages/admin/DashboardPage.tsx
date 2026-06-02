@@ -17,7 +17,19 @@ export function DashboardPage() {
   const [stats, setStats] = useState<AdminStatCardType[]>([]);
 
   useEffect(() => {
-    adminService.getStats().then(setStats);
+    const refreshStats = () => {
+      adminService.getStats().then(setStats);
+    };
+
+    refreshStats();
+
+    const unsubscribe = adminService.subscribeToRecordsChanges(refreshStats);
+    globalThis.addEventListener('focus', refreshStats);
+
+    return () => {
+      unsubscribe();
+      globalThis.removeEventListener('focus', refreshStats);
+    };
   }, []);
 
   return (
@@ -25,13 +37,13 @@ export function DashboardPage() {
       <section className="glass-panel rounded-2xl p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Control center</p>
+            <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Control center</p>
             <h2 className="text-3xl md:text-4xl font-bold mb-3">Administration dashboard</h2>
-            <p className="text-[#3b494b] max-w-2xl">Use this dashboard to monitor activity and access every management module from one place.</p>
+            <p className="text-on-surface-variant max-w-2xl">Use this dashboard to monitor activity and access every management module from one place.</p>
           </div>
           <div className="flex flex-col items-start md:items-end gap-2">
-            <Link to="/admin/listings?tab=users" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-white/80 border border-[#b9cacb66] text-[#006970]">Go to listings</Link>
-            <Link to="/marketplace/home" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-[#00f0ff33] text-[#006970]">Enter Home as user</Link>
+            <Link to="/admin/listings?tab=users" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-surface-container-lowest border border-outline-variant/40 text-primary hover:bg-surface-container">Go to listings</Link>
+            <Link to="/marketplace/home" className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-primary/20 text-primary hover:bg-primary/25">Enter Home as user</Link>
           </div>
         </div>
       </section>
@@ -40,9 +52,9 @@ export function DashboardPage() {
       </section>
       <section className="glass-panel rounded-2xl p-6">
         <h3 className="text-xl font-semibold mb-5">Recent activity</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-[#3b494b]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-on-surface-variant">
           {activity.map((item) => (
-            <article key={item} className="rounded-xl border border-[#b9cacb55] p-4 bg-white/70">{item}</article>
+            <article key={item} className="rounded-xl border border-outline-variant/30 dark:border-outline-variant/50 p-4 bg-surface-container-lowest dark:bg-surface-container-high">{item}</article>
           ))}
         </div>
       </section>

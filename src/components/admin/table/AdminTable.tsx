@@ -9,9 +9,9 @@ interface AdminTableProps {
 
 export function AdminTable({ records, onEdit, onDelete }: AdminTableProps) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#b9cacb66] bg-white/70">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant/40 bg-surface-container-lowest/80">
       <table className="w-full text-sm">
-        <thead className="bg-[#f0edee] text-xs uppercase tracking-wide text-[#3b494b]">
+        <thead className="bg-surface-container text-xs uppercase tracking-wide text-on-surface-variant">
           <tr>
             <th className="px-4 py-3 text-left">ID</th>
             <th className="px-4 py-3 text-left">Title</th>

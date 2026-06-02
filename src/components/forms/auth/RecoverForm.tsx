@@ -19,7 +19,7 @@ export function RecoverForm() {
     <>
       <form className="flex flex-col gap-4 w-full" onSubmit={onSubmit}>
         <Input label="Email" type="email" placeholder="Registered email" {...register('email', { required: true })} />
-        <Button type="submit" className="rounded-xl mt-2">Send link</Button>
+        <Button type="submit" className="rounded-xl mt-2 px-6 py-3 text-sm">Send link</Button>
       </form>
       {sent ? (
         <div className="text-primary mt-2 text-center font-bold">

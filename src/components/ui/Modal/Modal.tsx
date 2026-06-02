@@ -24,10 +24,10 @@ export function Modal({ isOpen, title, subtitle, onClose, children, footer, maxW
         <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
           <div className="flex items-start justify-between gap-3 mb-5">
             <div>
-              {subtitle ? <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">{subtitle}</p> : null}
+              {subtitle ? <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">{subtitle}</p> : null}
               <h3 className="text-2xl font-bold">{title}</h3>
             </div>
-            <button type="button" onClick={onClose} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee]">✕</button>
+            <button type="button" onClick={onClose} className="w-9 h-9 rounded-lg border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container">✕</button>
           </div>
           {children}
           {footer}

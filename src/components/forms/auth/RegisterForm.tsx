@@ -22,7 +22,7 @@ export function RegisterForm() {
         <Input label="Password" type="password" placeholder="Password" {...register('password', { required: true })} />
         <Input label="First name" placeholder="First name" {...register('firstName')} />
         <Input label="Last name" placeholder="Last name" {...register('lastName')} />
-        <Button type="submit" className="rounded-xl mt-2">Create Account</Button>
+        <Button type="submit" className="rounded-xl mt-2 px-6 py-3 text-sm">Create Account</Button>
       </form>
       <div className="w-full flex flex-col items-center mt-2">
         <Link to="/auth/login" className="text-primary text-xs font-bold hover:underline">Already have an account? Sign in</Link>

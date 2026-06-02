@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { AdminTab } from '@/types/admin.types';
 import { Tabs, Button } from '@/components/ui';
 import { useModal } from '@/hooks/useModal';
+import { adminService } from '@/services/admin.service';
 
 const adminTabs: { id: AdminTab; label: string }[] = [
   { id: 'users', label: 'Users' },
@@ -22,6 +23,8 @@ interface FieldConfig {
   fullWidth?: boolean;
   options?: readonly string[];
   relation?: 'role' | 'user' | 'category' | 'product' | 'cart';
+  min?: number;
+  max?: number;
 }
 
 interface EntityRecord {
@@ -56,8 +59,8 @@ const fieldsByTab: Record<AdminTab, FieldConfig[]> = {
   ],
   products: [
     { name: 'name', label: 'Name', type: 'text', required: true, fullWidth: true },
-    { name: 'price', label: 'Price', type: 'number', required: true },
-    { name: 'stock', label: 'Stock', type: 'number', required: true },
+    { name: 'price', label: 'Price', type: 'number', required: true, min: 0 },
+    { name: 'stock', label: 'Stock', type: 'number', required: true, min: 0 },
     { name: 'sellerId', label: 'Seller ID', type: 'relation-search', required: true, relation: 'user' },
     { name: 'categoryId', label: 'Category ID', type: 'relation-search', required: true, relation: 'category' },
     { name: 'description', label: 'Description', type: 'textarea', fullWidth: true, required: true },
@@ -68,7 +71,7 @@ const fieldsByTab: Record<AdminTab, FieldConfig[]> = {
     { name: 'description', label: 'Description', type: 'textarea', fullWidth: true, required: true }
   ],
   promos: [
-    { name: 'percentage', label: 'Percentage', type: 'number', required: true },
+    { name: 'percentage', label: 'Percentage', type: 'number', required: true, min: 0, max: 100 },
     { name: 'productId', label: 'Product ID', type: 'relation-search', required: true, relation: 'product' },
     { name: 'active', label: 'Active', type: 'checkbox', required: true }
   ],
@@ -76,8 +79,7 @@ const fieldsByTab: Record<AdminTab, FieldConfig[]> = {
     { name: 'date', label: 'Date', type: 'datetime-local', required: true },
     { name: 'status', label: 'Status', type: 'select', required: true, options: ORDER_STATUSES },
     { name: 'userId', label: 'User ID', type: 'relation-search', required: true, relation: 'user' },
-    { name: 'cartId', label: 'Cart ID', type: 'relation-search', required: true, relation: 'cart' },
-    { name: 'total', label: 'Total', type: 'number', required: true }
+    { name: 'cartId', label: 'Cart ID', type: 'relation-search', required: true, relation: 'cart' }
   ]
 };
 
@@ -114,7 +116,7 @@ const tabTitles: Record<AdminTab, string> = {
   users: 'User management',
   products: 'Product management',
   categories: 'Category management',
-  promos: 'Promotions and discounts management',
+  promos: 'Promos and discounts management',
   orders: 'Order management'
 };
 
@@ -124,6 +126,14 @@ const tabSingulars: Record<AdminTab, string> = {
   categories: 'category',
   promos: 'discount',
   orders: 'order'
+};
+
+const initialFilterByTab: Record<AdminTab, string> = {
+  users: '',
+  products: '',
+  categories: '',
+  promos: '',
+  orders: ''
 };
 
 const initialOrderItems: OrderItemRecord[] = [
@@ -209,12 +219,15 @@ function renderCardSummary(tab: AdminTab, record: EntityRecord): { title: string
 export function ListingsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [recordsByTab, setRecordsByTab] = useState<Record<AdminTab, EntityRecord[]>>(initialRecordsByTab);
+  const [isRecordsHydrated, setIsRecordsHydrated] = useState(false);
+  const [filtersByTab, setFiltersByTab] = useState<Record<AdminTab, string>>(initialFilterByTab);
   const [orderItems, setOrderItems] = useState<OrderItemRecord[]>(initialOrderItems);
   const [productImagesByProduct, setProductImagesByProduct] = useState<Record<number, ProductImage[]>>(initialProductImages);
   const [editingRecord, setEditingRecord] = useState<EntityRecord | null>(null);
   const [deleteRecord, setDeleteRecord] = useState<EntityRecord | null>(null);
   const [orderItemForm, setOrderItemForm] = useState({ productId: '', quantity: '1' });
   const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const editFormRef = useRef<HTMLFormElement | null>(null);
   const editModal = useModal();
   const deleteModal = useModal();
   const productImagesModal = useModal<number>();
@@ -222,6 +235,16 @@ export function ListingsPage() {
   const orderItemsModal = useModal<number>();
   const addOrderItemModal = useModal();
   const deleteOrderItemModal = useModal<number>();
+
+  useEffect(() => {
+    setRecordsByTab(adminService.getRecordsByTabSync() as Record<AdminTab, EntityRecord[]>);
+    setIsRecordsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isRecordsHydrated) return;
+    adminService.saveRecordsByTab(recordsByTab);
+  }, [isRecordsHydrated, recordsByTab]);
 
   useEffect(() => {
     return () => {
@@ -234,8 +257,6 @@ export function ListingsPage() {
   }, [productImagesByProduct]);
 
   const activeTab = (searchParams.get('tab') as AdminTab) || 'users';
-
-  const records = recordsByTab[activeTab] ?? [];
 
   const calculateOrderTotal = (orderId: number) => {
     return orderItems
@@ -295,12 +316,78 @@ export function ListingsPage() {
     return [];
   };
 
+  const getRelationDisplayValue = (field: FieldConfig, value: string | number | boolean | undefined): string => {
+    if (field.type !== 'relation-search') return toInputValue(value);
+    const currentValue = String(value ?? '').trim();
+    if (!currentValue) return '';
+
+    const options = getRelationOptions(field.relation);
+    const byId = options.find((option) => option.value === currentValue);
+    if (byId) return byId.label;
+
+    const byLabel = options.find((option) => option.label.toLowerCase() === currentValue.toLowerCase());
+    return byLabel ? byLabel.label : currentValue;
+  };
+
+  const getRelationIdFromInput = (field: FieldConfig, inputValue: string): number | null => {
+    const normalized = inputValue.trim().toLowerCase();
+    if (!normalized) return null;
+
+    const options = getRelationOptions(field.relation);
+    const match = options.find((option) => (
+      option.value === inputValue.trim() || option.label.toLowerCase() === normalized
+    ));
+
+    return match ? Number(match.value) : null;
+  };
+
+  const isValidRelationInput = (field: FieldConfig, inputValue: string): boolean => {
+    return getRelationIdFromInput(field, inputValue) !== null;
+  };
+
+  const getBusinessRuleError = (nextRecord: EntityRecord): { field: string; message: string } | null => {
+    if (activeTab === 'promos') {
+      const percentage = Number(nextRecord.percentage);
+      if (Number.isNaN(percentage) || percentage < 0 || percentage > 100) {
+        return { field: 'percentage', message: 'Percentage must be between 0 and 100.' };
+      }
+
+      const isActive = Boolean(nextRecord.active);
+      const productId = Number(nextRecord.productId);
+      if (isActive) {
+        const duplicatedActivePromo = (recordsByTab.promos ?? []).some((record) => (
+          Number(record.id) !== Number(editingRecord?.id)
+          && Boolean(record.active)
+          && Number(record.productId) === productId
+        ));
+
+        if (duplicatedActivePromo) {
+          return { field: 'productId', message: 'There is already an active discount for this product.' };
+        }
+      }
+    }
+
+    if (activeTab === 'products') {
+      const price = Number(nextRecord.price);
+      if (Number.isNaN(price) || price < 0) {
+        return { field: 'price', message: 'Price cannot be less than 0.' };
+      }
+
+      const stock = Number(nextRecord.stock);
+      if (Number.isNaN(stock) || stock < 0) {
+        return { field: 'stock', message: 'Stock cannot be less than 0.' };
+      }
+    }
+
+    return null;
+  };
+
   const openCreate = () => {
     const next = buildEmptyRecord(activeTab, recordsByTab[activeTab] ?? []);
     setEditingRecord(next);
 
     const initialFormValues = Object.fromEntries(
-      fieldsByTab[activeTab].map((field) => [field.name, toInputValue(next[field.name])])
+      fieldsByTab[activeTab].map((field) => [field.name, getRelationDisplayValue(field, next[field.name])])
     );
 
     setFormValues(initialFormValues);
@@ -310,7 +397,7 @@ export function ListingsPage() {
   const openEdit = (record: EntityRecord) => {
     setEditingRecord(record);
     const initialFormValues = Object.fromEntries(
-      fieldsByTab[activeTab].map((field) => [field.name, toInputValue(record[field.name])])
+      fieldsByTab[activeTab].map((field) => [field.name, getRelationDisplayValue(field, record[field.name])])
     );
     setFormValues(initialFormValues);
     editModal.open();
@@ -319,11 +406,39 @@ export function ListingsPage() {
   const submitRecord = () => {
     if (!editingRecord) return;
 
+    if (!editFormRef.current?.reportValidity()) return;
+
+    const setFieldError = (fieldName: string, message: string) => {
+      const input = editFormRef.current?.elements.namedItem(fieldName) as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null);
+      if (!input) return;
+      input.setCustomValidity(message);
+      input.reportValidity();
+    };
+
+    const clearFieldError = (fieldName: string) => {
+      const input = editFormRef.current?.elements.namedItem(fieldName) as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null);
+      if (!input) return;
+      input.setCustomValidity('');
+    };
+
+    clearFieldError('percentage');
+    clearFieldError('productId');
+    clearFieldError('price');
+    clearFieldError('stock');
+
     const nextRecord: EntityRecord = { id: editingRecord.id };
     fieldsByTab[activeTab].forEach((field) => {
       const raw = formValues[field.name] ?? '';
-      if (field.type === 'number' || field.type === 'relation-search') {
+      if (field.type === 'number') {
         nextRecord[field.name] = Number(raw || 0);
+        return;
+      }
+      if (field.type === 'relation-search') {
+        const relationId = getRelationIdFromInput(field, raw);
+        if (relationId === null) {
+          return;
+        }
+        nextRecord[field.name] = relationId;
         return;
       }
       if (field.type === 'checkbox') {
@@ -332,6 +447,21 @@ export function ListingsPage() {
       }
       nextRecord[field.name] = raw;
     });
+
+    const hasInvalidRelationField = fieldsByTab[activeTab]
+      .filter((field) => field.type === 'relation-search')
+      .some((field) => {
+        const relationValue = nextRecord[field.name];
+        return typeof relationValue !== 'number' || Number.isNaN(relationValue);
+      });
+
+    if (hasInvalidRelationField) return;
+
+    const businessRuleError = getBusinessRuleError(nextRecord);
+    if (businessRuleError) {
+      setFieldError(businessRuleError.field, businessRuleError.message);
+      return;
+    }
 
     setRecordsByTab((current) => {
       const currentTabRecords = current[activeTab] ?? [];
@@ -370,6 +500,14 @@ export function ListingsPage() {
     return renderCardSummary(tab, record);
   };
 
+  const records = (recordsByTab[activeTab] ?? []).filter((record) => {
+    const filterText = (filtersByTab[activeTab] ?? '').trim().toLowerCase();
+    if (!filterText) return true;
+
+    const summary = getCardSummary(activeTab, record);
+    return summary.title.toLowerCase().includes(filterText);
+  });
+
   const selectedProductImages = productImagesModal.payload ? (productImagesByProduct[productImagesModal.payload] ?? []) : [];
   const selectedOrderItems = orderItemsModal.payload ? orderItems.filter((item) => item.orderId === orderItemsModal.payload) : [];
   const selectedOrderTotalQty = selectedOrderItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -385,75 +523,87 @@ export function ListingsPage() {
   return (
     <main className="max-w-[1280px] mx-auto px-6 py-8 md:py-12">
       <section className="glass-panel rounded-2xl p-6 md:p-8">
-        <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Administration area</p>
+        <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Administration area</p>
         <h2 className="text-3xl md:text-4xl font-bold mb-3">Administrative listings</h2>
-        <p className="text-[#3b494b] max-w-3xl">Use this page to browse, create, update, and remove records across all available modules from a single place.</p>
+        <p className="text-on-surface-variant max-w-3xl">Use this page to browse, create, update, and remove records across all available modules from a single place.</p>
       </section>
 
-      <section className="glass-panel rounded-2xl p-3 md:p-4">
+      <section className="glass-panel rounded-2xl p-3 md:p-4 my-6">
         <Tabs tabs={adminTabs} activeTab={activeTab} onChange={(tab) => setSearchParams({ tab })} />
       </section>
 
       <section className="glass-panel rounded-2xl p-6 space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <h3 className="text-xl font-semibold">{tabTitles[activeTab]}</h3>
-          <Button onClick={openCreate}>New</Button>
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="relative w-full md:w-[280px]">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">filter_alt</span>
+              <input
+                type="search"
+                value={filtersByTab[activeTab] ?? ''}
+                onChange={(event) => setFiltersByTab((current) => ({ ...current, [activeTab]: event.target.value }))}
+                placeholder="Filter by name"
+                className="w-full rounded-lg border border-outline-variant/40 bg-surface-container-lowest pl-10 pr-3 py-2 text-sm focus:border-primary focus:ring-primary"
+              />
+            </div>
+            <Button onClick={openCreate}>New</Button>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
           {records.map((record) => {
             const summary = getCardSummary(activeTab, record);
             return (
-              <article key={record.id} className="rounded-xl border border-[#b9cacb66] p-4 bg-white/70 flex items-center justify-between gap-3">
+              <article key={record.id} className="rounded-xl border border-outline-variant/40 dark:border-outline-variant/50 p-4 bg-surface-container-lowest dark:bg-surface-container-high flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold truncate" title={summary.title}>{summary.title}</p>
-                  <p className="text-[#3b494b] truncate" title={summary.subtitle}>{summary.subtitle}</p>
+                  <p className="text-on-surface-variant truncate" title={summary.subtitle}>{summary.subtitle}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {activeTab === 'products' ? (
-                    <div className="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+                    <div className="bg-surface-container border border-outline-variant/40 rounded-lg w-9 h-9 flex items-center justify-center">
                       <button
                         type="button"
                         onClick={() => productImagesModal.open(Number(record.id))}
-                        className="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none"
+                        className="w-7 h-7 rounded hover:bg-surface-container-high inline-flex items-center justify-center leading-none"
                         aria-label="Open product images"
                       >
-                        <span className="material-symbols-outlined text-[18px] text-[#006970]">imagesmode</span>
+                        <span className="material-symbols-outlined text-[18px] text-primary">imagesmode</span>
                       </button>
                     </div>
                   ) : null}
                   {activeTab === 'orders' ? (
-                    <div className="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+                    <div className="bg-surface-container border border-outline-variant/40 rounded-lg w-9 h-9 flex items-center justify-center">
                       <button
                         type="button"
                         onClick={() => orderItemsModal.open(Number(record.id))}
-                        className="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none"
+                        className="w-7 h-7 rounded hover:bg-surface-container-high inline-flex items-center justify-center leading-none"
                         aria-label="Open order items"
                       >
-                        <span className="material-symbols-outlined text-[18px] text-[#006970]">receipt_long</span>
+                        <span className="material-symbols-outlined text-[18px] text-primary">receipt_long</span>
                       </button>
                     </div>
                   ) : null}
-                  <div className="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+                  <div className="bg-surface-container border border-outline-variant/40 rounded-lg w-9 h-9 flex items-center justify-center">
                     <button
                       type="button"
                       onClick={() => openEdit(record)}
-                      className="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none"
+                      className="w-7 h-7 rounded hover:bg-surface-container-high inline-flex items-center justify-center leading-none"
                       aria-label="Edit record"
                     >
-                      <span className="material-symbols-outlined text-[18px] text-[#006970]">edit</span>
+                      <span className="material-symbols-outlined text-[18px] text-primary">edit</span>
                     </button>
                   </div>
-                  <div className="bg-[#f0edee] border border-[#b9cacb66] rounded-lg w-9 h-9 flex items-center justify-center">
+                  <div className="bg-surface-container border border-outline-variant/40 rounded-lg w-9 h-9 flex items-center justify-center">
                     <button
                       type="button"
                       onClick={() => {
                         setDeleteRecord(record);
                         deleteModal.open();
                       }}
-                      className="w-7 h-7 rounded hover:bg-white inline-flex items-center justify-center leading-none"
+                      className="w-7 h-7 rounded hover:bg-surface-container-high inline-flex items-center justify-center leading-none"
                       aria-label="Delete record"
                     >
-                      <span className="material-symbols-outlined text-[18px] text-[#006970]">delete</span>
+                      <span className="material-symbols-outlined text-[18px] text-primary">delete</span>
                     </button>
                   </div>
                 </div>
@@ -473,18 +623,19 @@ export function ListingsPage() {
                     const isEditing = (recordsByTab[activeTab] ?? []).some((r) => r.id === editingRecord?.id);
                     return (
                       <>
-                        <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">{isEditing ? 'Edit record' : 'New record'}</p>
+                        <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">{isEditing ? 'Edit record' : 'New record'}</p>
                         <h3 className="text-2xl font-bold">{isEditing ? `Edit ${tabSingulars[activeTab]}` : `Create ${tabSingulars[activeTab]}`}</h3>
                       </>
                     );
                   })()}
                 </div>
-                <button type="button" onClick={editModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close edit popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={editModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close edit popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
 
               <form
+                ref={editFormRef}
                 className="space-y-4"
                 onSubmit={(event) => {
                   event.preventDefault();
@@ -498,26 +649,29 @@ export function ListingsPage() {
                   ].map((field) => {
                     if (field.type === 'checkbox') {
                       return (
-                        <label key={field.name} className="rounded-xl border border-[#b9cacb66] p-3 flex items-center justify-between gap-3 md:col-span-2">
-                          <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">{field.label}</span>
+                        <label key={field.name} className="rounded-xl border border-outline-variant/40 p-3 flex items-center justify-between gap-3 md:col-span-2">
+                          <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">{field.label}</span>
                           <input
+                            name={field.name}
                             type="checkbox"
                             checked={formValues[field.name] === 'true'}
                             onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: String(event.target.checked) }))}
-                            className="w-5 h-5 rounded border-[#b9cacb66] text-[#006970] focus:ring-[#006970]"
+                            className="w-5 h-5 rounded border-outline-variant/40 text-primary focus:ring-primary"
                           />
                         </label>
                       );
                     }
 
                     if (field.type === 'select') {
+                      const shouldSpanTwoColumns = field.fullWidth === true;
                       return (
-                        <label key={field.name} className="flex flex-col gap-2 md:col-span-2">
-                          <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">{field.label}</span>
+                        <label key={field.name} className={`flex flex-col gap-2 ${shouldSpanTwoColumns ? 'md:col-span-2' : ''}`}>
+                          <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">{field.label}</span>
                           <select
+                            name={field.name}
                             value={formValues[field.name] ?? 'CREATED'}
                             onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
-                            className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
+                            className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
                           >
                             {ORDER_STATUSES.map((status) => (
                               <option key={status} value={status}>{status}</option>
@@ -530,13 +684,14 @@ export function ListingsPage() {
                     if (field.type === 'textarea') {
                       return (
                         <label key={field.name} className={`flex flex-col gap-2 ${field.fullWidth ? 'md:col-span-2' : ''}`}>
-                          <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">{field.label}</span>
+                          <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">{field.label}</span>
                           <textarea
+                            name={field.name}
                             rows={3}
                             required={field.required}
                             value={formValues[field.name] ?? ''}
                             onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
-                            className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
+                            className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
                           />
                         </label>
                       );
@@ -547,19 +702,36 @@ export function ListingsPage() {
                       const options = getRelationOptions(field.relation);
                       return (
                         <label key={field.name} className={`flex flex-col gap-2 ${field.fullWidth ? 'md:col-span-2' : ''}`}>
-                          <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">{field.label}</span>
+                          <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">{field.label}</span>
                           <input
+                            name={field.name}
                             type="search"
                             required={field.required}
                             list={listId}
                             value={formValues[field.name] ?? ''}
-                            onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
-                            className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
-                            placeholder="Search and select ID"
+                            onChange={(event) => {
+                              const nextValue = event.target.value;
+                              setFormValues((current) => ({ ...current, [field.name]: nextValue }));
+                              if (!nextValue.trim() || isValidRelationInput(field, nextValue)) {
+                                event.currentTarget.setCustomValidity('');
+                              } else {
+                                event.currentTarget.setCustomValidity('Please select a valid option from the list.');
+                              }
+                            }}
+                            onBlur={(event) => {
+                              const nextValue = event.target.value;
+                              if (!nextValue.trim() || isValidRelationInput(field, nextValue)) {
+                                event.currentTarget.setCustomValidity('');
+                              } else {
+                                event.currentTarget.setCustomValidity('Please select a valid option from the list.');
+                              }
+                            }}
+                            className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
+                            placeholder="Search and select option"
                           />
                           <datalist id={listId}>
                             {options.map((option) => (
-                              <option key={`${listId}-${option.value}`} value={option.value} label={option.label} />
+                              <option key={`${listId}-${option.value}`} value={option.label} label={option.label} />
                             ))}
                           </datalist>
                         </label>
@@ -568,13 +740,19 @@ export function ListingsPage() {
 
                     return (
                       <label key={field.name} className={`flex flex-col gap-2 ${field.fullWidth ? 'md:col-span-2' : ''}`}>
-                        <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">{field.label}</span>
+                        <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">{field.label}</span>
                         <input
+                          name={field.name}
                           type={field.type}
                           required={field.required}
+                          min={field.min}
+                          max={field.max}
                           value={formValues[field.name] ?? ''}
-                          onChange={(event) => setFormValues((current) => ({ ...current, [field.name]: event.target.value }))}
-                          className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
+                          onChange={(event) => {
+                            event.currentTarget.setCustomValidity('');
+                            setFormValues((current) => ({ ...current, [field.name]: event.target.value }));
+                          }}
+                          className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
                         />
                       </label>
                     );
@@ -596,15 +774,15 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#8d2f39] font-bold mb-2">Confirmation required</p>
+                  <p className="text-xs uppercase tracking-widest text-error font-bold mb-2">Confirmation required</p>
                   <h3 className="text-2xl font-bold">Delete record</h3>
                 </div>
-                <button type="button" onClick={deleteModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close delete popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={deleteModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close delete popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
 
-              <p className="text-[#3b494b] mb-6 whitespace-pre-line">
+              <p className="text-on-surface-variant mb-6 whitespace-pre-line">
                 {deleteRecord
                   ? `Are you sure you want to delete "${getCardSummary(activeTab, deleteRecord).title}"?\nThis action cannot be undone.`
                   : 'Are you sure?'}
@@ -639,7 +817,7 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-5">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Image management</p>
+                  <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Image management</p>
                   <h3 className="text-2xl font-bold">
                     {(() => {
                       const pid = productImagesModal.payload;
@@ -649,18 +827,18 @@ export function ListingsPage() {
                     })()}
                   </h3>
                 </div>
-                <button type="button" onClick={productImagesModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close product images popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={productImagesModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close product images popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
 
               <label className="flex flex-col gap-2 mb-5">
-                <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Upload images</span>
+                <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Upload images</span>
                 <input
                   type="file"
                   multiple
                   accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
-                  className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-[#006970] file:px-3 file:py-1.5 file:text-white file:font-semibold"
+                  className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-white file:font-semibold"
                   onChange={(event) => {
                     const files = Array.from(event.target.files ?? []).filter((file) => file.type.startsWith('image/'));
                     const productId = productImagesModal.payload;
@@ -684,12 +862,12 @@ export function ListingsPage() {
                 />
               </label>
 
-              <p className="text-xs text-[#3b494b] mb-3">Click a preview to open the image in a new tab.</p>
+              <p className="text-xs text-on-surface-variant mb-3">Click a preview to open the image in a new tab.</p>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {selectedProductImages.length === 0 ? (
-                  <p className="text-sm text-[#3b494b] col-span-full">There are no uploaded images for this product yet.</p>
+                  <p className="text-sm text-on-surface-variant col-span-full">There are no uploaded images for this product yet.</p>
                 ) : selectedProductImages.map((image, index) => (
-                  <article key={image.id} className="relative rounded-xl overflow-hidden border border-[#b9cacb66] bg-white/80 group">
+                  <article key={image.id} className="relative rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-lowest/80 group">
                     <button
                       type="button"
                       className="w-full h-28 block"
@@ -702,7 +880,7 @@ export function ListingsPage() {
                     <button
                       type="button"
                       onClick={() => deleteImageModal.open(index)}
-                      className="absolute top-1 right-1 w-7 h-7 rounded-md bg-[#8d2f39] text-white inline-flex items-center justify-center opacity-90 hover:opacity-100"
+                      className="absolute top-1 right-1 w-7 h-7 rounded-md bg-error text-white inline-flex items-center justify-center opacity-90 hover:opacity-100"
                       aria-label="Delete image"
                     >
                       <span className="material-symbols-outlined text-[16px]">delete</span>
@@ -725,14 +903,14 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#8d2f39] font-bold mb-2">Confirmation required</p>
+                  <p className="text-xs uppercase tracking-widest text-error font-bold mb-2">Confirmation required</p>
                   <h3 className="text-2xl font-bold">Delete image</h3>
                 </div>
-                <button type="button" onClick={deleteImageModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close delete image popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={deleteImageModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close delete image popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
-              <p className="text-[#3b494b] mb-6 whitespace-pre-line">Are you sure you want to delete this image?{'\n'}This action cannot be undone.</p>
+              <p className="text-on-surface-variant mb-6 whitespace-pre-line">Are you sure you want to delete this image?{'\n'}This action cannot be undone.</p>
               <div className="flex items-center justify-end gap-2">
                 <Button variant="secondary" type="button" onClick={deleteImageModal.close}>Cancel</Button>
                 <Button
@@ -775,39 +953,39 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-5">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">Item management</p>
+                  <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Item management</p>
                   <h3 className="text-2xl font-bold">Order #{orderItemsModal.payload} items</h3>
                 </div>
-                <button type="button" onClick={orderItemsModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close order items popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={orderItemsModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close order items popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
 
               <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className="rounded-xl border border-[#b9cacb66] bg-white/80 p-4 flex flex-col gap-1">
-                  <p className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Total order items</p>
-                  <p className="text-2xl font-bold text-[#006970]">{selectedOrderItems.length}</p>
+                <div className="rounded-xl border border-outline-variant/40 dark:border-outline-variant/50 bg-surface-container-lowest dark:bg-surface-container-high p-4 flex flex-col gap-1">
+                  <p className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Total order items</p>
+                  <p className="text-2xl font-bold text-primary">{selectedOrderItems.length}</p>
                 </div>
-                <div className="rounded-xl border border-[#b9cacb66] bg-white/80 p-4 flex flex-col gap-1">
-                  <p className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Total product quantity</p>
-                  <p className="text-2xl font-bold text-[#006970]">{selectedOrderTotalQty}</p>
+                <div className="rounded-xl border border-outline-variant/40 dark:border-outline-variant/50 bg-surface-container-lowest dark:bg-surface-container-high p-4 flex flex-col gap-1">
+                  <p className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Total product quantity</p>
+                  <p className="text-2xl font-bold text-primary">{selectedOrderTotalQty}</p>
                 </div>
-                <div className="rounded-xl border border-[#b9cacb66] bg-white/80 p-4 flex flex-col gap-1">
-                  <p className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Order total</p>
-                  <p className="text-2xl font-bold text-[#006970]">${selectedOrderTotalAmount.toFixed(2)}</p>
+                <div className="rounded-xl border border-outline-variant/40 dark:border-outline-variant/50 bg-surface-container-lowest dark:bg-surface-container-high p-4 flex flex-col gap-1">
+                  <p className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Order total</p>
+                  <p className="text-2xl font-bold text-primary">${selectedOrderTotalAmount.toFixed(2)}</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-end mb-3">
-                <button type="button" onClick={() => addOrderItemModal.open()} className="px-3 py-2 rounded-lg text-xs font-bold bg-[#006970] text-white inline-flex items-center gap-1">
+                <button type="button" onClick={() => addOrderItemModal.open()} className="px-3 py-2 rounded-lg text-xs font-bold bg-primary text-on-primary inline-flex items-center gap-1 hover:opacity-90 transition-opacity">
                   <span className="material-symbols-outlined text-[16px]">add</span>
                   {' '}Add item
                 </button>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-[#b9cacb66]">
+              <div className="overflow-x-auto rounded-xl border border-outline-variant/40 dark:border-outline-variant/50 bg-surface-container-lowest dark:bg-surface-container-high">
                 <table className="w-full text-sm">
-                  <thead className="bg-[#f0edee] text-xs uppercase tracking-wide text-[#3b494b]">
+                  <thead className="bg-surface-container dark:bg-surface-container-highest/80 text-xs uppercase tracking-wide text-on-surface-variant">
                     <tr>
                       <th className="px-4 py-3 text-left font-semibold w-12">#</th>
                       <th className="px-4 py-3 text-left font-semibold">Product</th>
@@ -817,23 +995,23 @@ export function ListingsPage() {
                       <th className="px-4 py-3 w-12"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#b9cacb33]">
+                  <tbody className="divide-y divide-outline-variant/20">
                     {selectedOrderItems.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-sm text-[#3b494b]">There are no items in this order.</td>
+                        <td colSpan={6} className="px-4 py-6 text-center text-sm text-on-surface-variant">There are no items in this order.</td>
                       </tr>
                     ) : selectedOrderItems.map((item, index) => {
                       const product = (recordsByTab.products ?? []).find((record) => Number(record.id) === item.productId);
                       const productName = String(product?.name ?? `Product #${item.productId}`);
                       return (
-                        <tr key={item.id} className="hover:bg-white/60 transition-colors">
-                          <td className="px-4 py-3 text-[#3b494b] font-semibold">#{index + 1}</td>
+                        <tr key={item.id}>
+                          <td className="px-4 py-3 text-on-surface-variant font-semibold">#{index + 1}</td>
                           <td className="px-4 py-3 max-w-[180px] truncate" title={productName}>{productName}</td>
                           <td className="px-4 py-3 text-right">{item.quantity}</td>
                           <td className="px-4 py-3 text-right">${item.unitPrice.toFixed(2)}</td>
                           <td className="px-4 py-3 text-right font-semibold">${(item.quantity * item.unitPrice).toFixed(2)}</td>
                           <td className="px-4 py-3 text-center">
-                            <button type="button" onClick={() => deleteOrderItemModal.open(item.id)} className="w-7 h-7 rounded-md bg-[#8d2f39] text-white inline-flex items-center justify-center opacity-90 hover:opacity-100" aria-label="Delete order item">
+                            <button type="button" onClick={() => deleteOrderItemModal.open(item.id)} className="w-7 h-7 rounded-md bg-error text-white inline-flex items-center justify-center opacity-90 hover:opacity-100" aria-label="Delete order item">
                               <span className="material-symbols-outlined text-[16px]">delete</span>
                             </button>
                           </td>
@@ -858,11 +1036,11 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-5">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#006970] font-bold mb-2">New item</p>
+                  <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">New item</p>
                   <h3 className="text-2xl font-bold">Add order item</h3>
                 </div>
-                <button type="button" onClick={addOrderItemModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close add order item popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={addOrderItemModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close add order item popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
 
@@ -873,12 +1051,15 @@ export function ListingsPage() {
                   const orderId = orderItemsModal.payload;
                   if (orderId === null) return;
 
-                  const productId = Number(orderItemForm.productId);
+                  const productInput = orderItemForm.productId.trim();
+                  const selectedProduct = productOptions.find((option) => (
+                    String(option.id) === productInput || option.name.toLowerCase() === productInput.toLowerCase()
+                  ));
+                  const productId = selectedProduct ? Number(selectedProduct.id) : Number.NaN;
                   const quantity = Number(orderItemForm.quantity);
                   if (!productId || !quantity || quantity < 1) return;
 
-                  const product = productOptions.find((option) => option.id === productId);
-                  const nextUnitPrice = product ? Number(product.price) : 0;
+                  const nextUnitPrice = selectedProduct ? Number(selectedProduct.price) : 0;
 
                   const nextItem: OrderItemRecord = {
                     id: nextOrderItemId,
@@ -900,31 +1081,45 @@ export function ListingsPage() {
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <label className="flex flex-col gap-2 md:col-span-2">
-                    <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Product ID</span>
+                    <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Product ID</span>
                     <input
                       type="search"
                       list="order-item-product-options"
                       required
                       value={orderItemForm.productId}
-                      onChange={(event) => setOrderItemForm((current) => ({ ...current, productId: event.target.value }))}
-                      className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
-                      placeholder="Search and select ID"
+                      onChange={(event) => {
+                        const nextValue = event.target.value;
+                        setOrderItemForm((current) => ({ ...current, productId: nextValue }));
+                        const isValid = !nextValue.trim() || productOptions.some((option) => (
+                          String(option.id) === nextValue.trim() || option.name.toLowerCase() === nextValue.trim().toLowerCase()
+                        ));
+                        event.currentTarget.setCustomValidity(isValid ? '' : 'Please select a valid option from the list.');
+                      }}
+                      onBlur={(event) => {
+                        const nextValue = event.target.value;
+                        const isValid = !nextValue.trim() || productOptions.some((option) => (
+                          String(option.id) === nextValue.trim() || option.name.toLowerCase() === nextValue.trim().toLowerCase()
+                        ));
+                        event.currentTarget.setCustomValidity(isValid ? '' : 'Please select a valid option from the list.');
+                      }}
+                      className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
+                      placeholder="Search and select option"
                     />
                     <datalist id="order-item-product-options">
                       {productOptions.map((option) => (
-                        <option key={`product-option-${option.id}`} value={String(option.id)} label={option.name} />
+                        <option key={`product-option-${option.id}`} value={option.name} label={option.name} />
                       ))}
                     </datalist>
                   </label>
                   <label className="flex flex-col gap-2 md:col-span-2">
-                    <span className="text-xs uppercase tracking-wide text-[#3b494b] font-semibold">Quantity</span>
+                    <span className="text-xs uppercase tracking-wide text-on-surface-variant font-semibold">Quantity</span>
                     <input
                       type="number"
                       min={1}
                       required
                       value={orderItemForm.quantity}
                       onChange={(event) => setOrderItemForm((current) => ({ ...current, quantity: event.target.value }))}
-                      className="rounded-lg border border-[#b9cacb66] bg-white/90 px-3 py-2 text-sm focus:border-[#006970] focus:ring-[#006970]"
+                      className="rounded-lg border border-outline-variant/40 bg-surface-container-lowest px-3 py-2 text-sm focus:border-primary focus:ring-primary"
                     />
                   </label>
                 </div>
@@ -944,14 +1139,14 @@ export function ListingsPage() {
             <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-2xl">
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-[#8d2f39] font-bold mb-2">Confirmation required</p>
+                  <p className="text-xs uppercase tracking-widest text-error font-bold mb-2">Confirmation required</p>
                   <h3 className="text-2xl font-bold">Delete item</h3>
                 </div>
-                <button type="button" onClick={deleteOrderItemModal.close} className="w-9 h-9 rounded-lg border border-[#b9cacb66] hover:bg-[#f0edee] inline-flex items-center justify-center" aria-label="Close delete order item popup">
-                  <span className="material-symbols-outlined text-[20px] text-[#3b494b]">close</span>
+                <button type="button" onClick={deleteOrderItemModal.close} className="w-9 h-9 rounded-lg border border-outline-variant/40 hover:bg-surface-container inline-flex items-center justify-center" aria-label="Close delete order item popup">
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">close</span>
                 </button>
               </div>
-              <p className="text-[#3b494b] mb-6 whitespace-pre-line">Are you sure you want to delete this order item?{'\n'}This action cannot be undone.</p>
+              <p className="text-on-surface-variant mb-6 whitespace-pre-line">Are you sure you want to delete this order item?{'\n'}This action cannot be undone.</p>
               <div className="flex items-center justify-end gap-2">
                 <Button variant="secondary" type="button" onClick={deleteOrderItemModal.close}>Cancel</Button>
                 <Button

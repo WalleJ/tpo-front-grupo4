@@ -7,11 +7,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, PropsWith
   variant?: ButtonVariant;
 }
 
-export function Button({ variant = 'primary', className, children, ...props }: ButtonProps) {
+export function Button({ variant = 'primary', className, children, ...props }: Readonly<ButtonProps>) {
   const variants: Record<ButtonVariant, string> = {
-    primary: 'bg-primary text-on-primary',
-    secondary: 'border border-[#b9cacb] hover:bg-[#e5e2e3]',
-    danger: 'bg-[#8d2f39] text-white'
+    primary: 'bg-primary text-on-primary hover:opacity-90',
+    secondary: 'border border-outline-variant/60 bg-surface-container-lowest text-on-surface hover:bg-surface-container',
+    danger: 'bg-error text-on-error hover:opacity-90'
   };
 
   return (

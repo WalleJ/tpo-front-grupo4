@@ -23,7 +23,7 @@ export function LoginForm() {
       <form className="flex flex-col gap-4 w-full" onSubmit={onSubmit}>
         <Input label="Username" placeholder="Username" {...register('username', { required: true })} />
         <Input label="Password" type="password" placeholder="Password" {...register('password', { required: true })} />
-        <Button type="submit" className="rounded-xl mt-2">Sign in</Button>
+        <Button type="submit" className="rounded-xl mt-2 px-6 py-3 text-sm">Sign in</Button>
       </form>
       {errors.root?.message ? <div className="text-error mt-2 text-center font-bold">{errors.root.message}</div> : null}
       <div className="w-full flex flex-col items-center mt-2 gap-2">

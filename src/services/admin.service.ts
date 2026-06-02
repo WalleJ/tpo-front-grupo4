@@ -1,6 +1,10 @@
 import type { AdminRecord, AdminStatCard, AdminTab } from '@/types/admin.types';
+import { storageService } from '@/services/storage.service';
 
-const recordsByTab: Record<AdminTab, AdminRecord[]> = {
+const ADMIN_RECORDS_KEY = 'aio-admin-records';
+const ADMIN_RECORDS_UPDATED_EVENT = 'aio-admin-records-updated';
+
+const defaultRecordsByTab: Record<AdminTab, AdminRecord[]> = {
   users: [
     { id: 1, username: 'admin', email: 'admin@aio.com', password: 'admin123', firstName: 'Admin', lastName: 'Main', roleId: 1 },
     { id: 2, username: 'user', email: 'user@aio.com', password: 'user123', firstName: 'User', lastName: 'Demo', roleId: 2 }
@@ -29,18 +33,46 @@ const recordsByTab: Record<AdminTab, AdminRecord[]> = {
   ]
 };
 
+function cloneRecords(records: Record<AdminTab, AdminRecord[]>): Record<AdminTab, AdminRecord[]> {
+  return JSON.parse(JSON.stringify(records)) as Record<AdminTab, AdminRecord[]>;
+}
+
+function readRecords(): Record<AdminTab, AdminRecord[]> {
+  return storageService.get<Record<AdminTab, AdminRecord[]>>(ADMIN_RECORDS_KEY, cloneRecords(defaultRecordsByTab));
+}
+
 export const adminService = {
+  getRecordsByTabSync(): Record<AdminTab, AdminRecord[]> {
+    return readRecords();
+  },
+
+  saveRecordsByTab(records: Record<AdminTab, AdminRecord[]>) {
+    storageService.set<Record<AdminTab, AdminRecord[]>>(ADMIN_RECORDS_KEY, records);
+    globalThis.dispatchEvent(new CustomEvent(ADMIN_RECORDS_UPDATED_EVENT));
+  },
+
+  subscribeToRecordsChanges(callback: () => void): () => void {
+    const handler = () => callback();
+    globalThis.addEventListener(ADMIN_RECORDS_UPDATED_EVENT, handler);
+    globalThis.addEventListener('storage', handler);
+    return () => {
+      globalThis.removeEventListener(ADMIN_RECORDS_UPDATED_EVENT, handler);
+      globalThis.removeEventListener('storage', handler);
+    };
+  },
+
   async getStats(): Promise<AdminStatCard[]> {
+    const recordsByTab = readRecords();
     return [
-      { label: 'Users', value: 431, tab: 'users' },
-      { label: 'Products', value: 67, tab: 'products' },
-      { label: 'Categories', value: 18, tab: 'categories' },
-      { label: 'Promos and discounts', value: 12, tab: 'promos' },
-      { label: 'Orders', value: 124, tab: 'orders' }
+      { label: 'Users', value: recordsByTab.users.length, tab: 'users' },
+      { label: 'Products', value: recordsByTab.products.length, tab: 'products' },
+      { label: 'Categories', value: recordsByTab.categories.length, tab: 'categories' },
+      { label: 'Promos and discounts', value: recordsByTab.promos.length, tab: 'promos' },
+      { label: 'Orders', value: recordsByTab.orders.length, tab: 'orders' }
     ];
   },
 
   async listByTab(tab: AdminTab): Promise<AdminRecord[]> {
-    return recordsByTab[tab];
+    return readRecords()[tab];
   }
 };

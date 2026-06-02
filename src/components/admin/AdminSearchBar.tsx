@@ -11,7 +11,7 @@ export function AdminSearchBar({ value, onChange }: AdminSearchBarProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search record"
-        className="w-full pl-10 pr-3 py-2 rounded-lg border border-[#b9cacb66] bg-white/80"
+        className="w-full pl-10 pr-3 py-2 rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:ring-primary"
       />
     </div>
   );
