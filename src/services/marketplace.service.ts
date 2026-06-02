@@ -11,7 +11,7 @@ const PROFILE_KEY = 'aio-marketplace-profile';
 const MARKETPLACE_EVENT = 'aio-marketplace-state-change';
 
 function emitStateChange() {
-  window.dispatchEvent(new CustomEvent(MARKETPLACE_EVENT));
+  globalThis.dispatchEvent(new CustomEvent(MARKETPLACE_EVENT));
 }
 
 function readStorage<T>(key: string, fallback: T): T {
@@ -29,6 +29,16 @@ function writeStorage<T>(key: string, value: T) {
   emitStateChange();
 }
 
+function normalizeProfile(profile: UserProfile): UserProfile {
+  const avatarImage = profile.avatarImage?.trim() || '';
+  const normalizedAvatar = avatarImage.startsWith('/images/avatars/') ? avatarImage : '/images/avatars/avatar1.png';
+
+  return {
+    ...profile,
+    avatarImage: normalizedAvatar
+  };
+}
+
 export const marketplaceService = {
   getInitialCartItems(): CartItem[] {
     return readStorage(CART_KEY, initialCartItems);
@@ -43,11 +53,11 @@ export const marketplaceService = {
   },
 
   getProfile(): UserProfile {
-    return readStorage(PROFILE_KEY, demoProfile);
+    return normalizeProfile(readStorage(PROFILE_KEY, demoProfile));
   },
 
   setProfile(profile: UserProfile) {
-    writeStorage(PROFILE_KEY, profile);
+    writeStorage(PROFILE_KEY, normalizeProfile(profile));
   },
 
   appendOrder(order: PurchaseOrder) {
@@ -82,11 +92,11 @@ export const marketplaceService = {
 
   onStateChange(listener: () => void) {
     const handler = () => listener();
-    window.addEventListener(MARKETPLACE_EVENT, handler);
-    window.addEventListener('storage', handler);
+    globalThis.addEventListener(MARKETPLACE_EVENT, handler);
+    globalThis.addEventListener('storage', handler);
     return () => {
-      window.removeEventListener(MARKETPLACE_EVENT, handler);
-      window.removeEventListener('storage', handler);
+      globalThis.removeEventListener(MARKETPLACE_EVENT, handler);
+      globalThis.removeEventListener('storage', handler);
     };
   },
 

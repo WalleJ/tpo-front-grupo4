@@ -33,6 +33,11 @@ export function useProfileDashboard() {
     setProfile(nextProfile);
   };
 
+  const saveProfile = (nextProfile: UserProfile) => {
+    marketplaceService.setProfile(nextProfile);
+    setProfile(nextProfile);
+  };
+
   return {
     profile,
     selectedOrder,
@@ -40,6 +45,7 @@ export function useProfileDashboard() {
     buyerLevel,
     setSelectedOrderId,
     deletePaymentMethod,
+    saveProfile,
     getOrderTotal
   };
 }

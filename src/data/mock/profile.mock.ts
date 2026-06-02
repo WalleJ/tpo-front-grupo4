@@ -5,7 +5,14 @@ export const demoProfile: UserProfile = {
   displayName: 'User Demo',
   location: 'Buenos Aires, Argentina',
   roleLabel: 'HOME USER',
-  avatarImage: '/images/Samsung%208K%20QLED%20TV.jpg',
+  avatarImage: '/images/avatars/avatar1.png',
+  profileData: {
+    username: 'user',
+    email: 'user@aiohome.local',
+    password: 'user',
+    firstName: 'User',
+    lastName: 'Demo'
+  },
   loginSessions: [
     { dateTime: '2026-05-29 08:20', detail: 'Web - Chrome / Android' },
     { dateTime: '2026-05-28 22:09', detail: 'Web - Safari / iOS' },

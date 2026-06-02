@@ -16,7 +16,7 @@ export function Button({ variant = 'primary', className, children, ...props }: B
 
   return (
     <button
-      className={cn('px-4 py-2 rounded-lg transition-colors text-sm font-semibold', variants[variant], className)}
+      className={cn('px-4 py-2 rounded-lg transition-colors text-xs font-semibold', variants[variant], className)}
       {...props}
     >
       {children}
