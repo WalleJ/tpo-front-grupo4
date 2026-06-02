@@ -1,141 +1,217 @@
 # TPO Front - AI-O HOME (Grupo 4)
 
-Frontend estático del ecommerce **AI-O HOME**, orientado a prototipar la experiencia de usuario para dos perfiles:
+Aplicación frontend del ecommerce **AI-O HOME**, desarrollada con **React + Vite + TypeScript**. El proyecto funciona como un prototipo navegable de marketplace para productos smart home, con flujos diferenciados para usuario y administrador.
 
-- **USER**: navegación de tienda, home, carrito y perfil.
-- **ADMIN**: dashboard y listados de administración.
+- **USER**: navegación por home, catálogo, detalle de producto, carrito, checkout y perfil.
+- **ADMIN**: dashboard de administración y gestión visual de entidades.
 
-El proyecto está construido con páginas HTML, Tailwind CSS vía CDN, JavaScript vanilla y assets locales en `images/`.
+La autenticación, los productos, el carrito, el perfil y los listados administrativos usan datos mock y persistencia local mediante `localStorage`.
 
 ## 1. Estructura del proyecto
 
+- `src/main.tsx`
+  - Punto de entrada de la aplicación React.
+  - Configura `BrowserRouter`, providers globales y router principal.
+- `src/app/router/`
+  - Rutas públicas, rutas protegidas y redirecciones.
+- `src/app/layouts/`
+  - Layouts para auth, marketplace y administración.
+- `src/app/providers/`
+  - Composición de providers globales.
 - `src/pages/auth/`
-  - `Login.html`
-  - `Register.html`
-  - `Recover.html`
-- `src/pages/shop/`
-  - `AI-O_HOME.html`
+  - `LoginPage.tsx`
+  - `RegisterPage.tsx`
+  - `RecoverPage.tsx`
+- `src/pages/marketplace/`
+  - `HomePage.tsx`
+  - `StorePage.tsx`
+  - `ProductPage.tsx`
+  - `CartPage.tsx`
+  - `ProfilePage.tsx`
 - `src/pages/admin/`
-  - `AdminDashboard.html`
-  - `AdminLists.html`
-- `images/`
-  - Recursos visuales (productos, banners)
-- `sketch/`
-  - Bocetos de diseño
+  - `DashboardPage.tsx`
+  - `ListingsPage.tsx`
+- `src/components/`
+  - Componentes reutilizables de auth, marketplace, producto, admin y UI base.
+- `src/context/`
+  - Contextos de autenticación y tema.
+- `src/hooks/`
+  - Hooks personalizados para auth, tema, modales, checkout y perfil.
+- `src/services/`
+  - Servicios mock para auth, productos, marketplace, administración y storage.
+- `src/data/mock/`
+  - Datos iniciales de productos, carrito y perfil.
+- `src/types/`
+  - Tipos TypeScript del dominio.
+- `src/styles/`
+  - Estilos globales.
+- `public/`
+  - Assets públicos.
+- `pages/`
+  - Prototipo HTML estático legado. La app actual se ejecuta desde `src`.
 
-## 2. Como ejecutarlo
+## 2. Cómo inicializar y ejecutar el proyecto
 
-Este frontend no requiere build ni dependencias locales.
+### Requisitos
 
-### Opcion A (recomendada): Live Server en VS Code
+- Node.js instalado.
+- npm instalado.
 
-1. Abrir la carpeta `tpo-front-grupo4` en VS Code.
-2. Abrir `src/pages/auth/Login.html`.
-3. Ejecutar **Open with Live Server**.
+Se recomienda usar una versión actual de Node compatible con Vite 5.
 
-### Opcion B: abrir archivos directamente
+### Instalación
 
-1. Abrir `src/pages/auth/Login.html` en el navegador.
-2. Navegar usando los links y botones de la interfaz.
+Desde la raíz del proyecto:
 
-El flujo de auth esta simulado por rol con `localStorage`, dentro del alcance del prototipo visual.
+```bash
+npm install
+```
 
-## 3. Flujo de navegacion
+### Ejecutar en modo desarrollo
 
-### 3.1 Flujo de autenticacion
+```bash
+npm run dev
+```
 
-1. **Ingreso** en `Login.html`.
-2. Si las credenciales son validas en el mock local:
-   - `admin/admin` -> redirecciona a `../admin/AdminDashboard.html`
-   - `user/user` -> redirecciona a `../shop/AI-O_HOME.html#home`
-3. Si no son validas, se muestra mensaje de error en la misma vista.
-4. Desde login tambien se puede ir a:
-   - Recupero de clave (`Recover.html`)
-   - Registro (`Register.html`)
+Vite mostrará una URL local similar a:
 
-### 3.2 Flujo de usuario (USER)
+```text
+http://localhost:5173/
+```
 
-1. Desde login entra a `AI-O_HOME.html`.
-2. Navega por secciones internas: **Home**, **Store**, **Cart**, **Profile**.
-3. Puede explorar sliders, ver productos destacados y navegar a detalle.
-4. En mobile existe barra de navegacion inferior; en desktop, top bar.
+Al abrir la aplicación, cualquier ruta desconocida redirige a:
 
-### 3.3 Flujo administrador (ADMIN)
+```text
+/auth/login
+```
 
-1. Desde login entra a `AdminDashboard.html`.
-2. Desde dashboard accede a `AdminLists.html` por modulo:
+### Compilar para producción
+
+```bash
+npm run build
+```
+
+El build se genera en la carpeta `dist/`.
+
+### Previsualizar build de producción
+
+```bash
+npm run preview
+```
+
+## 3. Credenciales de prueba
+
+El login está simulado con credenciales mock:
+
+| Rol | Usuario | Contraseña | Redirección |
+| --- | --- | --- | --- |
+| ADMIN | `admin` | `admin` | `/admin/dashboard` |
+| USER | `user` | `user` | `/marketplace/home` |
+
+Si las credenciales no coinciden, se muestra un mensaje de error en la pantalla de login.
+
+## 4. Flujo de navegación
+
+### 4.1 Flujo de autenticación
+
+1. El usuario ingresa en `/auth/login`.
+2. Desde login puede navegar a:
+   - Registro: `/auth/register`
+   - Recupero de contraseña: `/auth/recover`
+3. Si inicia sesión como `admin`, entra al dashboard administrativo.
+4. Si inicia sesión como `user`, entra al marketplace.
+5. El logout limpia la sesión local y vuelve a login.
+
+### 4.2 Flujo de usuario
+
+1. Desde `/marketplace/home` puede ver secciones destacadas y productos.
+2. En `/marketplace/store` puede buscar, filtrar y agregar productos al carrito.
+3. En `/marketplace/product/:productId` puede ver el detalle de un producto.
+4. En `/marketplace/cart` puede modificar cantidades, pasar al checkout, agregar tarjeta y finalizar compra.
+5. En `/marketplace/profile` puede ver perfil, historial de compras, métodos de pago y sesiones.
+
+### 4.3 Flujo administrador
+
+1. Desde `/admin/dashboard` ve métricas generales y accesos a módulos.
+2. Desde `/admin/listings?tab=users` puede cambiar entre módulos:
    - Users
    - Products
    - Categories
    - Promos and discounts
    - Orders
-3. Ambas vistas admin validan rol con `localStorage`; si no es ADMIN, redirigen a login.
-4. Logout limpia rol y vuelve a `Login.html`.
+3. La pantalla de listados permite crear, editar y eliminar registros en modo prototipo.
+4. Las rutas admin están protegidas por rol.
 
-## 4. Componentes y vistas definidas
+## 5. Componentes y vistas definidas
 
-### 4.1 Auth
+### 5.1 Auth
 
-- **Login**: formulario de usuario/contrasena, validacion mock, links de recupero/registro.
-- **Register**: formulario de alta de usuario (simulado) y retorno a login.
-- **Recover**: formulario de email con mensaje de confirmacion.
+- **Login**: formulario de usuario/contraseña, validación mock y navegación por rol.
+- **Register**: formulario de alta simulado y retorno a login.
+- **Recover**: formulario de email con mensaje de confirmación.
 
-### 4.2 Shop
+### 5.2 Marketplace
 
-- **Top App Bar** con logo, navegacion principal y toggle de tema.
-- **Hero** con CTA principal.
-- **Bloque de metricas** de catalogo.
-- **Sliders de productos** (altavoces, displays, streaming) con autoplay y controles.
-- **Card promocional** de producto destacado.
-- **CTA newsletter**.
-- **Footer** informativo.
-- **Navegacion mobile** (bottom nav).
+- **MarketplaceLayout**: header fijo con navegación principal y cambio de tema.
+- **Home**: hero, métricas, productos destacados, novedades, newsletter y footer.
+- **Store**: catálogo con búsqueda, filtros y cards de producto.
+- **Product detail**: vista técnica del producto y acción de agregar al carrito.
+- **Cart**: listado de items, resumen de compra, checkout, alta de tarjeta y confirmación de compra.
+- **Profile**: encabezado de perfil, nivel comprador, sesiones, métodos de pago, reclamos e historial.
 
-### 4.3 Admin
+### 5.3 Admin
 
-- **Admin Dashboard**:
-  - Header con badge de rol y logout.
-  - KPIs/cards de resumen por modulo.
-  - Seccion de actividad reciente.
-- **Admin Lists**:
-  - Navegacion por tabs.
-  - Listados por entidad (users/products/categories/promos/orders).
-  - Acciones visuales de CRUD (botones de crear/editar/eliminar, en modo maqueta).
+- **AdminLayout**: header administrativo, cambio de tema, navegación a dashboard y logout.
+- **Dashboard**: cards de métricas por módulo y actividad reciente.
+- **Listings**: tabs por entidad, búsqueda/filtros, formularios y modales para acciones CRUD visuales.
 
-## 5. Paleta de colores
+## 6. Estado y persistencia
 
-Paleta principal inspirada en cian/teal sobre base clara:
+El estado se maneja principalmente con hooks de React, contextos y servicios mock.
 
-- **Primario**: `#006970`
-- **Primario intenso/acento**: `#00dbe9`
-- **Primario contenedor**: `#00f0ff`
-- **Fondo base**: `#fcf8f9`
-- **Texto principal**: `#1c1b1c`
-- **Texto secundario**: `#3b494b`
-- **Bordes/superficie variante**: `#b9cacb`, `#e5e2e3`
-- **Error**: `#ba1a1a`
+- `AuthContext`: usuario actual y acciones de autenticación.
+- `ThemeContext`: tema claro/oscuro.
+- `useCheckoutFlow`: estado del carrito, checkout, métodos de pago y compra.
+- `useProfileDashboard`: estado de perfil, historial y métodos de pago.
+- `useModal`: apertura/cierre de modales con payload opcional.
 
-El shop incluye mapeo extendido de tokens (estilo Material-like) en la configuracion Tailwind inline.
+Claves principales en `localStorage`:
 
-## 6. Tipografia
-
-- **Familia principal**: `Sora` (Google Fonts).
-- **Iconografia**: `Material Symbols Outlined`.
-- **Escalas de texto** definidas para display, headlines, body y label-caps (especialmente en `AI-O_HOME.html`).
+- `aio-auth-user`
+- `role`
+- `aio-theme`
+- `aio-marketplace-cart`
+- `aio-marketplace-profile`
+- `aio-admin-records`
 
 ## 7. Estilo general de interfaz
 
-- Enfoque visual **glassmorphism suave**:
-  - Paneles semitransparentes
-  - `backdrop-filter: blur(...)`
-  - bordes tenues
-- Fondos con **mesh/radial gradients** cian-teal.
-- Microinteracciones con hover y transiciones cortas.
-- Layout responsive con Tailwind (`md`, `lg`, `xl`).
-- Soporte de **modo oscuro** en la vista shop mediante clase `dark`.
+- Diseño responsive con Tailwind CSS.
+- Estética glassmorphism suave.
+- Fondos con mesh/radial gradients.
+- Soporte de modo claro/oscuro.
+- Tipografía principal: `Sora`.
+- Iconografía: `Material Symbols Outlined`.
+- Componentes visuales reutilizables para botones, inputs, cards, tabs, modales, header, badges y loaders.
 
 ## 8. Estado actual y alcance
 
-- El front funciona como **prototipo navegable** de alta fidelidad.
-- Parte de las acciones de negocio (CRUD, auth real, carrito persistente) estan mockeadas visualmente.
-- El foco actual es la experiencia de interfaz, navegacion y consistencia visual entre vistas.
+- El front funciona como prototipo navegable de alta fidelidad.
+- La autenticación está simulada.
+- Los datos se obtienen desde mocks locales.
+- El carrito, perfil, tema, sesión y registros admin se persisten en `localStorage`.
+- El CRUD administrativo es visual y local.
+- El checkout genera una orden mock y la agrega al historial del perfil.
+
+## 9. Scripts disponibles
+
+| Comando | Descripción |
+| --- | --- |
+| `npm install` | Instala dependencias del proyecto. |
+| `npm run dev` | Inicia Vite en modo desarrollo. |
+| `npm run build` | Ejecuta TypeScript y genera build en `dist/`. |
+| `npm run preview` | Sirve localmente el build generado. |
+
+## 10. Documentación adicional
+
+- `TECH_DOC.md`: describe conexiones entre páginas, componentes, hooks y servicios del proyecto React.
