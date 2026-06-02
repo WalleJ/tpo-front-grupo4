@@ -47,7 +47,7 @@ export function NewsletterSection() {
   };
 
   return (
-    <section className="max-w-[1280px] mx-auto px-gutter pb-xl">
+    <section className="max-w-[1280px] mx-auto px-gutter pb-md">
       <div className="bg-surface-container-highest rounded-[32px] p-lg md:p-xl flex flex-col md:flex-row items-center gap-lg">
         <div className="flex-1 z-10">
           <h3 className="font-headline-lg text-headline-lg mb-sm">Get updates on the latest AI-powered smart home devices</h3>

@@ -17,7 +17,7 @@ export function FeaturedProducts({ products }: Readonly<FeaturedProductsProps>) 
   }), [products]);
 
   return (
-    <section className="py-xl max-w-[1280px] mx-auto px-gutter flex flex-col gap-xl">
+    <section className="pt-16 max-w-[1280px] mx-auto px-gutter flex flex-col gap-xl">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-sm mb-xs">
         <div>
           <h3 className="font-headline-lg text-headline-lg mb-xs">Featured Products</h3>

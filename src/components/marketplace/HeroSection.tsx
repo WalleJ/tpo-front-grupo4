@@ -5,7 +5,7 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-[600px] flex items-center overflow-hidden mesh-gradient pt-16">
-      <div className="max-w-[1280px] mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-lg items-center py-xl">
+      <div className="max-w-[1280px] mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-lg items-center">
         <div className="md:col-span-6 z-10">
           <div className="inline-flex items-center gap-xs px-sm py-1 bg-primary-container/20 border border-primary/20 rounded-full mb-md">
             <span className="material-symbols-outlined text-[14px] text-on-primary-container">bolt</span>
