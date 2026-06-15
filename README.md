@@ -1,6 +1,6 @@
 # TPO Front - AI-O HOME (Grupo 4)
 
-Aplicación frontend del ecommerce **AI-O HOME**, desarrollada con **React + Vite + TypeScript**. El proyecto funciona como un prototipo navegable de marketplace para productos smart home, con flujos diferenciados para usuario y administrador.
+Aplicación frontend del ecommerce **AI-O HOME**, desarrollada con **React + Vite + JavaScript**. El proyecto funciona como un prototipo navegable de marketplace para productos smart home, con flujos diferenciados para usuario y administrador.
 
 - **USER**: navegación por home, catálogo, detalle de producto, carrito, checkout y perfil.
 - **ADMIN**: dashboard de administración y gestión visual de entidades.
@@ -9,7 +9,7 @@ La autenticación, los productos, el carrito, el perfil y los listados administr
 
 ## 1. Estructura del proyecto
 
-- `src/main.tsx`
+- `src/main.jsx`
   - Punto de entrada de la aplicación React.
   - Configura `BrowserRouter`, providers globales y router principal.
 - `src/app/router/`
@@ -19,18 +19,18 @@ La autenticación, los productos, el carrito, el perfil y los listados administr
 - `src/app/providers/`
   - Composición de providers globales.
 - `src/pages/auth/`
-  - `LoginPage.tsx`
-  - `RegisterPage.tsx`
-  - `RecoverPage.tsx`
+  - `LoginPage.jsx`
+  - `RegisterPage.jsx`
+  - `RecoverPage.jsx`
 - `src/pages/marketplace/`
-  - `HomePage.tsx`
-  - `StorePage.tsx`
-  - `ProductPage.tsx`
-  - `CartPage.tsx`
-  - `ProfilePage.tsx`
+  - `HomePage.jsx`
+  - `StorePage.jsx`
+  - `ProductPage.jsx`
+  - `CartPage.jsx`
+  - `ProfilePage.jsx`
 - `src/pages/admin/`
-  - `DashboardPage.tsx`
-  - `ListingsPage.tsx`
+  - `DashboardPage.jsx`
+  - `ListingsPage.jsx`
 - `src/components/`
   - Componentes reutilizables de auth, marketplace, producto, admin y UI base.
 - `src/context/`
@@ -42,7 +42,7 @@ La autenticación, los productos, el carrito, el perfil y los listados administr
 - `src/data/mock/`
   - Datos iniciales de productos, carrito y perfil.
 - `src/types/`
-  - Tipos TypeScript del dominio.
+  - Documentación JSDoc de las estructuras del dominio.
 - `src/styles/`
   - Estilos globales.
 - `public/`
@@ -209,7 +209,7 @@ Claves principales en `localStorage`:
 | --- | --- |
 | `npm install` | Instala dependencias del proyecto. |
 | `npm run dev` | Inicia Vite en modo desarrollo. |
-| `npm run build` | Ejecuta TypeScript y genera build en `dist/`. |
+| `npm run build` | Genera build de producción con Vite en `dist/`. |
 | `npm run preview` | Sirve localmente el build generado. |
 
 ## 10. Documentación adicional
